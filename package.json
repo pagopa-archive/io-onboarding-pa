@@ -16,10 +16,11 @@
   "devDependencies": {
     "@types/enzyme": "^3.1.12",
     "@types/enzyme-adapter-react-16": "^1.0.2",
-    "@types/jest": "^23.3.1",
+    "@types/jest": "^24.0.13",
     "@types/node": "10.14.1",
     "@types/react": "16.8.23",
     "@types/react-dom": "16.8.4",
+    "@types/react-router-dom": "^4.3.4",
     "@types/react-test-renderer": "^16.8.2",
     "@types/reactstrap": "^8.0.1",
     "danger": "^8.0.0",
@@ -27,16 +28,16 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
-    "jest": "^23.4.2",
     "italia-tslint-rules": "*",
+    "jest": "^24.8.0",
     "parcel-bundler": "^1.12.3",
     "prettier": "^1.12.1",
     "react-test-renderer": "^16.8.6",
     "rimraf": "^2.6.2",
-    "sass": "^1.22.4",
-    "ts-jest": "23.0.1",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.1.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.5.0",
+    "sass": "^1.22.4"
   },
   "dependencies": {
     "@coreui/coreui": "^2.1.12",
