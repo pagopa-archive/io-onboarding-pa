@@ -1,11 +1,20 @@
 import * as React from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import { DefaultContainer } from "./containers/DefaultContainer/DefaultContainer";
+import { Home } from "./containers/Home/Home";
+import { LoadingScreen } from "./containers/LoadingScreen/LoadingScreen";
 
 import "./App.scss";
+import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
 
 export const App: React.FC = () => {
   return (
-    <div className="App">
-      <h1 className="primary-bg white-color">Piattaforma Onboard PA</h1>
-    </div>
+    <BrowserRouter>
+      <div className="App h-100">
+        <Route path="/" exact component={Home} />
+        <Route path="/(generazione-documenti|conferma-documenti)" component={LoadingScreen} />
+        <Route path="/*" component={DefaultContainer} />
+      </div>
+    </BrowserRouter>
   );
 };
