@@ -12,7 +12,10 @@ export const App: React.FC = () => {
     <BrowserRouter>
       <div className="App h-100">
         <Route path="/" exact component={Home} />
-        <Route path="/(generazione-documenti|conferma-documenti)" component={LoadingScreen} />
+        <Route
+          path="/(generazione-documenti|conferma-documenti)"
+          component={LoadingScreen}
+        />
         <Route path="/*" component={DefaultContainer} />
       </div>
     </BrowserRouter>
