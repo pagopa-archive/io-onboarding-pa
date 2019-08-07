@@ -6,7 +6,10 @@ import { App } from "./App";
 
 WebFont.load({
   google: {
-    families: ["Titillium Web:300,400,700"]
+    families: [
+      "Titillium Web:300,400,700",
+      "Titillium Web"
+    ]
   }
 });
 

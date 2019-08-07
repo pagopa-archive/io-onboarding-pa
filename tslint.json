@@ -4,6 +4,11 @@
       "italia-tslint-rules/strong"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        "ordered-imports": [true, {
+            "import-sources-order": "any",
+            "named-imports-order": "case-insensitive"
+        }]
+    },
     "rulesDirectory": []
 }

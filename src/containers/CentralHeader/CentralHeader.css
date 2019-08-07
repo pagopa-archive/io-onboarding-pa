@@ -1,0 +1,22 @@
+.CentralHeader {
+    top: 48px;
+}
+
+.CentralHeader .text-title {
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 0;
+    vertical-align: text-top;
+    line-height: 24px;
+}
+
+.CentralHeader .text-par {
+    font-size: 18px;
+    letter-spacing: 0;
+    margin-top: 4px
+}
+
+.CentralHeader .username-text {
+    font-size: 18px;
+    letter-spacing: 0.26px;
+}

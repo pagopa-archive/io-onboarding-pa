@@ -4,8 +4,8 @@ import { DefaultContainer } from "./containers/DefaultContainer/DefaultContainer
 import { Home } from "./containers/Home/Home";
 import { LoadingScreen } from "./containers/LoadingScreen/LoadingScreen";
 
-import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
 import "./App.scss";
+import "./../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
 
 export const App: React.FC = () => {
   return (
