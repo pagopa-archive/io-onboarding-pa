@@ -2,7 +2,7 @@ import * as React from "react";
 import { AppHeader } from "@coreui/react";
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
 
-import bootstrapImages from "../../assets/img/bootstrap-italia/sprite.svg";
+import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 
 import "./CentralHeader.css";
 
@@ -43,7 +43,7 @@ export const CentralHeader: React.FC<ICentralHeaderProps> = props => {
               <div className="row h-100 align-items-end">
                 <div className="col-2">
                   <svg className="icon icon-white">
-                    <use xlinkHref={`${bootstrapImages}#it-user`} />
+                    <use xlinkHref={`${bootstrapItaliaImages}#it-user`} />
                   </svg>
                 </div>
                 <div className="col-10">
