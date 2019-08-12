@@ -56,5 +56,8 @@
     "react-router-dom": "^5.0.1",
     "reactstrap": "^8.0.0",
     "webfontloader": "^1.6.28"
+  },
+  "resolutions": {
+    "danger/gitlab": "~6.0.0"
   }
 }
