@@ -1,5 +1,6 @@
 .CentralHeader {
     top: 48px;
+    z-index: 1020;
 }
 
 .CentralHeader .text-title {

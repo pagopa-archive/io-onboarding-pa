@@ -8,7 +8,7 @@ export const SlimHeader: React.FC = () => {
   return (
     <AppHeader
       fixed
-      className="SlimHeader it-header-slim-wrapper border-bottom-0"
+      className="SlimHeader it-header-slim-wrapper border-bottom-0 position-fixed w-100"
     >
       <Nav className="d-md-down-none" navbar>
         <NavItem className="px-3">

@@ -1,0 +1,26 @@
+.Dashboard .dashboard-col-left {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 20.66667%;
+    flex: 0 0 20.66667%;
+    max-width: 20.66667%;
+}
+
+.Dashboard .dashboard-col-middle {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 79.33333%;
+    flex: 0 0 79.33333%;
+    max-width: 79.33333%;
+}
+
+.Dashboard .leftbar-title {
+    font-size: 21px;
+    color: #3F556D;
+    letter-spacing: 0;
+}
+
+.Dashboard .leftbar-text {
+    font-size: 14px;
+    color: #17314D;
+    letter-spacing: 0;
+    line-height: 18px;
+}

@@ -1,0 +1,17 @@
+.SpidLogin .card-title {
+    font-size: 36px;
+    color: #17314D;
+    letter-spacing: 0;
+}
+
+.SpidLogin .card-text {
+    font-family: "Titillium Web", Geneva, Tahoma, sans-serif !important;
+    font-size: 18px !important;
+    color: #17314D;
+    letter-spacing: 0;
+    line-height: 24px;
+}
+
+.SpidLogin .btn-outline-primary {
+    min-width: 240px;
+}

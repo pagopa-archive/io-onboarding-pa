@@ -10,7 +10,7 @@ import "./../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <div className="App h-100">
+      <div className="App">
         <Switch>
           <Route exact path="/" component={() => <Redirect to="/home" />} />
           <Route path="/home" component={Home} />

@@ -1,12 +1,13 @@
 import * as React from "react";
+import { withRouter } from "react-router";
 
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
 import mockImage from "../../assets/img/mock-img-white.png";
 import "./Home.css";
 
-export const Home: React.FC = () => {
+export const Home = withRouter(props => {
   return (
-    <div className="Home h-100">
+    <div className="Home">
       <div className="container-fluid d-flex h-100 flex-column custom-background-container overflow-auto">
         <div className="row justify-content-start">
           <div className="col">
@@ -47,6 +48,9 @@ export const Home: React.FC = () => {
             <button
               type="button"
               className="btn btn-primary home-btn home-btn-mt"
+              onClick={() => {
+                return props.history.push("/spid-login");
+              }}
             >
               Delegato ente
             </button>
@@ -75,4 +79,4 @@ export const Home: React.FC = () => {
       </div>
     </div>
   );
-};
+});

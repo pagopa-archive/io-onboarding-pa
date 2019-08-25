@@ -14,7 +14,7 @@ export const CentralHeader: React.FC<ICentralHeaderProps> = props => {
   return (
     <AppHeader
       fixed
-      className="CentralHeader it-header-center-wrapper border-bottom-0"
+      className="CentralHeader it-header-center-wrapper border-bottom-0 position-fixed w-100"
     >
       <div className="w-100">
         <div className="container-fluid">
@@ -41,14 +41,18 @@ export const CentralHeader: React.FC<ICentralHeaderProps> = props => {
             </div>
             <div className="col-2 text-white">
               <div className="row h-100 align-items-end">
-                <div className="col-2">
-                  <svg className="icon icon-white">
-                    <use xlinkHref={`${bootstrapItaliaImages}#it-user`} />
-                  </svg>
-                </div>
-                <div className="col-10">
-                  <p className="username-text mb-0">{props.userName}</p>
-                </div>
+                {props.userName !== "" ? (
+                  <React.Fragment>
+                    <div className="col-2">
+                      <svg className="icon icon-white">
+                        <use xlinkHref={`${bootstrapItaliaImages}#it-user`} />
+                      </svg>
+                    </div>
+                    <div className="col-10">
+                      <p className="username-text mb-0">{props.userName}</p>
+                    </div>
+                  </React.Fragment>
+                ) : null}
               </div>
             </div>
           </div>
