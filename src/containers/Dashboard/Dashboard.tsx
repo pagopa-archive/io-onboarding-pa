@@ -23,7 +23,7 @@ export const Dashboard: React.FC<IDashboardProps> = props => {
     institutionImage: string;
     institutionName: string;
   } = {
-    institutionDelegates: [""],
+    institutionDelegates: [],
     institutionFiscalCode: "",
     institutionImage: "",
     institutionName: ""
