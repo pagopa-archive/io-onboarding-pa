@@ -1,7 +1,6 @@
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-// test
 interface IRegistrationStepOneCustomProps {
   institution: {
     institutionName: string;

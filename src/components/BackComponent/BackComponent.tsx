@@ -1,15 +1,31 @@
 import * as React from "react";
-import { withRouter } from "react-router";
+import {RouteComponentProps, withRouter} from "react-router";
 
 import "./BackComponent.css";
 
 import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 
-export const BackComponent = withRouter(props => {
+interface IBackComponentCustomProps {
+  openConfirmModal: () => void;
+}
+
+interface IPathParams {
+  registrationStep: string;
+}
+
+interface IBackComponentProps
+  extends IBackComponentCustomProps,
+    RouteComponentProps<IPathParams> {}
+
+export const BackComponent = withRouter<
+  IBackComponentProps,
+  React.FC<IBackComponentProps>
+>((props: IBackComponentProps) => {
   // Go to selected step
   const goToStep = (step: number) => {
-    const page: string = step === 0 ? "/dashboard" : "/registrazione/" + step;
-    return props.history.push(page);
+    return step === 0
+      ? props.openConfirmModal()
+      : props.history.push("/registrazione/" + step);
   };
 
   // Create three button elements with step numbers from 1 to 3
