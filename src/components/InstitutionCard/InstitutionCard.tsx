@@ -1,15 +1,22 @@
 import React, {FC, Fragment} from "react";
 
 import "./InstitutionCard.css";
+import {RouteComponentProps, withRouter} from "react-router";
 
-interface IInstitutionCardProps {
+interface IInstitutionCardCustomProps {
   institutionDelegates: ReadonlyArray<string>;
   institutionFiscalCode: string;
   institutionImage: string;
   institutionName: string;
 }
 
-export const InstitutionCard: FC<IInstitutionCardProps> = props => {
+interface IInstitutionCardProps
+  extends IInstitutionCardCustomProps,
+    RouteComponentProps<> {}
+
+
+export const InstitutionCard = withRouter<IInstitutionCardProps, React.FC<IInstitutionCardProps>>(
+  (props) => {
   const enum InstitutionStates {
     NotSet,
     WaitingSignage,
@@ -93,7 +100,9 @@ export const InstitutionCard: FC<IInstitutionCardProps> = props => {
   const buttonRow = institutionState === InstitutionStates.NotSet || institutionState === InstitutionStates.WaitingSignage ? (
     <div className="row">
       <div className={`col-10 ${institutionState !== InstitutionStates.NotSet ? "offset-2" : "pl-4"} pt-3`}>
-        <button type="button" className="btn btn-primary">
+        <button type="button" className="btn btn-primary" onClick={institutionState === InstitutionStates.NotSet ? () => {
+                return props.history.push("/registrazione/1");
+              } : () => {}}>
           {`${institutionState === InstitutionStates.NotSet ? "Ricerca il tuo ente" : "Invia i documenti alla PEC di nuovo"}`}
         </button>
       </div>
@@ -103,7 +112,7 @@ export const InstitutionCard: FC<IInstitutionCardProps> = props => {
 
   return (
     <div className="InstitutionCard">
-      <div className="card-wrapper card-space">
+      <div className="card-wrapper card-space pr-4">
         <div className="card card-bg card-big">
           <div className="card-body">
             {imgNameCfRow}
@@ -115,4 +124,4 @@ export const InstitutionCard: FC<IInstitutionCardProps> = props => {
       </div>
     </div>
   );
-};
+});

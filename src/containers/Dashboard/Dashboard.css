@@ -1,3 +1,22 @@
+.Dashboard .left-section {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 83.33333%;
+    overflow-y: scroll;
+}
+
+.Dashboard .right-section {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 83.33333%;
+    width: 16.66667%;
+    overflow-y: scroll;
+    border-left: 1px solid #A8B1BB;
+}
+
 .Dashboard .dashboard-col-left {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 20.66667%;
@@ -23,4 +42,20 @@
     color: #17314D;
     letter-spacing: 0;
     line-height: 18px;
+}
+
+.Dashboard .dashboard-offset-col-left {
+    margin-left: 20.66667%;
+}
+
+.Dashboard .dashboard-section-title {
+    font-size: 36px;
+    color: #17314D;
+    letter-spacing: 0;
+}
+
+.Dashboard .dashboard-section-subtitle {
+    font-size: 24px;
+    color: #17314D;
+    letter-spacing: 0;
 }

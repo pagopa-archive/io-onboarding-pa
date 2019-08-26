@@ -1,0 +1,8 @@
+.NoServicesCard .no-services-card {
+    border: 2px dotted #D2D7DA;
+    border-radius: 4px;
+}
+
+.NoServicesCard .card::after {
+    background: none;
+}
