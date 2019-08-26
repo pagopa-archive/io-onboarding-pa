@@ -51,6 +51,7 @@
     "fp-ts": "1.12.0",
     "io-ts": "1.8.5",
     "react": "^16.8.6",
+    "react-bootstrap-typeahead": "^3.4.6",
     "react-dom": "^16.8.6",
     "react-router-config": "^5.0.1",
     "react-router-dom": "^5.0.1",
