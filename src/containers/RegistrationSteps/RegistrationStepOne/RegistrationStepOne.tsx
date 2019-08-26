@@ -2,7 +2,15 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 interface IRegistrationStepOneCustomProps {
-  prova?: string;
+  institution: {
+    institutionName: string;
+    institutionFiscalCode: string;
+    institutionAdminName: string;
+    institutionPecs: ReadonlyArray<string>;
+    institutionLegalRepName: string;
+    institutionLegalRepSurname: string;
+    institutionLegalRepCf: string;
+  };
 }
 
 interface IPathParams {
@@ -18,8 +26,9 @@ export const RegistrationStepOne = withRouter<
   React.FC<IRegistrationStepOneProps>
 >((props: IRegistrationStepOneProps) => {
   return (
-    <div>
-      {props.prova} - {props.match.params.registrationStep}
+    <div className="RegistrationStepOne">
+      {props.institution.institutionName} - {props.match.params.registrationStep}
+
     </div>
   );
 });

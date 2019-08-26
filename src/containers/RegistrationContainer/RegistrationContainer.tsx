@@ -5,10 +5,32 @@ import { BackComponent } from "../../components/BackComponent/BackComponent";
 import { RegistrationStepOne } from "../RegistrationSteps/RegistrationStepOne/RegistrationStepOne";
 
 export const RegistrationContainer = withRouter(props => {
+  const initialSelectedInstitution: {
+    institutionName: string;
+    institutionFiscalCode: string;
+    institutionAdminName: string;
+    institutionPecs: ReadonlyArray<string>;
+    institutionLegalRepName: string;
+    institutionLegalRepSurname: string;
+    institutionLegalRepCf: string;
+  } = {
+    institutionName: "Institution name",
+    institutionFiscalCode: "",
+    institutionAdminName: "",
+    institutionPecs: [],
+    institutionLegalRepName: "",
+    institutionLegalRepSurname: "",
+    institutionLegalRepCf: "",
+  };
+
+  const [selectedInstitution, setSelectedInstitution] = React.useState({
+    ...initialSelectedInstitution
+  });
+
   const registrationBody = (step => {
     switch (step) {
       case "1":
-        return <RegistrationStepOne prova="provaprova" />;
+        return <RegistrationStepOne institution={selectedInstitution} />;
       case "2":
         return <div>Ciao2</div>;
     }
