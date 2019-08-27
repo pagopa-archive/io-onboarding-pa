@@ -15,6 +15,12 @@ RUN yarn build
 FROM nginx:1.16.1
 LABEL maintainer="https://teamdigitale.governo.it"
 
+COPY .env /tmp/.env
+COPY env.sh /tmp/env.sh
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+
+RUN chmod +x /tmp/env.sh
+
+CMD ["./tmp/env.sh && cp /tmp/env-config.js && rm -rf /tmp/env-config.js env.sh && nginx -g daemon off;"]
 
 WORKDIR /usr/share/nginx/html
