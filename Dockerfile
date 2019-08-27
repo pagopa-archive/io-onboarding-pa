@@ -12,17 +12,9 @@ RUN sudo chmod -R 777 /usr/src/app
 RUN yarn install
 RUN yarn build
 
-FROM node:10.14.1-alpine
+FROM nginx:1.16.1
 LABEL maintainer="https://teamdigitale.governo.it"
 
-WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
-COPY /src /usr/src/app/src
-COPY /public /usr/src/app/public
-COPY /package.json /usr/src/app/package.json
-COPY --from=builder /usr/src/app/dist /usr/src/app/dist
-COPY --from=builder /usr/src/app/node_modules /usr/src/app/node_modules
-
-EXPOSE 1234
-
-ENTRYPOINT yarn start
+WORKDIR /usr/share/nginx/html

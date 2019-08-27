@@ -1,5 +1,9 @@
-version: "2.2"
+---
+
+version: '3.2'
 services:
+
+  # IO onboarding PA frontend
   io-onboarding-pa:
     container_name: io-onboarding-pa
     image: teamdigitale/io-onboarding-pa
@@ -7,5 +11,42 @@ services:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "1234:1234"
-    restart: always
+      - "8080:80"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - io-onboarding-pa-api
+
+  # IO onboarding PA backend - app
+  io-onboarding-pa-api:
+    container_name: io-onboarding-pa-api
+    image: teamdigitale/io-onboarding-pa-api
+    env_file:
+      - .env.io-onboarding-pa-api
+    ports:
+      - "8081:80"
+    stdin_open: true
+    tty: true
+    depends_on:
+        - database
+        - spid-testenv
+
+  # IO onboarding PA backend - postgres
+  database:
+    container_name: postgres
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+
+  # IO onboarding PA backend - spid
+  spid-testenv:
+    container_name: spid-testenv2
+    image: italia/spid-testenv2
+    ports:
+      - "8088:8088"
+    volumes:
+      - "./testenv2/conf:/app/conf"
