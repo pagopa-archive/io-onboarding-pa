@@ -38,8 +38,8 @@ export const RegistrationStepOne = withRouter<
 
   return (
     <div className="RegistrationStepOne">
-      {props.institution.institutionName} -{" "}
-      {props.match.params.registrationStep}
+      {/*{props.institution.institutionName} -{" "}*/}
+      {/*{props.match.params.registrationStep}*/}
       <AsyncTypeahead
         allowNew={false}
         isLoading={false}
