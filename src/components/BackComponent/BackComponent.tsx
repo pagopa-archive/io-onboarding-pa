@@ -72,7 +72,6 @@ export const BackComponent = withRouter<
             {backButtons}
           </div>
         </div>
-        {props.match.params.registrationStep}
       </div>
     </div>
   );
