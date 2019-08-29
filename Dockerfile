@@ -15,7 +15,7 @@ RUN yarn build
 FROM nginx:1.16.1
 LABEL maintainer="https://teamdigitale.governo.it"
 
-COPY .env.io-onboarding-pa /usr/share/nginx/html/.env.io-onboarding-pa
+COPY .env.io-onboarding-pa.development /usr/share/nginx/html/.env.io-onboarding-pa
 COPY env.sh /usr/share/nginx/html
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
