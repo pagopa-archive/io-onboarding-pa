@@ -1,7 +1,30 @@
 import * as React from "react";
-import { withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 
-export const RegistrationStepTwo = withRouter(props => {
+interface IRegistrationStepTwoCustomProps {
+  institution: {
+    institutionName: string;
+    institutionFiscalCode: string;
+    institutionAdminName: string;
+    institutionPecs: ReadonlyArray<string>;
+    institutionLegalRepName: string;
+    institutionLegalRepSurname: string;
+    institutionLegalRepCf: string;
+  };
+}
+
+interface IPathParams {
+  registrationStep: string;
+}
+
+interface IRegistrationStepTwoProps
+  extends IRegistrationStepTwoCustomProps,
+    RouteComponentProps<IPathParams> {}
+
+export const RegistrationStepTwo = withRouter<
+  IRegistrationStepTwoProps,
+  React.FC<IRegistrationStepTwoProps>
+>((props: IRegistrationStepTwoProps) => {
   return (
     <div className="RegistrationStepTwo">
       <div className="row">
@@ -37,13 +60,13 @@ export const RegistrationStepTwo = withRouter(props => {
       </div>
       <div className="form-row pt-5">
         <div className="form-group col-md-6">
-          <input type="text" className="form-control" id="formNome" />
+          <input type="text" className="form-control" id="formNome" value={props.institution.institutionLegalRepName || ""} />
           <label htmlFor="formNome" className="active">
             Nome
           </label>
         </div>
         <div className="form-group col-md-6">
-          <input type="text" className="form-control" id="formCognome" />
+          <input type="text" className="form-control" id="formCognome" value={props.institution.institutionLegalRepSurname || ""}/>
           <label htmlFor="formCognome" className="active">
             Cognome
           </label>

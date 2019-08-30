@@ -1,16 +1,31 @@
 import * as React from "react";
 import { AppHeader } from "@coreui/react";
+import { RouteComponentProps, withRouter } from "react-router";
+import {
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Nav,
+  UncontrolledDropdown
+} from "reactstrap";
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
 
 import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 
 import "./CentralHeader.css";
 
-interface ICentralHeaderProps {
+interface ICentralHeaderCustomProps {
   userName?: string;
 }
 
-export const CentralHeader: React.FC<ICentralHeaderProps> = props => {
+interface ICentralHeaderProps
+  extends ICentralHeaderCustomProps,
+    RouteComponentProps {}
+
+export const CentralHeader = withRouter<
+  ICentralHeaderProps,
+  React.FC<ICentralHeaderProps>
+>((props: ICentralHeaderProps) => {
   return (
     <AppHeader
       fixed
@@ -49,7 +64,24 @@ export const CentralHeader: React.FC<ICentralHeaderProps> = props => {
                       </svg>
                     </div>
                     <div className="col-10">
-                      <p className="username-text mb-0">{props.userName}</p>
+                      <Nav className="ml-auto" navbar>
+                        <UncontrolledDropdown nav direction="down">
+                          <DropdownToggle nav className="text-white pb-0">
+                            <p className="username-text mb-0">
+                              {props.userName}
+                            </p>
+                          </DropdownToggle>
+                          <DropdownMenu right>
+                            <DropdownItem
+                              onClick={() => props.history.push("/profile")}
+                            >
+                              Profilo
+                            </DropdownItem>
+                            {/*<DropdownItem onClick={e => this.props.onLogout(e)}>Logout</DropdownItem>*/}
+                            <DropdownItem>Logout</DropdownItem>
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
+                      </Nav>
                     </div>
                   </React.Fragment>
                 ) : null}
@@ -60,4 +92,4 @@ export const CentralHeader: React.FC<ICentralHeaderProps> = props => {
       </div>
     </AppHeader>
   );
-};
+});

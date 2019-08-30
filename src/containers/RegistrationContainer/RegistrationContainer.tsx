@@ -13,8 +13,8 @@ import {
 
 import { BackComponent } from "../../components/BackComponent/BackComponent";
 import { RegistrationStepOne } from "../RegistrationSteps/RegistrationStepOne/RegistrationStepOne";
-import {RegistrationStepThree} from "../RegistrationSteps/RegistrationStepThree/RegistrationStepThree";
-import {RegistrationStepTwo} from "../RegistrationSteps/RegistrationStepTwo/RegistrationStepTwo";
+import { RegistrationStepThree } from "../RegistrationSteps/RegistrationStepThree/RegistrationStepThree";
+import { RegistrationStepTwo } from "../RegistrationSteps/RegistrationStepTwo/RegistrationStepTwo";
 
 export const RegistrationContainer = withRouter(props => {
   const initialSelectedInstitution: {
@@ -41,12 +41,33 @@ export const RegistrationContainer = withRouter(props => {
     ...initialSelectedInstitution
   });
 
+  const onInstitutionSelected = (
+    event: ReadonlyArray<{
+      institutionName: string;
+      institutionFiscalCode: string;
+      institutionAdminName: string;
+      institutionPecs: ReadonlyArray<string>;
+      institutionLegalRepName: string;
+      institutionLegalRepSurname: string;
+      institutionLegalRepCf: string;
+    }>
+  ) => {
+    console.log("Calling onInstitutionSelected");
+    console.log(event);
+    setSelectedInstitution(event[0]);
+  };
+
   const registrationBody = (step => {
     switch (step) {
       case "1":
-        return <RegistrationStepOne institution={selectedInstitution} />;
+        return (
+          <RegistrationStepOne
+            institution={selectedInstitution}
+            onInstitutionSelected={onInstitutionSelected}
+          />
+        );
       case "2":
-        return <RegistrationStepTwo />;
+        return <RegistrationStepTwo institution={selectedInstitution} />;
       case "3":
         return <RegistrationStepThree />;
     }
