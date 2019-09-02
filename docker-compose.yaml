@@ -26,12 +26,14 @@ services:
     env_file:
       - .env.io-onboarding-pa-api.development
     ports:
-      - "8081:80"
+      - "8081:3000"
     stdin_open: true
     tty: true
     depends_on:
         - postgres
         - spid-testenv
+    volumes:
+      - "./certs:/usr/src/app/certs:delegated"
 
   # IO onboarding PA backend - postgres
   postgres:
