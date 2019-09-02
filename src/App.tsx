@@ -7,7 +7,10 @@ import { LoadingScreen } from "./components/LoadingScreen/LoadingScreen";
 import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
 import "./App.scss";
 
-/*Entry point for app, with first level routing*/
+/**
+ * Entry point for app, with first level routing
+ */
+
 export const App = () => {
   return (
     <BrowserRouter>

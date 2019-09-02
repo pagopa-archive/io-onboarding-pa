@@ -2,7 +2,9 @@ import React from "react";
 import { Button, Col, Media, Row } from "reactstrap";
 import ioLogoWhite from "../../../assets/img/io-logo-white.svg";
 
-/*props for LoginHomeButton component*/
+/**
+ * props for LoginHomeButton component
+ */
 interface IHomeLoginButtonProps {
   buttonText: string;
   img: string;
@@ -13,7 +15,9 @@ interface IHomeLoginButtonProps {
   text: string;
 }
 
-/*component defining a login element used in Home component(image, button and descriptive text)*/
+/**
+ * Component defining a login element used in Home component(image, button and descriptive text)
+ */
 export const HomeLoginButton = (props: IHomeLoginButtonProps) => {
   return (
     <Col sm={{ size: 3, offset: props.offset }}>

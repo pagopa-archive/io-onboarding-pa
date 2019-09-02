@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ComponentProps } from "react";
 import { Col, Media, Row } from "reactstrap";
 import { HomeLoginButton } from "./HomeLoginButton/HomeLoginButton";
 
@@ -11,19 +11,16 @@ import logoHomeDev from "../../assets/img/logo_home_dev.png";
 import logoHomeRep from "../../assets/img/logo_home_legal_rep.png";
 
 import "./Home.css";
-
-/*Landing page with three different login for developers, institution delegate and institution legal ref*/
+/**
+ * Landing page with three different login for developers, institution delegate and institution legal ref
+ */
 export const Home = () => {
-  /*array containing three login elements props*/
-  const homeLoginButtonsArray: ReadonlyArray<{
-    buttonText: string;
-    img: string;
-    imgHeight: number;
-    imgWidth: number;
-    link: string;
-    offset?: string;
-    text: string;
-  }> = [
+  /**
+   * array containing three login elements props
+   */
+  const homeLoginButtonsArray: ReadonlyArray<
+    ComponentProps<typeof HomeLoginButton>
+  > = [
     {
       buttonText: "Sviluppatore",
       img: logoHomeDev,
