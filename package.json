@@ -6,9 +6,9 @@
   "author": "https://teamdigitale.governo.it",
   "license": "MIT",
   "scripts": {
-    "start": "parcel ./public/index.html",
+    "start": "chmod +x ./env.sh && ./env.sh && cp env-config.js ./public/ && parcel ./public/index.html --public-url /",
     "prebuild": "rimraf dist",
-    "build": "parcel build ./public/index.html --public-url /",
+    "build": "parcel build ./public/index.html --public-url / --no-minify ./public/env-config.js",
     "postversion": "git push && git push --tags",
     "test": "jest",
     "lint": "tslint --project ."
