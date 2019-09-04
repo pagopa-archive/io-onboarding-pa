@@ -4,9 +4,11 @@ import {
   ButtonDropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownToggle
+  DropdownToggle,
+  Media
 } from "reactstrap";
 
+import spidLogo from "../../../assets/img/spid-ico-circle-bb.svg";
 import images from "../../../assets/img/spid/*.svg";
 
 import "./SpidLoginButton.css";
@@ -91,13 +93,15 @@ export const SpidLoginButton = withRouter(props => {
         toggle={() => {
           setIsSpidDropdownOpen((prevState: boolean) => !prevState);
         }}
+        className="w-100"
       >
         <DropdownToggle
           caret
           tag="button"
-          className="btn btn-primary toggle-spid"
+          className="btn btn-primary btn-icon toggle-spid"
         >
-          Log in con SPID
+          <Media object src={spidLogo} alt="Spid Logo" width={29} />
+          <span>Log in con SPID</span>
         </DropdownToggle>
         <DropdownMenu>{spidDropDownItems}</DropdownMenu>
       </ButtonDropdown>

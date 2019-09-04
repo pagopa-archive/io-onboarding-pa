@@ -51,9 +51,6 @@ export const SpidLogin = withRouter(props => {
                     <h2 className="pb-4">Accedi con SPID</h2>
                   </CardTitle>
                   <Row>
-                    <Col sm="3">
-                      <SpidLoginButton />
-                    </Col>
                     <Col sm="9 card-text">
                       <p className="font-weight-bold mb-0">Cos'è SPID</p>
                       <p>
@@ -65,30 +62,33 @@ export const SpidLogin = withRouter(props => {
                         Sei già in possesso di un'utenza SPID?
                       </p>
                       <p>Accedi con le credenziali fornite dal tuo gestore</p>
-                      <p className="font-weight-bold">
+                      <p className="font-weight-bold mb-1">
                         Non hai ancora un'utenza SPID?
                       </p>
                       <a
                         href="https://www.spid.gov.it/richiedi-spid"
-                        className="btn btn-outline-primary mb-4"
+                        className="btn btn-link mb-4 pl-0"
                       >
                         Richiedila a uno dei gestori
                       </a>
                       <p className="font-weight-bold mb-0">
                         Cosa posso fare con SPID
                       </p>
-                      <p>
+                      <p className="mb-1">
                         In questa fase di avvio del servizio le credenziali SPID
                         sono utilizzabili solo per l'accesso ai servizi per il
                         cittadino
                       </p>
                       <a
                         href="https://www.spid.gov.it"
-                        className="btn btn-outline-primary"
+                        className="btn btn-link pl-0"
                         role="button"
                       >
                         Maggiori informazioni su SPID
                       </a>
+                    </Col>
+                    <Col sm="3">
+                      <SpidLoginButton />
                     </Col>
                   </Row>
                 </CardBody>

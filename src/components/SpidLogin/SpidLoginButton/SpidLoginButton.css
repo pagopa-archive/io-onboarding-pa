@@ -8,3 +8,10 @@
     clip:rect(0,0,0,0);
     border:0
 }
+
+.SpidButton .dropdown-menu {
+    z-index: 1039;
+    left: 0px !important;
+    top: 65px !important;
+    transform: none !important;
+}
