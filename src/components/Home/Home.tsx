@@ -26,7 +26,7 @@ export const Home = () => {
       img: logoHomeDev,
       imgHeight: 100,
       imgWidth: 101,
-      link: "developer-dashboard",
+      link: "developer-login",
       offset: "home",
       text:
         "Entra qui se ti occupi di sviluppo di servizi digitali per gli enti e le amministrazioni italiane"
@@ -36,7 +36,7 @@ export const Home = () => {
       img: logoHomeDel,
       imgHeight: 100,
       imgWidth: 126,
-      link: "delegate-dashboard",
+      link: "spid-login",
       offset: undefined,
       text:
         "Entra qui se lavori in una pubblica amministrazione e sei delegato alla gestione dei servizi digitali"
@@ -46,7 +46,7 @@ export const Home = () => {
       img: logoHomeRep,
       imgHeight: 100,
       imgWidth: 106,
-      link: "legal-rep-dashboard",
+      link: "legal-rep-login",
       offset: undefined,
       text:
         "Entra qui se rappresenti legalmente un’ente, per supervisionare l’integrazione dei servizi su IO"
