@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { DefaultContainer } from "./components/DefaultContainer/DefaultContainer";
 import { Home } from "./components/Home/Home";
@@ -10,7 +10,6 @@ import "./App.scss";
 /**
  * Entry point for app, with first level routing
  */
-
 export const App = () => {
   return (
     <BrowserRouter>
