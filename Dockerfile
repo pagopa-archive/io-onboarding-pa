@@ -15,6 +15,8 @@ RUN yarn build
 FROM nginx:1.16.1
 LABEL maintainer="https://teamdigitale.governo.it"
 
+COPY nginx.conf /etc/nginx
+
 COPY env.sh /usr/share/nginx/html
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
