@@ -71,8 +71,9 @@ export const SpidLoginButton = withRouter(props => {
     const imageString = `spid-idp-${spidButton.idp}`;
 
     return (
-      <DropdownItem key={spidButton.name}>
+      <DropdownItem key={spidButton.name} className="p-0">
         <a
+          className="w-100 d-block p-3"
           href={`${customWindow._env_.IO_ONBOARDING_PA_API_HOST}:${customWindow._env_.IO_ONBOARDING_PA_API_PORT}/login?entityID=${spidButton.idp}&authLevel=SpidL2`}
         >
           <span className="spid-sr-only">{spidButton.name}</span>
