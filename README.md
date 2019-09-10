@@ -68,23 +68,4 @@ For demo purposes, some environment variables files are provided
 
 * *.env.io-onboarding-pa-api.development* for the backend (a complete description of the variables is available at the [backend GitHub repository](https://github.com/teamdigitale/io-onboarding-pa-api/blob/master/README.md))
 
-* *.env.io-onboarding-pa-api-postgres.development* for Postgres DB
-
-## Environment variables
-
-The table below describes all the Environment variables needed by the front end of the application.
-
-| Variable name                          | Description                               | type   |
-|----------------------------------------|-------------------------------------------|--------|
-| IO_ONBOARDING_PA_API_HOST              | The hostname of the APIs url              | string |
-| IO_ONBOARDING_PA_API_PORT              | The port for of APIs url                  | string |
-
-### Environment variables run-time injection
-
-The frontend container needs to adapt to different environments, reading at run-time environment variables values. For example, the application needs to know the address of the backend application. This is a non trivial task, since Javascript code runs on the client machine of the user executing the application, which prevents the application from directly reading the environment variables from the container.
-
-To overcome this limitation, an *env.sh* bash script is executed every time the frontend application container starts. The script reads the environment variables and produces an *env-config.js* file that is then automatically copied together with the rest of the files to be served by the webserver. The *index.html* file (in the *public* folder of this repository) links already to *env-config.js*, which is read every time the user opens the application in a browser.
-
->**IMPORTANT**: The *env.sh* script reads and automatically injects in `env-config.js` all environment variables prefixed with *IO_ONBOARDING_PA*, for example *IO_ONBOARDING_PA_API_HOST*.
-
-To read the variable values inside the frontend application, use `window._env_.IO_ONBOARDING_PA_YOUR_VAR`. 
+Use this template when creating new typescript projects.
