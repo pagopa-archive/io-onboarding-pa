@@ -23,6 +23,9 @@ interface ISearchInstitutionProps {
   selectedInstitution: IInstitution;
 }
 
+/**
+ * Component for institution search with autocomplete
+ */
 export const SearchInstitutions = (props: ISearchInstitutionProps) => {
   const options: ReadonlyArray<IInstitution> = [
     {
