@@ -61,7 +61,7 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
         isLoading={false}
         multiple={false}
         options={options}
-        labelKey="institutionName"
+        labelKey="name"
         minLength={3}
         onSearch={handleSearch}
         onChange={handleChange}

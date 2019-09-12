@@ -1,9 +1,10 @@
+import React, { ComponentProps } from "react";
 import { useState } from "react";
-import * as React from "react";
 import { withRouter } from "react-router";
 import {
   Button,
   Col,
+  Container,
   Modal,
   ModalBody,
   ModalFooter,
@@ -11,50 +12,84 @@ import {
   Row
 } from "reactstrap";
 
-import { BackComponent } from "../../components/BackComponent/BackComponent";
-import { RegistrationStepOne } from "../RegistrationSteps/RegistrationStepOne/RegistrationStepOne";
-import { RegistrationStepThree } from "../RegistrationSteps/RegistrationStepThree/RegistrationStepThree";
-import { RegistrationStepTwo } from "../RegistrationSteps/RegistrationStepTwo/RegistrationStepTwo";
+import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
+import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
+import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepThree";
+import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 export const RegistrationContainer = withRouter(props => {
-  const initialSelectedInstitution: {
-    institutionName: string;
-    institutionFiscalCode: string;
-    institutionAdminName: string;
-    institutionPecs: ReadonlyArray<string>;
-    institutionLegalRepName: string;
-    institutionLegalRepSurname: string;
-    institutionLegalRepCf: string;
-  } = {
-    institutionName: "Institution name",
-    institutionFiscalCode: "",
-    institutionAdminName: "",
-    institutionPecs: [],
-    institutionLegalRepName: "",
-    institutionLegalRepSurname: "",
-    institutionLegalRepCf: ""
+  const initialSelectedInstitution: ComponentProps<
+    typeof RegistrationStepOne
+  >["selectedInstitution"] = {
+    fiscalCode: "",
+    ipaCode: "",
+    legalRepresentative: {
+      familyName: "",
+      firstName: "",
+      fiscalCode: "",
+      phoneNumber: ""
+    },
+    name: "",
+    pecs: [],
+    scope: null,
+    selectedPecIndex: null
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const [selectedInstitution, setSelectedInstitution] = React.useState({
+  const [selectedInstitution, setSelectedInstitution] = useState({
     ...initialSelectedInstitution
   });
 
-  const onInstitutionSelected = (
-    event: ReadonlyArray<{
-      institutionName: string;
-      institutionFiscalCode: string;
-      institutionAdminName: string;
-      institutionPecs: ReadonlyArray<string>;
-      institutionLegalRepName: string;
-      institutionLegalRepSurname: string;
-      institutionLegalRepCf: string;
-    }>
+  const handleInstitutionSelected = (
+    event: ReadonlyArray<
+      ComponentProps<typeof RegistrationStepOne>["selectedInstitution"]
+    >
   ) => {
-    console.log("Calling onInstitutionSelected");
+    console.log("Calling handleInstitutionSelected");
     console.log(event);
-    setSelectedInstitution(event[0]);
+    const newInstitution =
+      event.length === 0
+        ? {
+            fiscalCode: "",
+            ipaCode: "",
+            legalRepresentative: {
+              familyName: "",
+              firstName: "",
+              fiscalCode: "",
+              phoneNumber: ""
+            },
+            name: "",
+            pecs: [],
+            scope: null,
+            selectedPecIndex: null
+          }
+        : event[0];
+    setSelectedInstitution(newInstitution);
+  };
+
+  const handlePecCheckboxChange = (selectedPecIndex: number) => {
+    setSelectedInstitution(
+      (
+        prevState: ComponentProps<
+          typeof RegistrationStepOne
+        >["selectedInstitution"]
+      ) => {
+        return { ...prevState, selectedPecIndex };
+      }
+    );
+  };
+
+  const handleScopeCheckboxChange = (selectedScope: string) => {
+    setSelectedInstitution(
+      (
+        prevState: ComponentProps<
+          typeof RegistrationStepOne
+        >["selectedInstitution"]
+      ) => {
+        return { ...prevState, scope: selectedScope };
+      }
+    );
   };
 
   const registrationBody = (step => {
@@ -62,12 +97,14 @@ export const RegistrationContainer = withRouter(props => {
       case "1":
         return (
           <RegistrationStepOne
-            institution={selectedInstitution}
-            onInstitutionSelected={onInstitutionSelected}
+            selectedInstitution={selectedInstitution}
+            onInstitutionSelected={handleInstitutionSelected}
+            onPecCheckboxChange={handlePecCheckboxChange}
+            onScopeCheckboxChange={handleScopeCheckboxChange}
           />
         );
       case "2":
-        return <RegistrationStepTwo institution={selectedInstitution} />;
+        return <RegistrationStepTwo />;
       case "3":
         return <RegistrationStepThree />;
     }
@@ -79,13 +116,15 @@ export const RegistrationContainer = withRouter(props => {
 
   return (
     <div className="RegistrationContainer">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-2">
-            <BackComponent openConfirmModal={toggleConfirmationModal} />
-          </div>
-          <div className="col-8">{registrationBody}</div>
-          <div className="col-2">
+      <Container fluid>
+        <Row>
+          <Col sm="2">
+            <RegistrationStepButtons
+              openConfirmModal={toggleConfirmationModal}
+            />
+          </Col>
+          <Col sm="8">{registrationBody}</Col>
+          <Col sm="2">
             <Row>
               <Col>
                 <p className=" pr-3 pt-5">Guida all'utilizzo</p>
@@ -101,9 +140,9 @@ export const RegistrationContainer = withRouter(props => {
                 </p>
               </Col>
             </Row>
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
       <Modal isOpen={showConfirmModal} toggle={toggleConfirmationModal}>
         <ModalHeader toggle={toggleConfirmationModal}>
           Annulla ricerca ente
@@ -116,8 +155,8 @@ export const RegistrationContainer = withRouter(props => {
           </p>
         </ModalBody>
         <ModalFooter>
-          <div className="row w-100 pt-4">
-            <div className="col-6 text-left">
+          <Row className="w-100 pt-4">
+            <Col sm="6" className="text-left">
               <Button
                 outline
                 color="secondary"
@@ -125,8 +164,8 @@ export const RegistrationContainer = withRouter(props => {
               >
                 Annulla
               </Button>
-            </div>
-            <div className="col-6 text-right">
+            </Col>
+            <Col sm="6" className="text-right">
               <Button
                 color="primary"
                 className="btn btn-primary"
@@ -134,8 +173,8 @@ export const RegistrationContainer = withRouter(props => {
               >
                 Conferma
               </Button>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </ModalFooter>
       </Modal>
     </div>
