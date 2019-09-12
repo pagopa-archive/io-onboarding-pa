@@ -1,5 +1,4 @@
-import { index } from "fp-ts/lib/Array";
-import React, { ComponentProps } from "react";
+import React, { ChangeEvent, ComponentProps } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
   Button,
@@ -14,19 +13,32 @@ import {
 } from "reactstrap";
 import { SearchInstitutions } from "./SearchInstitutions";
 
-interface IPathParams {
-  registrationStep: string;
-}
-
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchInstitutions>,
-    RouteComponentProps<IPathParams> {}
+    RouteComponentProps<{ registrationStep: string }> {
+  onPecCheckboxChange: (selectedPecIndex: number) => void;
+  onScopeCheckboxChange: (selectedScope: string) => void;
+}
 
 /**
- * Component for institution search with autocomplete
+ * Component for first step of registration process
  */
 export const RegistrationStepOne = withRouter(
   (props: IRegistrationStepOneProps) => {
+    /**
+     * Function called when pecs checkbox is clicked
+     */
+    const onPecCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+      props.onPecCheckboxChange(parseInt(event.target.value, 10));
+    };
+
+    /**
+     * Function called when scope checkbox is clicked
+     */
+    const onScopeCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+      props.onScopeCheckboxChange(event.target.value);
+    };
+
     const pecRadioButtons = props.selectedInstitution.pecs.map(
       (pec, pecIndex) => {
         return (
@@ -35,12 +47,10 @@ export const RegistrationStepOne = withRouter(
               className="form-check-input"
               type="radio"
               id={`radio-${pec}`}
-              name="radios-pec"
+              name="selectedPecIndex"
               value={pecIndex}
               checked={props.selectedInstitution.selectedPecIndex === pecIndex}
-              onChange={() => {
-                props.selectedInstitution.selectedPecIndex = pecIndex;
-              }}
+              onChange={onPecCheckboxChange}
             />
             <Label check className="form-check-label" htmlFor={`radio-${pec}`}>
               {pec}
@@ -62,12 +72,10 @@ export const RegistrationStepOne = withRouter(
             className="form-check-input"
             type="radio"
             id={`radio-${scope.value}`}
-            name="radios-scopes"
+            name="scope"
             value={scope.value}
             checked={props.selectedInstitution.scope === scope.value}
-            onChange={() => {
-              props.selectedInstitution.scope = scope.value;
-            }}
+            onChange={onScopeCheckboxChange}
           />
           <Label
             check
