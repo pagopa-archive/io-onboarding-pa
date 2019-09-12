@@ -18,6 +18,16 @@ import "./SpidLoginButton.css";
  */
 export const SpidLoginButton = withRouter(props => {
   /**
+   * Create window with custom element _env_ for environment variables
+   */
+  const customWindow = window as Window & {
+    _env_: {
+      IO_ONBOARDING_PA_API_HOST: string;
+      IO_ONBOARDING_PA_API_PORT: string;
+      IO_ONBOARDING_PA_SHOW_FAKE_IDP: string;
+    };
+  };
+  /**
    * Initial state for spidButton (dropdown closed)
    */
   const [isSpidDropdownOpen, setIsSpidDropdownOpen] = React.useState(false);
@@ -38,7 +48,7 @@ export const SpidLoginButton = withRouter(props => {
     { name: "Sielte ID", idp: "sielteid" },
     { name: "SPIDItalia Register.it", idp: "spiditalia" },
     { name: "Tim ID", idp: "timid" },
-    ...(process.env.NODE_ENV === "production"
+    ...(customWindow._env_.IO_ONBOARDING_PA_SHOW_FAKE_IDP === "0"
       ? []
       : [{ name: "Fake IDP", idp: "xx_testenv2" }])
   ];
@@ -55,16 +65,6 @@ export const SpidLoginButton = withRouter(props => {
    * Create dropdown elements
    */
   const spidDropDownItems = shuffledSpidProvidersInfo.map(spidButton => {
-    /**
-     * Create window with custom element _env_ for environment variables
-     */
-    const customWindow = window as Window & {
-      _env_: {
-        IO_ONBOARDING_PA_API_HOST: string;
-        IO_ONBOARDING_PA_API_PORT: string;
-      };
-    };
-
     /**
      * Get all spid idps images
      */
