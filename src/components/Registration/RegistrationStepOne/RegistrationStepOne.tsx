@@ -1,7 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import {
   Button,
   Col,
@@ -12,9 +10,9 @@ import {
   Label,
   Row
 } from "reactstrap";
-import { SearchInstitutions } from "../../../components/SearchInstitutions/SearchInstitutions";
+import { SearchInstitutions } from "./SearchInstitutions";
 
-interface IRegistrationStepOneCustomProps {
+interface IRegistrationStepOneProps {
   institution: {
     institutionName: string;
     institutionFiscalCode: string;
