@@ -1,6 +1,8 @@
 import React from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
+import "./SearchInstitutions.css";
+
 interface ILegalRepresentative {
   familyName: string;
   firstName: string;

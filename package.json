@@ -6,7 +6,7 @@
   "author": "https://teamdigitale.governo.it",
   "license": "MIT",
   "scripts": {
-    "start-server": "json-server --watch ./server/db.json",
+    "start-server": "json-server --watch ./server/db.json --routes ./server/routes.json",
     "start-fe": "parcel ./public/index.html",
     "start": "npm run start-server & npm run start-fe",
     "prebuild": "rimraf dist",
