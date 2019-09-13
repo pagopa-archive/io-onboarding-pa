@@ -97,8 +97,10 @@ export const RegistrationStepOne = withRouter(
               <Row className="pt-4">
                 <Col>
                   <SearchInstitutions
-                    selectedInstitution={props.selectedInstitution}
+                    institutions={props.institutions}
+                    onInstitutionSearch={props.onInstitutionSearch}
                     onInstitutionSelected={props.onInstitutionSelected}
+                    selectedInstitution={props.selectedInstitution}
                   />
                   <Form
                     action=""
@@ -107,14 +109,14 @@ export const RegistrationStepOne = withRouter(
                     className="form-horizontal w-100 pt-5"
                   >
                     <FormGroup row className="pt-5">
-                      <Col sm="12">
-                        <Label htmlFor="ipa-code-input" className="active">
-                          Codice Fiscale*
-                        </Label>
+                      <Col sm="3">
+                        <Label htmlFor="cf-input">Codice Fiscale*</Label>
+                      </Col>
+                      <Col sm="9">
                         <Input
                           type="text"
-                          id="ipa-code-input"
-                          name="ipa-code-input"
+                          id="cf-input"
+                          name="cf-input"
                           placeholder=""
                           readOnly
                           value={props.selectedInstitution.fiscalCode || ""}
@@ -125,12 +127,12 @@ export const RegistrationStepOne = withRouter(
                       </Col>
                     </FormGroup>
                     <FormGroup row>
-                      <Col md="3">
+                      <Col sm="3">
                         <Label htmlFor="admin-name-input">
                           Nome Amministrazione*
                         </Label>
                       </Col>
-                      <Col sm="12">
+                      <Col sm="9">
                         <Input
                           type="text"
                           id="admin-name-input"

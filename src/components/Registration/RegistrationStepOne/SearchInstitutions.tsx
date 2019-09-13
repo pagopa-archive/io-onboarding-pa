@@ -19,6 +19,8 @@ interface IInstitution {
 }
 
 interface ISearchInstitutionProps {
+  institutions: ReadonlyArray<IInstitution>;
+  onInstitutionSearch: (event: string) => void;
   onInstitutionSelected: (event: ReadonlyArray<IInstitution>) => void;
   selectedInstitution: IInstitution;
 }
@@ -27,29 +29,12 @@ interface ISearchInstitutionProps {
  * Component for institution search with autocomplete
  */
 export const SearchInstitutions = (props: ISearchInstitutionProps) => {
-  const options: ReadonlyArray<IInstitution> = [
-    {
-      fiscalCode: "CMNRPL44F22L000I",
-      ipaCode: "ajhajhajajjajajaj",
-      legalRepresentative: {
-        familyName: "Aliti",
-        firstName: "Davide",
-        fiscalCode: "LTADVD88T22F205H",
-        phoneNumber: "123456789"
-      },
-      name: "Comune di Ripalta Cremasca",
-      pecs: ["a@a.it", "b@b.it"],
-      scope: null,
-      selectedPecIndex: null
-    }
-  ];
 
   const handleSearch = (query: string) => {
-    console.log(query);
+    props.onInstitutionSearch(query);
   };
 
   const handleChange = (selected: ReadonlyArray<IInstitution>) => {
-    console.log(selected);
     props.onInstitutionSelected(selected);
   };
 
@@ -60,7 +45,7 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
         delay={400}
         isLoading={false}
         multiple={false}
-        options={options}
+        options={props.institutions}
         labelKey="name"
         minLength={3}
         onSearch={handleSearch}

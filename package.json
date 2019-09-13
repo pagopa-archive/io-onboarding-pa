@@ -6,7 +6,9 @@
   "author": "https://teamdigitale.governo.it",
   "license": "MIT",
   "scripts": {
-    "start": "chmod +x ./env.sh && ./env.sh && cp env-config.js ./public/ && rm -rf env-config.js && parcel ./public/index.html --public-url /",
+    "start-server": "json-server --watch ./server/db.json",
+    "start-fe": "parcel ./public/index.html",
+    "start": "npm run start-server & npm run start-fe",
     "prebuild": "rimraf dist",
     "build": "parcel build ./public/index.html --public-url / --no-minify ./public/env-config.js",
     "postversion": "git push && git push --tags",

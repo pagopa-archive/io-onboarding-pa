@@ -37,9 +37,35 @@ export const RegistrationContainer = withRouter(props => {
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
+  const [institutions, setInstitutions] = useState([]);
+
   const [selectedInstitution, setSelectedInstitution] = useState({
     ...initialSelectedInstitution
   });
+
+  const handleIntitutionSearch = (searchString: string) => {
+    fetch(
+      window._env_.IO_ONBOARDING_PA_API_HOST +
+        ":" +
+        window._env_.IO_ONBOARDING_PA_API_PORT +
+        `/institutions?q=${searchString}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + "123"
+          // 'Content-Type': 'application/json'
+        },
+        method: "GET"
+      }
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        console.log(responseData);
+        setInstitutions(responseData);
+      });
+  };
 
   const handleInstitutionSelected = (
     event: ReadonlyArray<
@@ -97,10 +123,12 @@ export const RegistrationContainer = withRouter(props => {
       case "1":
         return (
           <RegistrationStepOne
-            selectedInstitution={selectedInstitution}
-            onInstitutionSelected={handleInstitutionSelected}
             onPecCheckboxChange={handlePecCheckboxChange}
             onScopeCheckboxChange={handleScopeCheckboxChange}
+            institutions={institutions}
+            onInstitutionSearch={handleIntitutionSearch}
+            onInstitutionSelected={handleInstitutionSelected}
+            selectedInstitution={selectedInstitution}
           />
         );
       case "2":
