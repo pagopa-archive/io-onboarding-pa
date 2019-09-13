@@ -44,20 +44,19 @@ export const RegistrationContainer = withRouter(props => {
   });
 
   const handleIntitutionSearch = (searchString: string) => {
-    fetch(
+    const url =
       window._env_.IO_ONBOARDING_PA_API_HOST +
-        ":" +
-        window._env_.IO_ONBOARDING_PA_API_PORT +
-        `/institutions?q=${searchString}`,
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + "123"
-          // 'Content-Type': 'application/json'
-        },
-        method: "GET"
-      }
-    )
+      ":" +
+      window._env_.IO_ONBOARDING_PA_API_PORT +
+      `/public-administrations?search=${searchString}`;
+    fetch(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + "123"
+        // 'Content-Type': 'application/json'
+      },
+      method: "GET"
+    })
       .then(response => {
         return response.json();
       })
