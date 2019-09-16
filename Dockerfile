@@ -15,6 +15,11 @@ RUN yarn build
 FROM nginx:1.16.1
 LABEL maintainer="https://teamdigitale.governo.it"
 
+# Install major CA certificates to cover
+# https://github.com/SparebankenVest/azure-key-vault-to-kubernetes integration
+RUN apt-get update && \
+    apt-get install -y ca-certificates
+
 COPY nginx.conf /etc/nginx
 
 COPY env.sh /usr/share/nginx/html
