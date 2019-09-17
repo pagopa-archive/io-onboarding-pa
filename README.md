@@ -1,47 +1,76 @@
-# io-onboarding-pa
-This repository contains the code of the front end used by the onboarding portal for public administrations of the IO project.
+# IO Public Administrations Onboarding frontned
 
-## How to run the application
+The repository contains the frontend code of the IO Public Administrations onboarding portal.
 
-### Dependencies
+## Tools
 
 * [Docker](https://www.docker.com/) and [Docker Compose](https://github.com/docker/compose)
 
-To fully simulate the SPID authentication process we use the images provided by the
-[spid-testenv2](https://github.com/italia/spid-testenv2) project.
+## External software dependencies
 
-A Linux/macOS environment is required at the moment.
+The application usually interfaces with some additional components:
 
-### Installation steps
+* The application backend, available at https://github.com/teamdigitale/io-onboarding-pa-api
 
-1. clone the project
-2. go to the project's folder
-3. at the root level of your project create the folders `certs` and `testenv2/conf` and from the 
-`io-onboarding-pa-api` project ([https://github.com/teamdigitale/io-onboarding-pa-api/](https://github.com/teamdigitale/io-onboarding-pa-api/))
-copy in these folders the content of
-[https://github.com/teamdigitale/io-onboarding-pa-api/tree/master/certs](https://github.com/teamdigitale/io-onboarding-pa-api/tree/master/certs) and 
-[https://github.com/teamdigitale/io-onboarding-pa-api/tree/master/testenv2/conf](https://github.com/teamdigitale/io-onboarding-pa-api/tree/master/testenv2/conf)
-respectively
-4. run `docker-compose up --build` to start the containers
-6. point your browser to [http://localhost:8080](http://localhost:8080) to view the front end;
-you can find the backend at [http://localhost:8081](http://localhost:8081)
+* A working SPID test environment, available at https://github.com/italia/spid-testenv2
 
-### Configuration
-The project is already shipped with default environment variables; you can find them in
-the `.env.*` files at the root level of the project.  
-The `.env.io-onboarding-pa-api.*` files contains environment variables for the backend container;
-for a complete description of these variables please refer to 
-[https://github.com/teamdigitale/io-onboarding-pa-api/blob/master/README.md](https://github.com/teamdigitale/io-onboarding-pa-api/blob/master/README.md)   
-The file `.env.io-onboarding-pa.development` contains environmental variables for the front end that are used when locally
-testing with docker, see next section for a complete description of these variables.  
-These variables are injected into the front end running env.sh script, that creates a `env-config.js` file into `/public` folder and is 
-used inside `index.html` in the same folder. To get the value of these variables in your code, use
-`window._env_.**variable_name**`.  
-***To be added to the `env-config.js` file by the script, variable name inside `.env.io-onboarding-pa.development` file 
-must start with the substring IO_ONBOARDING_PA***
+* Postgres, image available at https://hub.docker.com/_/postgres
 
+For test puroposes, all these dependencies have been included in the form of Docker images through the *docker-compose.yaml* file, and are pulled once the test environment is built. See further sections for more details.
 
-### Environment variables
+## Build the application
+
+The application can potentially run anywhere, either directly on a bare-bone machine, or in a form of a Docker container. Every change to the code, triggers an automated image build on DockerHub.
+
+Images are consumed by production deployments, where they're usually deployed on top of Kubernetes clusters. For more informations about IO production deployments and IO helm-charts, have a look at the [io-infrastructure-post-config repository](https://github.com/teamdigitale/io-infrastructure-post-config).
+
+## Test the application locally
+
+The application can be built and tested locally, either directly on the developer machine (directly using development tools, such as *yarn* or *parcel*), or as a Docker-based image.
+
+To test the application, run in the root folder:
+
+```shell
+# Copy the SPID demo configurations folder from the application backend repository
+git clone https://github.com/teamdigitale/io-onboarding-pa-api.git
+cp -r io-onboarding-pa-api/certs .
+cp -r io-onboarding-pa-api/testenv2 .
+rm -rf io-onboarding-pa-api
+
+# Bring up the Docker test environment (build the frontend, pull the backend and the SPID test environment)
+docker-compose up
+```
+
+Then, point your browser to
+
+* [http://localhost:8080](http://localhost:8080) for the frontend
+* [http://localhost:8081](http://localhost:8081) to reach the backend
+
+To bring down the test environment:
+
+```shell
+docker-compose down
+```
+
+Sometimes, it may be needed to re-built the frontend image, which is instead cached by Docker, once built the first time. To overcome this bahavior, run:
+
+```shell
+docker-compose up --build
+```
+
+## Configuration
+
+Both the frontend and the backend applications need some environment variables defined in order to work. Environment variables can be customized as needed.
+
+For demo purposes, some environment variables files are provided
+
+* *.env.io-onboarding-pa.development* for the frontend (see the *Environment variables* section for more details)
+
+* *.env.io-onboarding-pa-api.development* for the backend (a complete description of the variables is available at the [backend GitHub repository](https://github.com/teamdigitale/io-onboarding-pa-api/blob/master/README.md))
+
+* *.env.io-onboarding-pa-api-postgres.development* for Postgres DB
+
+## Environment variables
 
 The table below describes all the Environment variables needed by the front end of the application.
 
@@ -49,3 +78,13 @@ The table below describes all the Environment variables needed by the front end 
 |----------------------------------------|-------------------------------------------|--------|
 | IO_ONBOARDING_PA_API_HOST              | The hostname of the APIs url              | string |
 | IO_ONBOARDING_PA_API_PORT              | The port for of APIs url                  | string |
+
+### Environment variables run-time injection
+
+The frontend container needs to adapt to different environments, reading at run-time environment variables values. For example, the application needs to know the address of the backend application. This is a non trivial task, since Javascript code runs on the client machine of the user executing the application, which prevents the application from directly reading the environment variables from the container.
+
+To overcome this limitation, an *env.sh* bash script is executed every time the frontend application container starts. The script reads the environment variables and produces an *env-config.js* file that is then automatically copied together with the rest of the files to be served by the webserver. The *index.html* file (in the *public* folder of this repository) links already to *env-config.js*, which is read every time the user opens the application in a browser.
+
+>**IMPORTANT**: The *env.sh* script reads and automatically injects in `env-config.js` all environment variables prefixed with *IO_ONBOARDING_PA*, for example *IO_ONBOARDING_PA_API_HOST*.
+
+To read the variable values inside the frontend application, use `window._env_.IO_ONBOARDING_PA_YOUR_VAR`. 
