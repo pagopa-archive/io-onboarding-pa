@@ -20,6 +20,8 @@ LABEL maintainer="https://teamdigitale.governo.it"
 RUN apt-get update && \
     apt-get install -y ca-certificates
 
+COPY nginx.conf /etc/nginx
+
 COPY env.sh /usr/share/nginx/html
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
