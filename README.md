@@ -67,5 +67,3 @@ For demo purposes, some environment variables files are provided
 * *.env.io-onboarding-pa.development* for the frontend (see the *Environment variables* section for more details)
 
 * *.env.io-onboarding-pa-api.development* for the backend (a complete description of the variables is available at the [backend GitHub repository](https://github.com/teamdigitale/io-onboarding-pa-api/blob/master/README.md))
-
-Use this template when creating new typescript projects.
