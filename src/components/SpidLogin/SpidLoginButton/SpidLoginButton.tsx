@@ -48,9 +48,10 @@ export const SpidLoginButton = withRouter(props => {
     { name: "Sielte ID", idp: "sielteid" },
     { name: "SPIDItalia Register.it", idp: "spiditalia" },
     { name: "Tim ID", idp: "timid" },
-    ...(customWindow._env_.IO_ONBOARDING_PA_SHOW_FAKE_IDP === "0"
-      ? []
-      : [{ name: "Fake IDP", idp: "xx_testenv2" }])
+    { name: "Fake IDP", idp: "xx_testenv2" }
+    // ...(customWindow._env_.IO_ONBOARDING_PA_SHOW_FAKE_IDP === "0"
+    //   ? []
+    //   : [{ name: "Fake IDP", idp: "xx_testenv2" }])
   ];
 
   /**
