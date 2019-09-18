@@ -135,7 +135,7 @@ export const RegistrationContainer = withRouter(props => {
       case "3":
         return <RegistrationStepThree />;
     }
-  })(props.match.params.registrationStep);
+  })(props.match.params.signUpStep);
 
   const toggleConfirmationModal = () => {
     setShowConfirmModal((prevState: boolean) => !prevState);
