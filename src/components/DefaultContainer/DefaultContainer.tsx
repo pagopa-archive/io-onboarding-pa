@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { Route } from "react-router";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { DelegateDashboard } from "../DelegateDashboard/DelegateDashboard";
@@ -24,20 +24,12 @@ export const DefaultContainer = () => {
   /**
    * Initial state for user profile
    */
-  const [userProfile, setUserProfile] = useState<
-    IDefaultContainerUserProfileState
-  >({
+  const [userProfile] = useState<IDefaultContainerUserProfileState>({
     email: "",
     fiscalCode: "",
     name: "",
     role: ""
   });
-
-  const handleSetUserProfile = (
-    newUserProfile: IDefaultContainerUserProfileState
-  ) => {
-    setUserProfile(newUserProfile);
-  };
 
   return (
     <div className="DefaultContainer">
@@ -46,10 +38,7 @@ export const DefaultContainer = () => {
       <div className="pt-app-body">
         <Route path="/spid-login" component={SpidLogin} />
         <Route path="/sign-up/:signUpStep" exact component={SignUpContainer} />
-        <Route
-          path="/delegate-dashboard"
-          render={() => <DelegateDashboard />}
-        />
+        <Route path="/dashboard" render={() => <DelegateDashboard />} />
         <Route path="/profile" render={() => <UserSettings />} />
       </div>
     </div>
