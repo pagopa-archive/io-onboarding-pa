@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 /**
  * Component that returns loading and informative screens across application

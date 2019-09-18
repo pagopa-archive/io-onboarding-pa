@@ -1,0 +1,17 @@
+.SpidButton .spid-sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    border:0
+}
+
+.SpidButton .dropdown-menu {
+    z-index: 1039;
+    left: 0px !important;
+    top: 65px !important;
+    transform: none !important;
+}
