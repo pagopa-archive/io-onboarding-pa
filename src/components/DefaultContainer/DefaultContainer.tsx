@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route } from "react-router";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { DelegateDashboard } from "../DelegateDashboard/DelegateDashboard";
-import { SignUpContainer } from "../SignUpContainer/SignUpContainer";
+import { RegistrationContainer } from "../Registration/RegistrationContainer";
 import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
 import { UserSettings } from "../UserSettings/UserSettings";
@@ -37,7 +37,11 @@ export const DefaultContainer = () => {
       <CentralHeader userName={userProfile.name} userRole={userProfile.role} />
       <div className="pt-app-body">
         <Route path="/spid-login" component={SpidLogin} />
-        <Route path="/sign-up/:signUpStep" exact component={SignUpContainer} />
+        <Route
+          path="/sign-up/:signUpStep"
+          exact
+          component={RegistrationContainer}
+        />
         <Route path="/dashboard" render={() => <DelegateDashboard />} />
         <Route path="/profile" render={() => <UserSettings />} />
       </div>

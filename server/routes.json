@@ -1,0 +1,3 @@
+{
+  "/public-administrations?search=:searchString": "/institutions?q=:searchString"
+}

@@ -1,0 +1,57 @@
+{
+  "institutions": [
+    {
+      "fiscalCode": "86000470830",
+      "ipaCode": "c_e043",
+      "legalRepresentative": {
+        "familyName": "Spano'",
+        "firstName": "Ignazio Alfonso",
+        "fiscalCode": null,
+        "phoneNumber": null
+      },
+      "name": "Comune di Gioiosa Marea",
+      "pecs": [
+        "protocollo@pec.comunegioiosamarea.it",
+        "affarigenerali@pec.comunegioiosamarea.it"
+      ],
+      "scope": null,
+      "selectedPecIndex": null
+    },
+    {
+      "fiscalCode": "81000930800",
+      "ipaCode": "c_e044",
+      "legalRepresentative": {
+        "familyName": "ALI'",
+        "firstName": "Gianfranco",
+        "fiscalCode": null,
+        "phoneNumber": null
+      },
+      "name": "Comune di Gioiosa Jonica",
+      "pecs": [
+        "affarigenerali.gioiosa@asmepec.it",
+        "tecnico.gioiosa@asmepec.it",
+        "ragioneria.gioiosa@asmepec.it",
+        "vigili.gioiosa@asmepec.it"
+      ],
+      "scope": null,
+      "selectedPecIndex": null
+    },
+    {
+      "fiscalCode": "00282520808",
+      "ipaCode": "c_e956",
+      "legalRepresentative": {
+        "familyName": "Sergio",
+        "firstName": "Mazzia",
+        "fiscalCode": null,
+        "phoneNumber": null
+      },
+      "name": "Comune di Marina di Gioiosa Ionica",
+      "pecs": [
+        "protocollo.marinadigioiosa@asmepec.it",
+        "ragioneria.marinadigioiosa@asmepec.it"
+      ],
+      "scope": null,
+      "selectedPecIndex": null
+    }
+  ]
+}
