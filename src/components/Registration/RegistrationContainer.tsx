@@ -1,4 +1,4 @@
-import React, { ComponentProps } from "react";
+import React, { ComponentProps, useContext } from "react";
 import { useState } from "react";
 import { withRouter } from "react-router";
 import {
@@ -17,7 +17,11 @@ import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
 import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepThree";
 import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
+import { TokenContext } from "../../context/token-context";
+
 export const RegistrationContainer = withRouter(props => {
+  const tokenContext = useContext(TokenContext);
+
   const initialSelectedInstitution: ComponentProps<
     typeof RegistrationStepOne
   >["selectedInstitution"] = {
@@ -52,7 +56,7 @@ export const RegistrationContainer = withRouter(props => {
     fetch(url, {
       headers: {
         Accept: "application/json",
-        Authorization: "Bearer " + "123"
+        Authorization: "Bearer " + tokenContext.token
         // 'Content-Type': 'application/json'
       },
       method: "GET"
