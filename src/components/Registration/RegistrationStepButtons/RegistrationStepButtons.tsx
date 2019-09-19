@@ -8,7 +8,7 @@ import "./RegistrationStepButtons.css";
 import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
 
 interface IRegistrationStepButtonsProps
-  extends RouteComponentProps<{ registrationStep: string }> {
+  extends RouteComponentProps<{ signUpStep: string }> {
   openConfirmModal: () => void;
 }
 
@@ -20,10 +20,10 @@ export const RegistrationStepButtons = withRouter(
     /**
      * Function to go to selected registration step or open modal to return to Dashboard if at step 0
      */
-    const goToRegistrationStep = (registrationStep: number) => {
-      return registrationStep === 0
+    const goToRegistrationStep = (signUpStep: number) => {
+      return signUpStep === 0
         ? props.openConfirmModal()
-        : props.history.push("/registrazione/" + registrationStep);
+        : props.history.push("/sign-up/" + signUpStep);
     };
 
     /**
@@ -40,12 +40,8 @@ export const RegistrationStepButtons = withRouter(
         type="button"
         onClick={() => goToRegistrationStep(el)}
         className={`
-      ${el.toString() === props.match.params.registrationStep ? "btn-link" : ""}
-      ${
-        el >= parseInt(props.match.params.registrationStep, 10)
-          ? "step-button"
-          : ""
-      }
+      ${el.toString() === props.match.params.signUpStep ? "btn-link" : ""}
+      ${el >= parseInt(props.match.params.signUpStep, 10) ? "step-button" : ""}
       `}
       >
         {el}
@@ -61,7 +57,7 @@ export const RegistrationStepButtons = withRouter(
               className="btn-icon mt-5 pl-0"
               onClick={() =>
                 goToRegistrationStep(
-                  parseInt(props.match.params.registrationStep, 10) - 1
+                  parseInt(props.match.params.signUpStep, 10) - 1
                 )
               }
             >
