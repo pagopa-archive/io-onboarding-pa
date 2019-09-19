@@ -6,9 +6,9 @@ import ioLogoWhite from "../../assets/img/io-logo-white.svg";
 
 import logoTD from "../../assets/img/logo_td.png";
 
-import logoHomeDel from "../../assets/img/logo_home_del.png";
-import logoHomeDev from "../../assets/img/logo_home_dev.png";
-import logoHomeRep from "../../assets/img/logo_home_legal_rep.png";
+import logoHomeDel from "../../assets/img/logo_home_del.svg";
+import logoHomeDev from "../../assets/img/logo_home_dev.svg";
+import logoHomeRep from "../../assets/img/logo_home_legal_rep.svg";
 
 import "./Home.css";
 /**
@@ -25,7 +25,6 @@ export const Home = () => {
       buttonText: "Sviluppatore",
       img: logoHomeDev,
       imgHeight: 100,
-      imgWidth: 101,
       link: "developer-login",
       offset: "home",
       text:
@@ -35,7 +34,6 @@ export const Home = () => {
       buttonText: "Delegato Ente",
       img: logoHomeDel,
       imgHeight: 100,
-      imgWidth: 126,
       link: "spid-login",
       offset: undefined,
       text:
@@ -45,7 +43,6 @@ export const Home = () => {
       buttonText: "Legale Rappresentante Ente",
       img: logoHomeRep,
       imgHeight: 100,
-      imgWidth: 106,
       link: "legal-rep-login",
       offset: undefined,
       text:
@@ -98,7 +95,6 @@ export const Home = () => {
               buttonText={homeLoginButton.buttonText}
               img={homeLoginButton.img}
               imgHeight={homeLoginButton.imgHeight}
-              imgWidth={homeLoginButton.imgWidth}
               text={homeLoginButton.text}
               link={homeLoginButton.link}
               offset={homeLoginButton.offset}
