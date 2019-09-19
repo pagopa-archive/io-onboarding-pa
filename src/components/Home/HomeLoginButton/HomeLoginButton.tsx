@@ -10,7 +10,6 @@ interface IHomeLoginButtonProps extends RouteComponentProps {
   buttonText: string;
   img: string;
   imgHeight: number;
-  imgWidth: number;
   link: string;
   offset?: string;
   text: string;
