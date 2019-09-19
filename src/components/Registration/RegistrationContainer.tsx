@@ -196,7 +196,7 @@ export const RegistrationContainer = withRouter(props => {
               <Button
                 color="primary"
                 className="btn btn-primary"
-                onClick={() => props.history.push("/dashboard/")}
+                onClick={() => props.history.push("/dashboard")}
               >
                 Conferma
               </Button>
