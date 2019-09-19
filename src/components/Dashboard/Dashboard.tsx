@@ -29,9 +29,12 @@ export const Dashboard = withRouter(props => {
     );
   }
 
+  /**
+   * Set token in token context
+   */
   tokenContext.setToken(getCookie("sessionToken"));
 
-  console.log("setToken", tokenContext.token);
+  console.log("setToken called!", tokenContext.token);
 
   return (
     <div className="Dashboard">
