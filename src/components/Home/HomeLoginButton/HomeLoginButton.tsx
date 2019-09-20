@@ -47,7 +47,7 @@ export const HomeLoginButton = withRouter<
           </Button>
         </Col>
       </Row>
-      <Row className="bg-dark bg-transparent pt-4 mt-4">
+      <Row className="bg-dark bg-transparent pt-3 mt-2">
         <Col>
           <p className="small text-white pl-4 pr-4">{props.text}</p>
         </Col>

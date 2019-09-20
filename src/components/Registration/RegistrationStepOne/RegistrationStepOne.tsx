@@ -100,7 +100,7 @@ export const RegistrationStepOne = withRouter(
             <Col sm="10">
               <Row>
                 <Col sm="11">
-                  <h1 className="pt-5">Ricerca Ente</h1>
+                  <h1 className="pt-4">Ricerca Ente</h1>
                   <Row className="pt-4">
                     <Col>
                       <SearchInstitutions
@@ -113,13 +113,13 @@ export const RegistrationStepOne = withRouter(
                         action=""
                         method="post"
                         encType="multipart/form-data"
-                        className="form-horizontal w-100 pt-5"
+                        className="form-horizontal w-100 pt-3"
                       >
-                        <FormGroup row className="pt-5">
-                          <Col sm="3">
+                        <FormGroup row className="pt-3">
+                          <Col sm="4">
                             <Label htmlFor="cf-input">Codice Fiscale*</Label>
                           </Col>
-                          <Col sm="9">
+                          <Col sm="8">
                             <Input
                               type="text"
                               id="cf-input"
@@ -134,12 +134,12 @@ export const RegistrationStepOne = withRouter(
                           </Col>
                         </FormGroup>
                         <FormGroup row>
-                          <Col sm="3">
+                          <Col sm="4">
                             <Label htmlFor="admin-name-input">
                               Nome Amministrazione*
                             </Label>
                           </Col>
-                          <Col sm="9">
+                          <Col sm="8">
                             <Input
                               type="text"
                               id="admin-name-input"
@@ -154,21 +154,21 @@ export const RegistrationStepOne = withRouter(
                           </Col>
                         </FormGroup>
                         <FormGroup row>
-                          <Col sm="3">
+                          <Col sm="4">
                             <Label htmlFor="text-input">Indirizzo PEC</Label>
                           </Col>
-                          <Col sm="9">{pecRadioButtons}</Col>
+                          <Col sm="8">{pecRadioButtons}</Col>
                         </FormGroup>
-                        <FormGroup row>
-                          <Col sm="3">
+                        <FormGroup row className="mb-4">
+                          <Col sm="4">
                             <Label htmlFor="text-input">
                               Area di competenza
                             </Label>
                           </Col>
-                          <Col sm="9">{scopeRadioButtons}</Col>
+                          <Col sm="8">{scopeRadioButtons}</Col>
                         </FormGroup>
                       </Form>
-                      <Row>
+                      <Row className="pb-3">
                         <Col size={6} className="text-left">
                           <Button
                             outline
@@ -196,12 +196,12 @@ export const RegistrationStepOne = withRouter(
                 </Col>
               </Row>
             </Col>
-            <Col sm="1">
+            <Col sm="2">
               <Media
                 object
                 src={logoSignupStepOne}
                 alt="Signup step one logo"
-                className="pt-5"
+                className="pt-3 w-75"
               />
             </Col>
           </Row>

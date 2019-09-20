@@ -28,7 +28,7 @@ export const SpidLogin = withRouter(props => {
               <Col>
                 <Button
                   color="link"
-                  className="btn-icon mt-5 pl-4"
+                  className="btn-icon mt-4 pl-4"
                   onClick={() => {
                     return props.history.push("/home");
                   }}
@@ -44,7 +44,7 @@ export const SpidLogin = withRouter(props => {
             </Row>
           </Col>
           <Col sm="8">
-            <div className="card-wrapper card-space mt-5">
+            <div className="card-wrapper card-space mt-4">
               <Card className="card-bg card-big">
                 <CardBody>
                   <CardTitle>
@@ -96,7 +96,7 @@ export const SpidLogin = withRouter(props => {
             </div>
           </Col>
           <div className="col-2 pl-3 pr-3">
-            <p className="card-text pt-5 small">
+            <p className="card-text pt-4 small">
               Se ti sei sbagliato e volevi accedere con un profilo diverso
               clicca qui sotto
             </p>
