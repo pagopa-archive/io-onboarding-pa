@@ -71,8 +71,7 @@ export const Home = () => {
               object
               src={ioLogoWhite}
               alt="NewCo Logo"
-              width="109"
-              height="88"
+              height="60"
             />
           </Col>
         </Row>
