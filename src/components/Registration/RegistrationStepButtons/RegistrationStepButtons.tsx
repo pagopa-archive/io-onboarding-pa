@@ -54,7 +54,7 @@ export const RegistrationStepButtons = withRouter(
           <Col>
             <Button
               color="link"
-              className="btn-icon mt-5 pl-0"
+              className="btn-icon mt-4 pl-0"
               onClick={() =>
                 goToRegistrationStep(
                   parseInt(props.match.params.signUpStep, 10) - 1

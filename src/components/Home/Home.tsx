@@ -55,17 +55,17 @@ export const Home = () => {
       <div className="container-fluid d-flex h-100 flex-column custom-background-container overflow-auto">
         <Row className="pt-4 pl-4">
           <Col sm="auto">
-            <Media object src={logoTD} alt="Team Digitale Logo" />
+            <Media object src={logoTD} alt="Team Digitale Logo" height="40" />
           </Col>
           <Col sm="auto" className="pl-5">
             <Media
               object
-              src="https://via.placeholder.com/189x55.png?text=NewCo_Logo"
+              src="https://via.placeholder.com/189x40.png?text=NewCo_Logo"
               alt="NewCo Logo"
             />
           </Col>
         </Row>
-        <Row className="pt-5 mt-4">
+        <Row className="pt-3 mt-4">
           <Col>
             <Media
               object
@@ -76,19 +76,19 @@ export const Home = () => {
             />
           </Col>
         </Row>
-        <Row className="pt-5 mt-4">
+        <Row className="pt-4 mt-4">
           <Col>
             <h2 className="text-white mb-4 mt-3">IO Back-office</h2>
           </Col>
         </Row>
-        <Row className="pt-3 pb-5">
+        <Row className="pt-2 pb-5">
           <Col>
             <p className="text-white">
               Seleziona il profilo con cui vuoi accedere al back-office.
             </p>
           </Col>
         </Row>
-        <Row className="pt-3 mt-3 text-center">
+        <Row className="pt-2 mt-2 text-center">
           {homeLoginButtonsArray.map(homeLoginButton => (
             <HomeLoginButton
               key={homeLoginButton.link}

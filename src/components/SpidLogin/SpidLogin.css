@@ -6,3 +6,7 @@
     margin: 0;
     height: 0px;
 }
+
+.SpidLogin .row [class*=col-]>.card-wrapper {
+    height: auto;
+}

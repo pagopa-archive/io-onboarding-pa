@@ -158,7 +158,7 @@ export const RegistrationContainer = withRouter(props => {
           <Col sm="2">
             <Row>
               <Col>
-                <p className=" pr-3 pt-5">Guida all'utilizzo</p>
+                <p className=" pr-3 pt-4">Guida all'utilizzo</p>
                 <p className="small pr-3">
                   Le informazioni legate al tuo ente vengono derivate dal
                   database di Indice PA. Nel caso alcune informazioni non siano
