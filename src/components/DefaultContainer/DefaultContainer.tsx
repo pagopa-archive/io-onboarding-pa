@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Route } from "react-router";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
-import { DelegateDashboard } from "../DelegateDashboard/DelegateDashboard";
+import { Dashboard } from "../Dashboard/Dashboard";
 import { RegistrationContainer } from "../Registration/RegistrationContainer";
 import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
@@ -42,7 +42,7 @@ export const DefaultContainer = () => {
           exact
           component={RegistrationContainer}
         />
-        <Route path="/dashboard" render={() => <DelegateDashboard />} />
+        <Route path="/dashboard" render={() => <Dashboard />} />
         <Route path="/profile" render={() => <UserSettings />} />
       </div>
     </div>
