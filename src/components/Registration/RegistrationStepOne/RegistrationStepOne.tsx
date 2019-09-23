@@ -17,7 +17,6 @@ import { SearchInstitutions } from "./SearchInstitutions";
 
 import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 
-
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchInstitutions>,
     RouteComponentProps<{ registrationStep: string }> {
@@ -183,8 +182,12 @@ export const RegistrationStepOne = withRouter(
                           <Button
                             color="primary"
                             className="w-50"
-                            onClick={() =>
-                              props.history.push("/registrazione/2")
+                            onClick={() => props.history.push("/sign-up/2")}
+                            disabled={
+                              !props.selectedInstitution.name ||
+                              props.selectedInstitution.selectedPecIndex ===
+                                null ||
+                              !props.selectedInstitution.scope
                             }
                           >
                             Conferma
