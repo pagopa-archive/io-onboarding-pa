@@ -28,6 +28,22 @@ Images are consumed by production deployments, where they're usually deployed on
 
 The application can be built and tested locally, either directly on the developer machine (directly using development tools, such as *yarn* or *parcel*), or as a Docker-based image.
 
+#### Test locally with mocked APIs
+To test locally on developer machine with mocked APIs, run in the root folder:
+
+```shell
+yarn start-with-mock
+```
+Then, point your browser to
+
+* [http://localhost:1234](http://localhost:1234) for the frontend
+* [http://localhost:3000](http://localhost:3000) to reach the mocked backend
+
+This project uses json-server package ([https://github.com/typicode/json-server](https://github.com/typicode/json-server))
+to generate fake REST API.
+
+#### Test as Docker-based image
+
 To test the application, run in the root folder:
 
 ```shell
