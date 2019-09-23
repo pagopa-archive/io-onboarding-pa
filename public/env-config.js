@@ -1,4 +1,3 @@
 window._env_ = {
-  IO_ONBOARDING_PA_API_HOST : "http://localhost",
-  IO_ONBOARDING_PA_API_PORT : "3000"
+  // Variables to be used during execution should be added here
 };
