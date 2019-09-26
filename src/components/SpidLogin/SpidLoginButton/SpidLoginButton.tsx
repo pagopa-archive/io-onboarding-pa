@@ -11,22 +11,19 @@ import {
 import spidLogo from "../../../assets/img/spid-ico-circle-bb.svg";
 import images from "../../../assets/img/spid/*.svg";
 
+import { ICustomWindow } from "../../../customTypes/CustomWindow";
+
 import "./SpidLoginButton.css";
 
 /**
  * Component for spid login button with dropdown
  */
-export const SpidLoginButton = withRouter(props => {
+export const SpidLoginButton = withRouter(() => {
   /**
    * Create window with custom element _env_ for environment variables
    */
-  const customWindow = window as Window & {
-    _env_: {
-      IO_ONBOARDING_PA_API_HOST: string;
-      IO_ONBOARDING_PA_API_PORT: string;
-      IO_ONBOARDING_PA_SHOW_FAKE_IDP: string;
-    };
-  };
+  const customWindow = window as ICustomWindow;
+
   /**
    * Initial state for spidButton (dropdown closed)
    */
@@ -48,10 +45,9 @@ export const SpidLoginButton = withRouter(props => {
     { name: "Sielte ID", idp: "sielteid" },
     { name: "SPIDItalia Register.it", idp: "spiditalia" },
     { name: "Tim ID", idp: "timid" },
-    { name: "Fake IDP", idp: "xx_testenv2" }
-    // ...(customWindow._env_.IO_ONBOARDING_PA_SHOW_FAKE_IDP === "0"
-    //   ? []
-    //   : [{ name: "Fake IDP", idp: "xx_testenv2" }])
+    ...(customWindow._env_.IO_ONBOARDING_PA_SHOW_FAKE_IDP === "0"
+      ? []
+      : [{ name: "Fake IDP", idp: "xx_testenv2" }])
   ];
 
   /**

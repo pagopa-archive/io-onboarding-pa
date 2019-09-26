@@ -11,6 +11,7 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
 import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
@@ -20,6 +21,11 @@ import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 import { TokenContext } from "../../context/token-context";
 
 export const RegistrationContainer = withRouter(props => {
+  /**
+   * Create window with custom element _env_ for environment variables
+   */
+  const customWindow = window as ICustomWindow;
+
   const tokenContext = useContext(TokenContext);
 
   const initialSelectedInstitution: ComponentProps<
@@ -49,9 +55,9 @@ export const RegistrationContainer = withRouter(props => {
 
   const handleIntitutionSearch = (searchString: string) => {
     const url =
-      window._env_.IO_ONBOARDING_PA_API_HOST +
+      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
       ":" +
-      window._env_.IO_ONBOARDING_PA_API_PORT +
+      customWindow._env_.IO_ONBOARDING_PA_API_PORT +
       `/public-administrations?search=${searchString}`;
     fetch(url, {
       headers: {
@@ -65,7 +71,6 @@ export const RegistrationContainer = withRouter(props => {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
         setInstitutions(responseData);
       });
   };
@@ -75,8 +80,6 @@ export const RegistrationContainer = withRouter(props => {
       ComponentProps<typeof RegistrationStepOne>["selectedInstitution"]
     >
   ) => {
-    console.log("Calling handleInstitutionSelected");
-    console.log(event);
     const newInstitution =
       event.length === 0
         ? {
