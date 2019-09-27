@@ -5,10 +5,6 @@ interface ITokenContext {
   token: string;
 }
 
-interface ITokenContextProvider extends ITokenContext {
-  children: ReactNode;
-}
-
 /**
  * Token context to save token for apis calls
  */
@@ -22,7 +18,7 @@ export const TokenContext = createContext<ITokenContext>({
 /**
  * Token context provider component to use token in the app
  */
-export const TokenContextProvider = (props: ITokenContextProvider) => {
+export const TokenContextProvider = (props: { children: ReactNode }) => {
   const [token, setToken] = useState("");
 
   return (

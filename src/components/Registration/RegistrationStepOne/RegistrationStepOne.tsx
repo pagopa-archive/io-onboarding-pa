@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ComponentProps } from "react";
+import React, { ChangeEvent, ComponentProps, useContext, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
   Button,
@@ -12,6 +12,8 @@ import {
   Media,
   Row
 } from "reactstrap";
+
+import { AlertContext } from "../../../context/alert-context";
 
 import { SearchInstitutions } from "./SearchInstitutions";
 
@@ -29,6 +31,16 @@ interface IRegistrationStepOneProps
  */
 export const RegistrationStepOne = withRouter(
   (props: IRegistrationStepOneProps) => {
+    const alertContext = useContext(AlertContext);
+
+    useEffect(() => {
+      alertContext.setAlert({
+        alertColor: "info",
+        alertText: "Ciao",
+        showAlert: true
+      });
+    }, []);
+
     /**
      * Function called when pecs checkbox is clicked
      */
