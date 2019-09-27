@@ -13,8 +13,6 @@ import {
   Row
 } from "reactstrap";
 
-import { AlertContext } from "../../../context/alert-context";
-
 import { SearchInstitutions } from "./SearchInstitutions";
 
 import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
