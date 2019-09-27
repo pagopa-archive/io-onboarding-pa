@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Route } from "react-router";
+import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
 import { RegistrationContainer } from "../Registration/RegistrationContainer";
@@ -36,6 +37,7 @@ export const DefaultContainer = () => {
       <SlimHeader />
       <CentralHeader userName={userProfile.name} userRole={userProfile.role} />
       <div className="pt-app-body">
+        <AppAlert />
         <Route path="/spid-login" component={SpidLogin} />
         <Route
           path="/sign-up/:signUpStep"
