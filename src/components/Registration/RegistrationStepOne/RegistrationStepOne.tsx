@@ -33,6 +33,7 @@ export const RegistrationStepOne = withRouter(
   (props: IRegistrationStepOneProps) => {
     const alertContext = useContext(AlertContext);
 
+    /*
     useEffect(() => {
       alertContext.setAlert({
         alertColor: "info",
@@ -40,6 +41,7 @@ export const RegistrationStepOne = withRouter(
         showAlert: true
       });
     }, []);
+    */
 
     /**
      * Function called when pecs checkbox is clicked
