@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  ComponentProps,
-  useContext,
-  useEffect
-} from "react";
+import React, { ChangeEvent, ComponentProps } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
   Button,
@@ -36,8 +31,6 @@ interface IRegistrationStepOneProps
  */
 export const RegistrationStepOne = withRouter(
   (props: IRegistrationStepOneProps) => {
-    const alertContext = useContext(AlertContext);
-
     /**
      * Function called when pecs checkbox is clicked
      */
