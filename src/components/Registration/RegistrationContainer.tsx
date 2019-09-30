@@ -1,4 +1,4 @@
-import React, { ComponentProps, useContext } from "react";
+import React, { ComponentProps, Fragment, useContext } from "react";
 import { useState } from "react";
 import { withRouter } from "react-router";
 import {
@@ -144,6 +144,29 @@ export const RegistrationContainer = withRouter(props => {
     }
   })(props.match.params.signUpStep);
 
+  const rightColumnContent = (step => {
+    switch (step) {
+      case "1":
+        return (
+          <Fragment>
+            <p className=" pr-3 pt-4">Guida all'utilizzo</p>
+            <p className="small pr-3">
+              Le informazioni legate al tuo ente vengono derivate dal database
+              di Indice PA. Nel caso alcune informazioni non siano corrette o
+              siano state cambiate di recente, richiedine la modifica
+              direttamente su Indice PA.
+            </p>
+            <p className="small pr-2">
+              Controlla le informazioni del tuo ente qui: www.indicepa.gov.it
+            </p>
+          </Fragment>
+        );
+      case "2":
+      case "3":
+        return null;
+    }
+  })(props.match.params.signUpStep);
+
   const toggleConfirmationModal = () => {
     setShowConfirmModal((prevState: boolean) => !prevState);
   };
@@ -160,19 +183,7 @@ export const RegistrationContainer = withRouter(props => {
           <Col sm="8">{registrationBody}</Col>
           <Col sm="2">
             <Row>
-              <Col>
-                <p className=" pr-3 pt-4">Guida all'utilizzo</p>
-                <p className="small pr-3">
-                  Le informazioni legate al tuo ente vengono derivate dal
-                  database di Indice PA. Nel caso alcune informazioni non siano
-                  corrette o siano state cambiate di recente, richiedine la
-                  modifica direttamente su Indice PA.
-                </p>
-                <p className="small pr-2">
-                  Controlla le informazioni del tuo ente qui:
-                  www.indicepa.gov.it
-                </p>
-              </Col>
+              <Col>{rightColumnContent}</Col>
             </Row>
           </Col>
         </Row>
