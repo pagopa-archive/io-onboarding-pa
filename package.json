@@ -11,12 +11,12 @@
     "start-fe-mock": "export $(grep -v '^#' .env.io-onboarding-pa-mock-backend.development | xargs) && chmod +x env.sh && source env.sh && cp env-config.js ./public/ && rm -rf env-config.js && npm run start-fe",
     "start-with-mock": "npm run start-server & npm run start-fe-mock",
     "start": "npm run start-fe",
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist && yarn generate:locales",
     "build": "parcel build ./public/index.html --public-url / --no-minify ./public/env-config.js",
     "postversion": "git push && git push --tags",
     "test": "jest",
     "lint": "tslint --project .",
-    "generate:locales": "ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' scripts/make-locales.ts"
+    "generate:locales": "rimraf locales/locales.ts && ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' ./scripts/make-locales.ts"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.12",

@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY /src /usr/src/app/src
 COPY /public /usr/src/app/public
+COPY /scripts /usr/src/app/scripts
+COPY /locales /usr/src/app/locales
 COPY /package.json /usr/src/app/package.json
 COPY /tsconfig.json /usr/src/app/tsconfig.json
 COPY /yarn.lock /usr/src/app/yarn.lock
