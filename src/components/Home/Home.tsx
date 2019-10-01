@@ -1,4 +1,5 @@
 import React, { ComponentProps } from "react";
+import { useTranslation } from "react-i18next";
 import { Col, Media, Row } from "reactstrap";
 import { HomeLoginButton } from "./HomeLoginButton/HomeLoginButton";
 
@@ -15,6 +16,11 @@ import "./Home.css";
  * Landing page with three different login for developers, institution delegate and institution legal ref
  */
 export const Home = () => {
+  /**
+   * react-i18next translation hook
+   */
+  const { t } = useTranslation();
+
   /**
    * array containing three login elements props
    */
@@ -67,12 +73,7 @@ export const Home = () => {
         </Row>
         <Row className="pt-3 mt-4">
           <Col>
-            <Media
-              object
-              src={ioLogoWhite}
-              alt="NewCo Logo"
-              height="60"
-            />
+            <Media object src={ioLogoWhite} alt="NewCo Logo" height="60" />
           </Col>
         </Row>
         <Row className="pt-4 mt-4">
@@ -82,9 +83,7 @@ export const Home = () => {
         </Row>
         <Row className="pt-2 pb-5">
           <Col>
-            <p className="text-white">
-              Seleziona il profilo con cui vuoi accedere al back-office.
-            </p>
+            <p className="text-white">{t("home.profileSelect")}</p>
           </Col>
         </Row>
         <Row className="pt-2 mt-2 text-center">
