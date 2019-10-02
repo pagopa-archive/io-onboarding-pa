@@ -7,3 +7,4 @@ coverage
 .cache/
 .idea/
 public/env-config.js
+locales/locales.ts

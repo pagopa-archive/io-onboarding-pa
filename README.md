@@ -24,6 +24,24 @@ The application can potentially run anywhere, either directly on a bare-bone mac
 
 Images are consumed by production deployments, where they're usually deployed on top of Kubernetes clusters. For more informations about IO production deployments and IO helm-charts, have a look at the [io-infrastructure-post-config repository](https://github.com/teamdigitale/io-infrastructure-post-config).
 
+## Building Prerequisites
+
+### Dependencies
+
+First we install the libraries used by the project:
+
+```
+$ yarn install
+```
+
+### Generating translations
+
+The second step is to generate the definitions from the YAML translations:
+
+```
+$ yarn generate:locales
+```
+
 ## Test the application locally
 
 The application can be built and tested locally, either directly on the developer machine (directly using development tools, such as *yarn* or *parcel*), or as a Docker-based image.
@@ -106,3 +124,21 @@ To overcome this limitation, an *env.sh* bash script is executed every time the 
 >**IMPORTANT**: The *env.sh* script reads and automatically injects in `env-config.js` all environment variables prefixed with *IO_ONBOARDING_PA*, for example *IO_ONBOARDING_PA_API_HOST*.
 
 To read the variable values inside the frontend application, use `window._env_.IO_ONBOARDING_PA_YOUR_VAR`. 
+
+## Internationalization
+
+For multi-language support the application uses:
+
+* [react-i18next](https://github.com/i18next/react-i18next) for the integration of translations with user preferences
+* [i18next-browser-languageDetector](https://github.com/i18next/i18next-browser-languageDetector) to automatically detect user language
+* YAML files in the directory `locales`
+* A YAML-to-typescript conversion script (`generate:locales`).
+
+To add a new language you must:
+
+1. Create a new directory under [locales](locales) using the language code as the name (e.g. `es` for Spanish, `de` for German, etc...).
+1. Copy the content from the base language (`en`).
+1. Proceed with the translation by editing the YAML and eventual Markdown files.
+1. Run the Typescript code generation script (`yarn generate:locales`).
+1. New languages will be automatically used if detected as user languages by `LanguageDetector` used in `src/i18n.ts`
+1. Where user language should be detected and order used in searching is defined by `order` array in `languageDetectorOptions` in the same file
