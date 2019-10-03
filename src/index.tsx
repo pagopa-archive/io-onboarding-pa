@@ -1,3 +1,6 @@
+import "../node_modules/react-app-polyfill/ie11";
+import "../node_modules/react-app-polyfill/stable";
+
 import React from "react";
 import { render } from "react-dom";
 
