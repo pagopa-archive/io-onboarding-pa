@@ -1,5 +1,6 @@
 import { AppHeader } from "@coreui/react";
 import React, { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
   Badge,
@@ -34,6 +35,11 @@ export const CentralHeader = withRouter<
   ICentralHeaderProps,
   React.FC<ICentralHeaderProps>
 >((props: ICentralHeaderProps) => {
+  /**
+   * react-i18next translation hook
+   */
+  const { t } = useTranslation();
+
   return (
     <AppHeader
       fixed
@@ -56,14 +62,14 @@ export const CentralHeader = withRouter<
                 <Col sm="auto" className="ml-2">
                   <Row>
                     <Col>
-                      <h4 className="font-weight-bold mb-0">Back-office</h4>
+                      <h4 className="font-weight-bold mb-0">
+                        {t("centralHeader.title")}
+                      </h4>
                     </Col>
                   </Row>
                   <Row>
                     <Col>
-                      <p className="mb-0">
-                        Gestisci il profilo del tuo ente su IO
-                      </p>
+                      <p className="mb-0">{t("centralHeader.subtitle")}</p>
                     </Col>
                   </Row>
                 </Col>
@@ -97,10 +103,12 @@ export const CentralHeader = withRouter<
                             <DropdownItem
                               onClick={() => props.history.push("/profile")}
                             >
-                              Profilo
+                              {t("centralHeader.userMenu.profile")}
                             </DropdownItem>
                             {/*TODO: add logout function*/}
-                            <DropdownItem>Logout</DropdownItem>
+                            <DropdownItem>
+                              {t("centralHeader.userMenu.logout")}
+                            </DropdownItem>
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </Nav>

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, ComponentProps } from "react";
+import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
   Button,
@@ -29,6 +30,11 @@ interface IRegistrationStepOneProps
  */
 export const RegistrationStepOne = withRouter(
   (props: IRegistrationStepOneProps) => {
+    /**
+     * react-i18next translation hook
+     */
+    const { t } = useTranslation();
+
     /**
      * Function called when pecs checkbox is clicked
      */
@@ -65,8 +71,8 @@ export const RegistrationStepOne = withRouter(
     );
 
     const institutionScopes: ReadonlyArray<{ label: string; value: string }> = [
-      { label: "Locale (es. comuni, regioni)", value: "LOCAL" },
-      { label: "Nazionale (es. enti centrali)", value: "NATIONAL" }
+      { label: t("signUp.stepOne.scopeRadio.localLabel"), value: "LOCAL" },
+      { label: t("signUp.stepOne.scopeRadio.nationalLabel"), value: "NATIONAL" }
     ];
 
     const scopeRadioButtons = institutionScopes.map(scope => {
@@ -99,7 +105,7 @@ export const RegistrationStepOne = withRouter(
             <Col sm="10">
               <Row>
                 <Col sm="11">
-                  <h1 className="pt-4">Ricerca Ente</h1>
+                  <h1 className="pt-4">{t("signUp.stepOne.title")}</h1>
                   <Row className="pt-4">
                     <Col>
                       <SearchInstitutions
@@ -116,7 +122,9 @@ export const RegistrationStepOne = withRouter(
                       >
                         <FormGroup row className="pt-3">
                           <Col sm="4">
-                            <Label htmlFor="cf-input">Codice Fiscale*</Label>
+                            <Label htmlFor="cf-input">
+                              {t("signUp.stepOne.inputs.cfLabel")}
+                            </Label>
                           </Col>
                           <Col sm="8">
                             <Input
@@ -128,14 +136,14 @@ export const RegistrationStepOne = withRouter(
                               value={props.selectedInstitution.fiscalCode || ""}
                             />
                             <FormText color="muted">
-                              *Precompilato da IndicePA
+                              {t("signUp.stepOne.inputs.precompiledLabel")}
                             </FormText>
                           </Col>
                         </FormGroup>
                         <FormGroup row>
                           <Col sm="4">
                             <Label htmlFor="admin-name-input">
-                              Nome Amministrazione*
+                              {t("signUp.stepOne.inputs.administrationLabel")}
                             </Label>
                           </Col>
                           <Col sm="8">
@@ -148,20 +156,22 @@ export const RegistrationStepOne = withRouter(
                               value={props.selectedInstitution.name || ""}
                             />
                             <FormText color="muted">
-                              *Precompilato da IndicePA
+                              {t("signUp.stepOne.inputs.precompiledLabel")}
                             </FormText>
                           </Col>
                         </FormGroup>
                         <FormGroup row>
                           <Col sm="4">
-                            <Label htmlFor="text-input">Indirizzo PEC</Label>
+                            <Label htmlFor="text-input">
+                              {t("signUp.stepOne.inputs.pecLabel")}
+                            </Label>
                           </Col>
                           <Col sm="8">{pecRadioButtons}</Col>
                         </FormGroup>
                         <FormGroup row className="mb-4">
                           <Col sm="4">
                             <Label htmlFor="text-input">
-                              Area di competenza
+                              {t("signUp.stepOne.inputs.scopeLabel")}
                             </Label>
                           </Col>
                           <Col sm="8">{scopeRadioButtons}</Col>
@@ -175,7 +185,7 @@ export const RegistrationStepOne = withRouter(
                             className="w-50"
                             onClick={() => props.history.push("/dashboard/")}
                           >
-                            Annulla
+                            {t("signUp.stepOne.inputs.leftButton")}
                           </Button>
                         </Col>
                         <Col size={6} className="text-right">
@@ -190,7 +200,7 @@ export const RegistrationStepOne = withRouter(
                               !props.selectedInstitution.scope
                             }
                           >
-                            Conferma
+                            {t("signUp.stepOne.inputs.rightButton")}
                           </Button>
                         </Col>
                       </Row>

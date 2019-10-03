@@ -1,6 +1,7 @@
 import React from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
+import { useTranslation } from "react-i18next";
 import "./SearchInstitutions.css";
 
 interface ILegalRepresentative {
@@ -31,6 +32,10 @@ interface ISearchInstitutionProps {
  * Component for institution search with autocomplete
  */
 export const SearchInstitutions = (props: ISearchInstitutionProps) => {
+  /**
+   * react-i18next translation hook
+   */
+  const { t } = useTranslation();
 
   const handleSearch = (query: string) => {
     props.onInstitutionSearch(query);
@@ -52,7 +57,10 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
         minLength={3}
         onSearch={handleSearch}
         onChange={handleChange}
-        placeholder="Ricerca qui il tuo ente"
+        placeholder={t("signUp.searchInstitutions.placeholder")}
+        promptText={t("signUp.searchInstitutions.searching")}
+        searchText={t("signUp.searchInstitutions.searching")}
+        emptyLabel={t("signUp.searchInstitutions.emptyLabel")}
         selected={
           props.selectedInstitution.name ? [props.selectedInstitution] : []
         }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { Button, ButtonGroup, Col, Row } from "reactstrap";
@@ -17,6 +18,11 @@ interface IRegistrationStepButtonsProps
  */
 export const RegistrationStepButtons = withRouter(
   (props: IRegistrationStepButtonsProps) => {
+    /**
+     * react-i18next translation hook
+     */
+    const { t } = useTranslation();
+
     /**
      * Function to go to selected registration step or open modal to return to Dashboard if at step 0
      */
@@ -64,7 +70,7 @@ export const RegistrationStepButtons = withRouter(
               <svg className="icon icon-primary">
                 <use xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`} />
               </svg>
-              <span>Torna indietro</span>
+              <span>{t("signUp.stepButtons.back")}</span>
             </Button>
           </Col>
         </Row>

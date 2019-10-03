@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router";
 import {
   Button,
@@ -19,6 +20,11 @@ import "./SpidLogin.css";
  * Component for spid login for delegate
  */
 export const SpidLogin = withRouter(props => {
+  /**
+   * react-i18next translation hook
+   */
+  const { t } = useTranslation();
+
   return (
     <div className="SpidLogin">
       <Container fluid>
@@ -38,7 +44,7 @@ export const SpidLogin = withRouter(props => {
                       xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`}
                     />
                   </svg>
-                  <span>Torna indietro</span>
+                  <span>{t("spidLogin.back")}</span>
                 </Button>
               </Col>
             </Row>
@@ -48,43 +54,37 @@ export const SpidLogin = withRouter(props => {
               <Card className="card-bg card-big">
                 <CardBody>
                   <CardTitle>
-                    <h2 className="pb-4">Accedi con SPID</h2>
+                    <h2 className="pb-4">{t("spidLogin.title")}</h2>
                   </CardTitle>
                   <Row>
                     <Col sm="9 card-text">
-                      <p className="font-weight-bold mb-0">Cos'è SPID</p>
-                      <p>
-                        SPID è il sistema di accesso ai servizi forniti dalla
-                        Pubblica Amministrazione e dai privati accreditati
-                        attraverso un'unica identità digitale
-                      </p>
                       <p className="font-weight-bold mb-0">
-                        Sei già in possesso di un'utenza SPID?
+                        {t("spidLogin.description.title")}
                       </p>
-                      <p>Accedi con le credenziali fornite dal tuo gestore</p>
+                      <p>{t("spidLogin.description.text")}</p>
+                      <p className="font-weight-bold mb-0">
+                        {t("spidLogin.alreadyHasSpid.title")}
+                      </p>
+                      <p>{t("spidLogin.alreadyHasSpid.text")}</p>
                       <p className="font-weight-bold mb-1">
-                        Non hai ancora un'utenza SPID?
+                        {t("spidLogin.noSpid.title")}
                       </p>
                       <a
                         href="https://www.spid.gov.it/richiedi-spid"
                         className="btn btn-link mb-4 pl-0"
                       >
-                        Richiedila a uno dei gestori
+                        {t("spidLogin.noSpid.title")}
                       </a>
                       <p className="font-weight-bold mb-0">
-                        Cosa posso fare con SPID
+                        {t("spidLogin.whatIsFor.title")}
                       </p>
-                      <p className="mb-1">
-                        In questa fase di avvio del servizio le credenziali SPID
-                        sono utilizzabili solo per l'accesso ai servizi per il
-                        cittadino
-                      </p>
+                      <p className="mb-1">{t("spidLogin.whatIsFor.text")}</p>
                       <a
                         href="https://www.spid.gov.it"
                         className="btn btn-link pl-0"
                         role="button"
                       >
-                        Maggiori informazioni su SPID
+                        {t("spidLogin.moreInfo")}
                       </a>
                     </Col>
                     <Col sm="3">
@@ -96,10 +96,7 @@ export const SpidLogin = withRouter(props => {
             </div>
           </Col>
           <div className="col-2 pl-3 pr-3">
-            <p className="card-text pt-4 small">
-              Se ti sei sbagliato e volevi accedere con un profilo diverso
-              clicca qui sotto
-            </p>
+            <p className="card-text pt-4 small">{t("spidLogin.wrongLogin")}</p>
             <a
               href="#"
               className="btn btn-outline-primary"
@@ -108,7 +105,7 @@ export const SpidLogin = withRouter(props => {
                 return props.history.push("/home");
               }}
             >
-              Torna alla home
+              {t("spidLogin.backHome")}
             </a>
           </div>
         </Row>
