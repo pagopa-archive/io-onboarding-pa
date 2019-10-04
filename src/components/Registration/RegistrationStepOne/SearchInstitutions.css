@@ -5,3 +5,14 @@
 .SearchInstitutions .rbt-input-hint {
     line-height: 2.755;
 }
+
+
+.SearchInstitutions .rbt-menu.dropdown-menu.show::-webkit-scrollbar {
+    width: 7px;
+    -webkit-appearance: none;
+}
+
+.SearchInstitutions .rbt-menu.dropdown-menu.show::-webkit-scrollbar-thumb {
+    background-color: rgb(0, 102, 204);
+    border-radius: 7px
+}
