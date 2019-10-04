@@ -130,6 +130,10 @@ export const RegistrationContainer = withRouter(props => {
     );
   };
 
+  const toggleConfirmationModal = () => {
+    setShowConfirmModal((prevState: boolean) => !prevState);
+  };
+
   const registrationBody = (step => {
     switch (step) {
       case "1":
@@ -141,6 +145,7 @@ export const RegistrationContainer = withRouter(props => {
             onInstitutionSearch={handleIntitutionSearch}
             onInstitutionSelected={handleInstitutionSelected}
             selectedInstitution={selectedInstitution}
+            openConfirmModal={toggleConfirmationModal}
           />
         );
       case "2":
@@ -165,10 +170,6 @@ export const RegistrationContainer = withRouter(props => {
         return null;
     }
   })(props.match.params.signUpStep);
-
-  const toggleConfirmationModal = () => {
-    setShowConfirmModal((prevState: boolean) => !prevState);
-  };
 
   return (
     <div className="RegistrationContainer">
