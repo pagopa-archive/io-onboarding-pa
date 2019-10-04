@@ -23,6 +23,7 @@ interface IRegistrationStepOneProps
     RouteComponentProps<{ registrationStep: string }> {
   onPecCheckboxChange: (selectedPecIndex: number) => void;
   onScopeCheckboxChange: (selectedScope: string) => void;
+  openConfirmModal: () => void;
 }
 
 /**
@@ -183,7 +184,7 @@ export const RegistrationStepOne = withRouter(
                             outline
                             color="secondary"
                             className="w-50"
-                            onClick={() => props.history.push("/dashboard/")}
+                            onClick={props.openConfirmModal}
                           >
                             {t("signUp.stepOne.leftButton")}
                           </Button>
