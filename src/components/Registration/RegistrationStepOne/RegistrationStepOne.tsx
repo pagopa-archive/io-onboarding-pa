@@ -107,6 +107,7 @@ export const RegistrationStepOne = withRouter(
               <Row>
                 <Col sm="11">
                   <h1 className="pt-4">{t("signUp.stepOne.title")}</h1>
+                  <p>{t("signUp.stepOne.description")}</p>
                   <Row className="pt-4">
                     <Col>
                       <SearchInstitutions

@@ -54,6 +54,7 @@ translation:
         localLabel: "Locale (es. comuni, regioni)"
         nationalLabel: "Nazionale (es. enti centrali)"
       title: "Ricerca Ente"
+      description: "Ricerca il nome del tuo ente tra quelli iscritti ad IndicePA. Se il tuo Ente non risulta iscritto su IndicePA non sarà possibile effettuare l’accesso su IO Back-office."
       inputs:
         precompiledLabel: "*Precompilato da IndicePA"
         cfLabel: "Codice Fiscale*"
@@ -63,6 +64,7 @@ translation:
       leftButton: "Annulla"
       rightButton: "Conferma"
     searchInstitutions:
+      buttonText: "Ricerca"
       placeholder: "Ricerca qui il tuo ente"
       searching: "Ricerca..."
       emptyLabel: "Nessun risultato"
