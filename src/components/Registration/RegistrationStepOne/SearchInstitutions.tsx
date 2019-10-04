@@ -2,7 +2,11 @@ import React from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 
 import { useTranslation } from "react-i18next";
+import { Button, Col, InputGroup, InputGroupAddon, Row } from "reactstrap";
+
 import "./SearchInstitutions.css";
+
+import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
 
 interface ILegalRepresentative {
   familyName: string;
@@ -47,24 +51,39 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
 
   return (
     <div className="SearchInstitutions">
-      <AsyncTypeahead
-        allowNew={false}
-        delay={600}
-        isLoading={false}
-        multiple={false}
-        options={props.institutions}
-        labelKey="name"
-        minLength={5}
-        onSearch={handleSearch}
-        onChange={handleChange}
-        placeholder={t("signUp.searchInstitutions.placeholder")}
-        promptText={t("signUp.searchInstitutions.searching")}
-        searchText={t("signUp.searchInstitutions.searching")}
-        emptyLabel={t("signUp.searchInstitutions.emptyLabel")}
-        selected={
-          props.selectedInstitution.name ? [props.selectedInstitution] : []
-        }
-      />
+      <InputGroup>
+        <InputGroupAddon addonType="prepend">
+          <Button color="primary" className="py-0 px-2">
+            <Row>
+              <Col sm="4">
+                <svg className="icon icon-sm icon-white">
+                  <use xlinkHref={`${bootstrapItaliaImages}#it-search`} />
+                </svg>
+              </Col>
+              <Col sm="8">{t("signUp.searchInstitutions.buttonText")}</Col>
+            </Row>
+          </Button>
+        </InputGroupAddon>
+        <AsyncTypeahead
+          className="flex-grow-1"
+          allowNew={false}
+          delay={600}
+          isLoading={false}
+          multiple={false}
+          options={props.institutions}
+          labelKey="name"
+          minLength={5}
+          onSearch={handleSearch}
+          onChange={handleChange}
+          placeholder={t("signUp.searchInstitutions.placeholder")}
+          promptText={t("signUp.searchInstitutions.searching")}
+          searchText={t("signUp.searchInstitutions.searching")}
+          emptyLabel={t("signUp.searchInstitutions.emptyLabel")}
+          selected={
+            props.selectedInstitution.name ? [props.selectedInstitution] : []
+          }
+        />
+      </InputGroup>
     </div>
   );
 };

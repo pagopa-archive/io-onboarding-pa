@@ -1,3 +1,7 @@
+.SearchInstitutions .input-group-prepend {
+    pointer-events: none;
+}
+
 .SearchInstitutions .rbt-input-main {
     font-weight: normal;
 }
