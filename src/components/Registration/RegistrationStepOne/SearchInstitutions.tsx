@@ -49,12 +49,12 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
     <div className="SearchInstitutions">
       <AsyncTypeahead
         allowNew={false}
-        delay={400}
+        delay={600}
         isLoading={false}
         multiple={false}
         options={props.institutions}
         labelKey="name"
-        minLength={3}
+        minLength={5}
         onSearch={handleSearch}
         onChange={handleChange}
         placeholder={t("signUp.searchInstitutions.placeholder")}
