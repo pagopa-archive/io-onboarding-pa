@@ -36,7 +36,7 @@ export const DefaultContainer = () => {
     <div className="DefaultContainer">
       <SlimHeader />
       <CentralHeader userName={userProfile.name} userRole={userProfile.role} />
-      <div className="pt-app-body">
+      <div>
         <AppAlert />
         <Route path="/spid-login" component={SpidLogin} />
         <Route

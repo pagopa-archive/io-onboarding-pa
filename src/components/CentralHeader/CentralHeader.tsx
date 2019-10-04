@@ -43,7 +43,7 @@ export const CentralHeader = withRouter<
   return (
     <AppHeader
       fixed
-      className="CentralHeader it-header-center-wrapper border-bottom-0 position-fixed w-100"
+      className="CentralHeader it-header-center-wrapper border-bottom-0 w-100"
     >
       <div className="w-100">
         <Container fluid>
