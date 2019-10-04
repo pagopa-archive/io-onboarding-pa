@@ -1,4 +1,84 @@
 ---
 translation:
   home:
+    title: "IO Back-office"
     profileSelect: "Seleziona il profilo con cui vuoi accedere al back-office."
+    loginButtons:
+      text:
+        developer: "Sviluppatore"
+        delegate: "Delegato Ente"
+        legalRep: "Legale Rappresentante Ente"
+      description:
+        developer: "Entra qui se ti occupi di sviluppo di servizi digitali per gli enti e le amministrazioni italiane"
+        delegate: "Entra qui se lavori in una pubblica amministrazione e sei delegato alla gestione dei servizi digitali"
+        legalRep: "Entra qui se rappresenti legalmente un’ente, per supervisionare l’integrazione dei servizi su IO"
+  centralHeader:
+    title: "Back-office"
+    subtitle: "Gestisci il profilo del tuo ente su IO"
+    userMenu:
+      profile: "Profilo"
+      logout: "Logout"
+  spidLogin:
+    back: "Torna indietro"
+    title: "Accedi con SPID"
+    description:
+      title: "Cos'è SPID"
+      text: "SPID è il sistema di accesso ai servizi forniti dalla Pubblica Amministrazione e dai privati accreditati attraverso un'unica identità digitale"
+    alreadyHasSpid:
+      title: "Sei già in possesso di un'utenza SPID?"
+      text: "Accedi con le credenziali fornite dal tuo gestore"
+    noSpid:
+      title: "Non hai ancora un'utenza SPID?"
+      text: "Richiedila a uno dei gestori"
+    whatIsFor:
+      title: "Cosa posso fare con SPID"
+      text: "In questa fase di avvio del servizio le credenziali SPID sono utilizzabili solo per l'accesso ai servizi per il cittadino"
+    moreInfo: "Maggiori informazioni su SPID"
+    wrongLogin: "Se ti sei sbagliato e volevi accedere con un profilo diverso clicca qui sotto"
+    backHome: "Torna alla home"
+  signUp:
+    rightCol:
+      title: "Guida all'utilizzo"
+      text: "Le informazioni legate al tuo ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA."
+      additionalInfo: "Controlla le informazioni del tuo ente qui: www.indicepa.gov.it"
+    backModal:
+      title: "Annulla ricerca ente"
+      text: "Sei sicuro di voler uscire dalla ricerca ente?"
+      additionalText: "Verrai rediretto alla tua dashboard personale e potrai iniziare di nuovo la ricerca ente quando lo riterrai più opportuno."
+      leftButton: "Annulla"
+      rightButton: "Conferma"
+    stepButtons:
+      back: "Torna indietro"
+    stepOne:
+      scopeRadio:
+        localLabel: "Locale (es. comuni, regioni)"
+        nationalLabel: "Nazionale (es. enti centrali)"
+      title: "Ricerca Ente"
+      inputs:
+        precompiledLabel: "*Precompilato da IndicePA"
+        cfLabel: "Codice Fiscale*"
+        administrationLabel: "Nome Amministrazione*"
+        pecLabel: "Indirizzo PEC"
+        scopeLabel: "Area di competenza"
+      leftButton: "Annulla"
+      rightButton: "Conferma"
+    searchInstitutions:
+      placeholder: "Ricerca qui il tuo ente"
+      searching: "Ricerca..."
+      emptyLabel: "Nessun risultato"
+    stepTwo:
+      title: "L'ente selezionato non è ancora iscritto a IO"
+      description: "Per potere iscrivere un ente a IO è necessario identificare un Legale Rappresentante che si assuma la esponsabilità dell’erogazione dei servizi dell’ente tramite IO."
+      legalRep:
+        title: "Legale Rappresentate"
+        description: "Queste informazioni verranno utilizzate per generare la lettera di adesione dell’ente e l’accordo di contitolarità per il trattamento dei dati. Potrai prendere visione dei documenti alla pagina successiva."
+        disclaimer: "Se il nome e cognome sono già presenti è perchè abbiamo recuperato queste informazioni da IndicePA. Puoi modificare i campi precompilati se hai identificato un altro legale rappresentante. In quel caso le modifiche non si rifletteranno su IndicePA, ti consigliamo di aggiornare questa informazione anche su"
+      inputs:
+        nameLabel: "Nome"
+        surnameLabel: "Cognome"
+        fcLabel: "Codice Fiscale"
+        fcPlaceholder: "Inserisci il CF personale del legale rappresentante"
+        phoneLabel: "Numero di telefono dell'ufficio del Legale Rappresentante"
+        phonePlaceholder: "Inserisci il numero di telefono dell'ufficio"
+      leftButton: "Annulla"
+      rightButton: "Conferma"

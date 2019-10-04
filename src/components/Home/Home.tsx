@@ -28,31 +28,28 @@ export const Home = () => {
     ComponentProps<typeof HomeLoginButton>
   > = [
     {
-      buttonText: "Sviluppatore",
+      buttonText: t("home.loginButtons.text.developer"),
       img: logoHomeDev,
       imgHeight: 100,
       link: "developer-login",
       offset: "home",
-      text:
-        "Entra qui se ti occupi di sviluppo di servizi digitali per gli enti e le amministrazioni italiane"
+      text: t("home.loginButtons.description.developer")
     },
     {
-      buttonText: "Delegato Ente",
+      buttonText: t("home.loginButtons.text.delegate"),
       img: logoHomeDel,
       imgHeight: 100,
       link: "spid-login",
       offset: undefined,
-      text:
-        "Entra qui se lavori in una pubblica amministrazione e sei delegato alla gestione dei servizi digitali"
+      text: t("home.loginButtons.description.delegate")
     },
     {
-      buttonText: "Legale Rappresentante Ente",
+      buttonText: t("home.loginButtons.text.legalRep"),
       img: logoHomeRep,
       imgHeight: 100,
       link: "legal-rep-login",
       offset: undefined,
-      text:
-        "Entra qui se rappresenti legalmente un’ente, per supervisionare l’integrazione dei servizi su IO"
+      text: t("home.loginButtons.description.legalRep")
     }
   ];
 
@@ -78,7 +75,7 @@ export const Home = () => {
         </Row>
         <Row className="pt-4 mt-4">
           <Col>
-            <h2 className="text-white mb-4 mt-3">IO Back-office</h2>
+            <h2 className="text-white mb-4 mt-3">{t("home.title")}</h2>
           </Col>
         </Row>
         <Row className="pt-2 pb-5">

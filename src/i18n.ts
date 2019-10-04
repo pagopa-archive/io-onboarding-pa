@@ -8,12 +8,12 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import * as locales from "../locales/locales";
 
 // the translations
-// (tip move them in a JSON file and import them)
 const resources = {
   en: locales.localeEN,
   it: locales.localeIT
 };
 
+// language detection options
 const languageDetectorOptions = {
   order: [
     "querystring",
