@@ -185,7 +185,7 @@ export const RegistrationStepOne = withRouter(
                             className="w-50"
                             onClick={() => props.history.push("/dashboard/")}
                           >
-                            {t("signUp.stepOne.inputs.leftButton")}
+                            {t("signUp.stepOne.leftButton")}
                           </Button>
                         </Col>
                         <Col size={6} className="text-right">
@@ -200,7 +200,7 @@ export const RegistrationStepOne = withRouter(
                               !props.selectedInstitution.scope
                             }
                           >
-                            {t("signUp.stepOne.inputs.rightButton")}
+                            {t("signUp.stepOne.rightButton")}
                           </Button>
                         </Col>
                       </Row>
