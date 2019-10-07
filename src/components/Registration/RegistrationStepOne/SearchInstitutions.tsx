@@ -50,7 +50,7 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
   };
 
   return (
-    <div className="SearchInstitutions">
+    <div className="SearchInstitutions pt-2 pb-4">
       <InputGroup>
         <InputGroupAddon addonType="prepend">
           <Button color="primary" className="py-0 px-2">
