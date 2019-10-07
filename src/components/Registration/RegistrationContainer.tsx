@@ -160,7 +160,7 @@ export const RegistrationContainer = withRouter(props => {
       case "1":
         return (
           <Fragment>
-            <p className=" pr-3 pt-4">{t("signUp.rightCol.title")}</p>
+            <p className="pr-3 mt-5">{t("signUp.rightCol.title")}</p>
             <p className="small pr-3">{t("signUp.rightCol.text")}</p>
             <p className="small pr-2">{t("signUp.rightCol.additionalInfo")}</p>
           </Fragment>

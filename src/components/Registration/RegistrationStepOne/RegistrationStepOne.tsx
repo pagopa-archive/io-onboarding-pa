@@ -106,9 +106,9 @@ export const RegistrationStepOne = withRouter(
             <Col sm="10">
               <Row>
                 <Col sm="11">
-                  <h1 className="pt-4">{t("signUp.stepOne.title")}</h1>
-                  <p>{t("signUp.stepOne.description")}</p>
-                  <Row className="pt-4">
+                  <h1 className="mt-5">{t("signUp.stepOne.title")}</h1>
+                  <p className="mt-4">{t("signUp.stepOne.description")}</p>
+                  <Row className="mt-5">
                     <Col>
                       <SearchInstitutions
                         institutions={props.institutions}
@@ -120,9 +120,9 @@ export const RegistrationStepOne = withRouter(
                         action=""
                         method="post"
                         encType="multipart/form-data"
-                        className="form-horizontal w-100 pt-3"
+                        className="form-horizontal w-100 mt-5"
                       >
-                        <FormGroup row className="pt-3">
+                        <FormGroup row>
                           <Col sm="4">
                             <Label htmlFor="cf-input">
                               {t("signUp.stepOne.inputs.cfLabel")}
@@ -170,7 +170,7 @@ export const RegistrationStepOne = withRouter(
                           </Col>
                           <Col sm="8">{pecRadioButtons}</Col>
                         </FormGroup>
-                        <FormGroup row className="mb-4">
+                        <FormGroup row className="mb-5">
                           <Col sm="4">
                             <Label htmlFor="text-input">
                               {t("signUp.stepOne.inputs.scopeLabel")}
@@ -179,7 +179,7 @@ export const RegistrationStepOne = withRouter(
                           <Col sm="8">{scopeRadioButtons}</Col>
                         </FormGroup>
                       </Form>
-                      <Row className="pb-3">
+                      <Row className="pb-5">
                         <Col size={6} className="text-left">
                           <Button
                             outline
@@ -216,7 +216,7 @@ export const RegistrationStepOne = withRouter(
                 object
                 src={logoSignupStepOne}
                 alt="Signup step one logo"
-                className="pt-3 w-75"
+                className="pt-5 w-75"
               />
             </Col>
           </Row>

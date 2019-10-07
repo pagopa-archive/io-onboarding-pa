@@ -29,19 +29,21 @@ export const RegistrationStepTwo = () => {
           <Col sm="10">
             <Row>
               <Col sm="11">
-                <h1 className="pt-4">{t("signUp.stepTwo.title")}</h1>
-                <Row className="pt-4">
+                <h1 className="pt-5">{t("signUp.stepTwo.title")}</h1>
+                <Row className="pt-3">
                   <Col>
                     <p>{t("signUp.stepTwo.description")}</p>
                     <Form
                       action=""
                       method="post"
                       encType="multipart/form-data"
-                      className="form-horizontal w-100 pt-3"
+                      className="form-horizontal w-100 pt-4"
                     >
                       <h3>{t("signUp.stepTwo.legalRep.title")}</h3>
-                      <p>{t("signUp.stepTwo.legalRep.description")}</p>
-                      <FormGroup row className="pt-3 mb-3">
+                      <p className="pt-2">
+                        {t("signUp.stepTwo.legalRep.description")}
+                      </p>
+                      <FormGroup row className="pt-4 mb-4">
                         <Col sm="6">
                           <Label htmlFor="name-input" className="active">
                             {t("signUp.stepTwo.inputs.nameLabel")}
@@ -65,13 +67,13 @@ export const RegistrationStepTwo = () => {
                           />
                         </Col>
                       </FormGroup>
-                      <p className="mb-5">
+                      <p className="pt-3 mb-5">
                         {t("signUp.stepTwo.legalRep.disclaimer")}&nbsp;
                         <a href="http://www.indicepa.gov.it">
                           www.indicepa.gov.it
                         </a>
                       </p>
-                      <FormGroup row className="pt-3">
+                      <FormGroup row className="pt-4">
                         <Col sm="6">
                           <Label htmlFor="fc-input" className="active">
                             {t("signUp.stepTwo.inputs.fcLabel")}
@@ -100,7 +102,7 @@ export const RegistrationStepTwo = () => {
                         </Col>
                       </FormGroup>
                     </Form>
-                    <Row className="pb-3">
+                    <Row className="pb-5 pb-5">
                       <Col size={6} className="text-left">
                         <Button outline color="secondary" className="w-50">
                           {t("signUp.stepTwo.leftButton")}
@@ -122,7 +124,7 @@ export const RegistrationStepTwo = () => {
               object
               src={logoSignupStepTwoNew}
               alt="Signup step one logo"
-              className="pt-3 w-75"
+              className="pt-5 w-75"
             />
           </Col>
         </Row>
