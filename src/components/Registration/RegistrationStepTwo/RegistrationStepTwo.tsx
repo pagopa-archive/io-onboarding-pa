@@ -69,7 +69,11 @@ export const RegistrationStepTwo = () => {
                       </FormGroup>
                       <p className="pt-3 mb-5">
                         {t("signUp.stepTwo.legalRep.disclaimer")}&nbsp;
-                        <a href="http://www.indicepa.gov.it">
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href="http://www.indicepa.gov.it"
+                        >
                           www.indicepa.gov.it
                         </a>
                       </p>

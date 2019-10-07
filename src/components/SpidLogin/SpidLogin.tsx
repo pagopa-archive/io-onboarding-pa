@@ -70,6 +70,8 @@ export const SpidLogin = withRouter(props => {
                         {t("spidLogin.noSpid.title")}
                       </p>
                       <a
+                        target="_blank"
+                        rel="noopener noreferrer"
                         href="https://www.spid.gov.it/richiedi-spid"
                         className="btn btn-link mb-4 pl-0"
                       >
@@ -80,6 +82,8 @@ export const SpidLogin = withRouter(props => {
                       </p>
                       <p className="mb-1">{t("spidLogin.whatIsFor.text")}</p>
                       <a
+                        target="_blank"
+                        rel="noopener noreferrer"
                         href="https://www.spid.gov.it"
                         className="btn btn-link pl-0"
                         role="button"
@@ -100,7 +104,6 @@ export const SpidLogin = withRouter(props => {
               {t("spidLogin.wrongLogin")}
             </p>
             <a
-              href="#"
               className="btn btn-outline-primary"
               role="button"
               onClick={() => {

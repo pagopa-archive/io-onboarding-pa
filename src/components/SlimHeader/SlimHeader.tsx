@@ -16,14 +16,24 @@ export const SlimHeader = () => {
       <Container fluid className="it-header-slim-wrapper-content">
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <a href="https://www.agid.gov.it/it/piattaforme/pagopa">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.agid.gov.it/it/piattaforme/pagopa"
+            >
               PagoPa SPA
             </a>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
           <NavItem className="px-3">
-            <a href="https://io.italia.it/">io.italia.it</a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://io.italia.it/"
+            >
+              io.italia.it
+            </a>
           </NavItem>
         </Nav>
       </Container>

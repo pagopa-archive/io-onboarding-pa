@@ -40,7 +40,7 @@ translation:
     rightCol:
       title: "Guida all'utilizzo"
       text: "Le informazioni legate al tuo ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA."
-      additionalInfo: "Controlla le informazioni del tuo ente qui: www.indicepa.gov.it"
+      additionalInfo: "Controlla le informazioni del tuo ente qui:"
     backModal:
       title: "Annulla ricerca ente"
       text: "Sei sicuro di voler uscire dalla ricerca ente?"
