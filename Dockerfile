@@ -24,7 +24,7 @@ RUN apt-get update && \
 
 COPY nginx.conf /etc/nginx
 
-COPY env.sh /usr/share/nginx/html
+COPY ./scripts/env.sh /usr/share/nginx/html
 COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 
 RUN chmod +x /usr/share/nginx/html/env.sh

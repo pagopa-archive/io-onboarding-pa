@@ -119,7 +119,7 @@ The table below describes all the Environment variables needed by the front end 
 
 The frontend container needs to adapt to different environments, reading at run-time environment variables values. For example, the application needs to know the address of the backend application. This is a non trivial task, since Javascript code runs on the client machine of the user executing the application, which prevents the application from directly reading the environment variables from the container.
 
-To overcome this limitation, an *env.sh* bash script is executed every time the frontend application container starts. The script reads the environment variables and produces an *env-config.js* file that is then automatically copied together with the rest of the files to be served by the webserver. The *index.html* file (in the *public* folder of this repository) links already to *env-config.js*, which is read every time the user opens the application in a browser.
+To overcome this limitation, an *env.sh* bash script inside `scripts` folder is executed every time the frontend application container starts. The script reads the environment variables and produces an *env-config.js* file that is then automatically copied together with the rest of the files to be served by the webserver. The *index.html* file (in the *public* folder of this repository) links already to *env-config.js*, which is read every time the user opens the application in a browser.
 
 >**IMPORTANT**: The *env.sh* script reads and automatically injects in `env-config.js` all environment variables prefixed with *IO_ONBOARDING_PA*, for example *IO_ONBOARDING_PA_API_HOST*.
 
