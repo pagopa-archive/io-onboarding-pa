@@ -10,5 +10,5 @@ export const ScrollToTop = withRouter((props: IScrollToTopProps) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return <Fragment>{props.children}</Fragment> || null;
+  return <Fragment>{props.children}</Fragment>;
 });
