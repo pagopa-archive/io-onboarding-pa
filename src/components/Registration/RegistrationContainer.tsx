@@ -162,7 +162,16 @@ export const RegistrationContainer = withRouter(props => {
           <Fragment>
             <p className="pr-3 mt-5">{t("signUp.rightCol.title")}</p>
             <p className="small pr-3">{t("signUp.rightCol.text")}</p>
-            <p className="small pr-2">{t("signUp.rightCol.additionalInfo")}</p>
+            <p className="small pr-2">
+              {t("signUp.rightCol.additionalInfo")}&nbsp;
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="http://www.indicepa.gov.it"
+              >
+                www.indicepa.gov.it
+              </a>
+            </p>
           </Fragment>
         );
       case "2":
