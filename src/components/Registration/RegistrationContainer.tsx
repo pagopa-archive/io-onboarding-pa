@@ -130,6 +130,24 @@ export const RegistrationContainer = withRouter(props => {
     );
   };
 
+  const handleStepTwoInputChange = (inputName: string, inputValue: string) => {
+    setSelectedInstitution(
+      (
+        prevState: ComponentProps<
+          typeof RegistrationStepOne
+        >["selectedInstitution"]
+      ) => {
+        return {
+          ...prevState,
+          legalRepresentative: {
+            ...prevState.legalRepresentative,
+            [inputName]: inputValue
+          }
+        };
+      }
+    );
+  };
+
   const toggleConfirmationModal = () => {
     setShowConfirmModal((prevState: boolean) => !prevState);
   };
@@ -149,7 +167,12 @@ export const RegistrationContainer = withRouter(props => {
           />
         );
       case "2":
-        return <RegistrationStepTwo />;
+        return (
+          <RegistrationStepTwo
+            selectedInstitution={selectedInstitution}
+            onStepTwoInputChange={handleStepTwoInputChange}
+          />
+        );
       case "3":
         return <RegistrationStepThree />;
     }
