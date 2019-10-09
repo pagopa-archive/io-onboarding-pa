@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -12,11 +12,19 @@ import {
   Row
 } from "reactstrap";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
+import { SearchInstitutions } from "../RegistrationStepOne/SearchInstitutions";
+
+interface IRegistrationStepTwoProps {
+  selectedInstitution: ComponentProps<
+    typeof SearchInstitutions
+  >["selectedInstitution"];
+  onStepTwoInputChange: (inputName: string, inputValue: string) => void;
+}
 
 /**
  * Component for second step of registration process
  */
-export const RegistrationStepTwo = () => {
+export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
   /**
    * react-i18next translation hook
    */
@@ -45,14 +53,24 @@ export const RegistrationStepTwo = () => {
                       </p>
                       <FormGroup row className="pt-4 mb-4">
                         <Col sm="6">
-                          <Label htmlFor="name-input" className="active">
+                          <Label htmlFor="firstName-input" className="active">
                             {t("signUp.stepTwo.inputs.nameLabel")}
                           </Label>
                           <Input
                             type="text"
-                            id="name-input"
-                            name="name-input"
+                            id="firstName-input"
+                            name="firstName"
                             placeholder=""
+                            value={
+                              props.selectedInstitution.legalRepresentative
+                                .firstName
+                            }
+                            onChange={event =>
+                              props.onStepTwoInputChange(
+                                "firstName",
+                                event.target.value
+                              )
+                            }
                           />
                         </Col>
                         <Col sm="6">
@@ -61,9 +79,19 @@ export const RegistrationStepTwo = () => {
                           </Label>
                           <Input
                             type="text"
-                            id="surname-input"
-                            name="surname-input"
+                            id="familyName-input"
+                            name="familyName"
                             placeholder=""
+                            value={
+                              props.selectedInstitution.legalRepresentative
+                                .familyName
+                            }
+                            onChange={event =>
+                              props.onStepTwoInputChange(
+                                "familyName",
+                                event.target.value
+                              )
+                            }
                           />
                         </Col>
                       </FormGroup>
@@ -84,11 +112,21 @@ export const RegistrationStepTwo = () => {
                           </Label>
                           <Input
                             type="text"
-                            id="fc-input"
-                            name="fc-input"
+                            id="fiscalCode-input"
+                            name="fiscalCode"
                             placeholder={t(
                               "signUp.stepTwo.inputs.fcPlaceholder"
                             )}
+                            value={
+                              props.selectedInstitution.legalRepresentative
+                                .fiscalCode || ""
+                            }
+                            onChange={event =>
+                              props.onStepTwoInputChange(
+                                "fiscalCode",
+                                event.target.value
+                              )
+                            }
                           />
                         </Col>
                         <Col sm="6">
@@ -97,11 +135,21 @@ export const RegistrationStepTwo = () => {
                           </Label>
                           <Input
                             type="text"
-                            id="phone-input"
-                            name="phone-input"
+                            id="phoneNumber-input"
+                            name="phoneNumber"
                             placeholder={t(
                               "signUp.stepTwo.inputs.phonePlaceholder"
                             )}
+                            value={
+                              props.selectedInstitution.legalRepresentative
+                                .phoneNumber || ""
+                            }
+                            onChange={event =>
+                              props.onStepTwoInputChange(
+                                "phoneNumber",
+                                event.target.value
+                              )
+                            }
                           />
                         </Col>
                       </FormGroup>
@@ -113,7 +161,12 @@ export const RegistrationStepTwo = () => {
                         </Button>
                       </Col>
                       <Col size={6} className="text-right">
-                        <Button color="primary" className="w-50">
+                        <Button
+                          color="primary"
+                          className="w-50"
+                          // TODO: add function to call API to save institution and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
+                          onClick={() => console.log(props.selectedInstitution)}
+                        >
                           {t("signUp.stepTwo.rightButton")}
                         </Button>
                       </Col>
