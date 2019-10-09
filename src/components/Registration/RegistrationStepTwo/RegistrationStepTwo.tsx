@@ -164,6 +164,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                         <Button
                           color="primary"
                           className="w-50"
+                          // TODO: add function to call API to save institution and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
                           onClick={() => console.log(props.selectedInstitution)}
                         >
                           {t("signUp.stepTwo.rightButton")}
