@@ -13,6 +13,8 @@ import {
   Media,
   Row
 } from "reactstrap";
+import { FoundNotRegisteredAdministration } from "../../../../generated/definitions/api/FoundNotRegisteredAdministration";
+import { FoundRegisteredAdministration } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
 
 import { SearchInstitutions } from "./SearchInstitutions";
 
@@ -31,6 +33,10 @@ interface IRegistrationStepOneProps
  */
 export const RegistrationStepOne = withRouter(
   (props: IRegistrationStepOneProps) => {
+    console.log(
+      "FoundRegisteredAdministration.is(props.selectedInstitution)",
+      FoundRegisteredAdministration.is(props.selectedInstitution)
+    );
     /**
      * react-i18next translation hook
      */
@@ -60,7 +66,13 @@ export const RegistrationStepOne = withRouter(
               id={`radio-${pec}`}
               name="selectedPecIndex"
               value={pecIndex}
-              checked={props.selectedInstitution.selectedPecIndex === pecIndex}
+              checked={
+                FoundRegisteredAdministration.is(props.selectedInstitution)
+                  ? props.selectedInstitution.selectedPecIndex === pecIndex
+                  : (props.selectedInstitution as (FoundNotRegisteredAdministration & {
+                      selectedPecIndex: number;
+                    })).selectedPecIndex === pecIndex
+              }
               onChange={onPecCheckboxChange}
             />
             <Label check className="form-check-label" htmlFor={`radio-${pec}`}>
@@ -85,7 +97,13 @@ export const RegistrationStepOne = withRouter(
             id={`radio-${scope.value}`}
             name="scope"
             value={scope.value}
-            checked={props.selectedInstitution.scope === scope.value}
+            checked={
+              FoundRegisteredAdministration.is(props.selectedInstitution)
+                ? props.selectedInstitution.scope === scope.value
+                : (props.selectedInstitution as (FoundNotRegisteredAdministration & {
+                    scope: string;
+                  })).scope === scope.value
+            }
             onChange={onScopeCheckboxChange}
           />
           <Label
@@ -197,9 +215,12 @@ export const RegistrationStepOne = withRouter(
                             onClick={() => props.history.push("/sign-up/2")}
                             disabled={
                               !props.selectedInstitution.name ||
-                              props.selectedInstitution.selectedPecIndex ===
-                                null ||
-                              !props.selectedInstitution.scope
+                              (props.selectedInstitution as (FoundNotRegisteredAdministration & {
+                                selectedPecIndex: number;
+                              })).selectedPecIndex === null ||
+                              !(props.selectedInstitution as (FoundNotRegisteredAdministration & {
+                                scope: string;
+                              })).scope
                             }
                           >
                             {t("signUp.stepOne.rightButton")}

@@ -4,32 +4,17 @@ import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { useTranslation } from "react-i18next";
 import { Button, Col, InputGroup, InputGroupAddon, Row } from "reactstrap";
 
+import { FoundAdministration } from "../../../../generated/definitions/api/FoundAdministration";
+
 import "./SearchInstitutions.css";
 
 import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
 
-interface ILegalRepresentative {
-  familyName: string;
-  firstName: string;
-  fiscalCode: string | null;
-  phoneNumber: string | null;
-}
-
-interface IInstitution {
-  fiscalCode: string;
-  ipaCode: string;
-  name: string;
-  legalRepresentative: ILegalRepresentative;
-  pecs: ReadonlyArray<string>;
-  selectedPecIndex: number | null;
-  scope: string | null;
-}
-
 interface ISearchInstitutionProps {
-  institutions: ReadonlyArray<IInstitution>;
+  institutions: ReadonlyArray<FoundAdministration>;
   onInstitutionSearch: (event: string) => void;
-  onInstitutionSelected: (event: ReadonlyArray<IInstitution>) => void;
-  selectedInstitution: IInstitution;
+  onInstitutionSelected: (event: ReadonlyArray<FoundAdministration>) => void;
+  selectedInstitution: FoundAdministration;
 }
 
 /**
@@ -45,7 +30,7 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
     props.onInstitutionSearch(query);
   };
 
-  const handleChange = (selected: ReadonlyArray<IInstitution>) => {
+  const handleChange = (selected: ReadonlyArray<FoundAdministration>) => {
     props.onInstitutionSelected(selected);
   };
 

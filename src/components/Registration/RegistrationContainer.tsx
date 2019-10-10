@@ -12,6 +12,8 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
+import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
@@ -37,18 +39,18 @@ export const RegistrationContainer = withRouter(props => {
   const initialSelectedInstitution: ComponentProps<
     typeof RegistrationStepOne
   >["selectedInstitution"] = {
-    fiscalCode: "",
+    fiscalCode: "" as OrganizationFiscalCode,
     ipaCode: "",
     legalRepresentative: {
       familyName: "",
       firstName: "",
-      fiscalCode: "",
+      fiscalCode: "" as FiscalCode,
       phoneNumber: ""
     },
     name: "",
     pecs: [],
-    scope: null,
-    selectedPecIndex: null
+    scope: undefined,
+    selectedPecIndex: -1
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -89,18 +91,18 @@ export const RegistrationContainer = withRouter(props => {
     const newInstitution =
       event.length === 0
         ? {
-            fiscalCode: "",
+            fiscalCode: "" as OrganizationFiscalCode,
             ipaCode: "",
             legalRepresentative: {
               familyName: "",
               firstName: "",
-              fiscalCode: "",
+              fiscalCode: "" as FiscalCode,
               phoneNumber: ""
             },
             name: "",
             pecs: [],
-            scope: null,
-            selectedPecIndex: null
+            scope: undefined,
+            selectedPecIndex: -1
           }
         : event[0];
     setSelectedInstitution(newInstitution);
