@@ -34,7 +34,7 @@ First we install the libraries used by the project:
 $ yarn install
 ```
 
-### Generating translations and classes
+### Generating translations and types
 
 The second step is to generate the definitions from the YAML translations and from OpenApi specs.
 
