@@ -13,6 +13,7 @@ import {
   Row
 } from "reactstrap";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
+import { ScopeEnum } from "../../../generated/definitions/api/FoundRegisteredAdministration";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
 
@@ -120,7 +121,7 @@ export const RegistrationContainer = withRouter(props => {
     );
   };
 
-  const handleScopeCheckboxChange = (selectedScope: string) => {
+  const handleScopeCheckboxChange = (selectedScope: ScopeEnum) => {
     setSelectedInstitution(
       (
         prevState: ComponentProps<

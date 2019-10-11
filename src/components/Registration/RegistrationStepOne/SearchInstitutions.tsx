@@ -5,16 +5,41 @@ import { useTranslation } from "react-i18next";
 import { Button, Col, InputGroup, InputGroupAddon, Row } from "reactstrap";
 
 import { FoundAdministration } from "../../../../generated/definitions/api/FoundAdministration";
+import {
+  FoundNotRegisteredAdministration,
+  FoundNotRegisteredAdministrationLegalRepresentative
+} from "../../../../generated/definitions/api/FoundNotRegisteredAdministration";
+import {
+  FoundRegisteredAdministration,
+  FoundRegisteredAdministrationLegalRepresentative
+} from "../../../../generated/definitions/api/FoundRegisteredAdministration";
 
 import "./SearchInstitutions.css";
 
 import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
 
+/*
+ * Defined a type for selected institution that will be filled with the form
+ * it holds every property of FoundNotRegisteredAdministration and all the properties of
+ * FoundRegisteredAdministration not shared with FoundNotRegisteredAdministration, as optionals
+ */
+type CustomInstitution = FoundNotRegisteredAdministration &
+  Partial<
+    Omit<FoundRegisteredAdministration, keyof FoundNotRegisteredAdministration>
+  > & {
+    legalRepresentative: Partial<
+      Omit<
+        FoundRegisteredAdministrationLegalRepresentative,
+        keyof FoundNotRegisteredAdministrationLegalRepresentative
+      >
+    >;
+  };
+
 interface ISearchInstitutionProps {
   institutions: ReadonlyArray<FoundAdministration>;
   onInstitutionSearch: (event: string) => void;
-  onInstitutionSelected: (event: ReadonlyArray<FoundAdministration>) => void;
-  selectedInstitution: FoundAdministration;
+  onInstitutionSelected: (event: ReadonlyArray<CustomInstitution>) => void;
+  selectedInstitution: CustomInstitution;
 }
 
 /**
@@ -30,7 +55,7 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
     props.onInstitutionSearch(query);
   };
 
-  const handleChange = (selected: ReadonlyArray<FoundAdministration>) => {
+  const handleChange = (selected: ReadonlyArray<CustomInstitution>) => {
     props.onInstitutionSelected(selected);
   };
 

@@ -34,12 +34,26 @@ First we install the libraries used by the project:
 $ yarn install
 ```
 
-### Generating translations
+### Generating translations and classes
 
-The second step is to generate the definitions from the YAML translations:
+The second step is to generate the definitions from the YAML translations and from OpenApi specs.
+
+To generate the definitions from the YAML translations:
 
 ```
 $ yarn generate:locales
+```
+
+To generate the definitions from the OpenApi specs:
+
+```
+$ yarn generate:locales
+```
+
+These commands can be run together using:
+
+```
+$ yarn generate:all
 ```
 
 ## Test the application locally
