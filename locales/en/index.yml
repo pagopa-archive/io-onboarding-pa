@@ -63,7 +63,7 @@ translation:
         scopeLabel: "Area di competenza"
       leftButton: "Annulla"
       rightButton: "Conferma"
-    searchInstitutions:
+    searchAdministrations:
       buttonText: "Ricerca"
       placeholder: "Ricerca qui il tuo ente"
       searching: "Ricerca..."

@@ -14,16 +14,16 @@ import {
   FoundRegisteredAdministrationLegalRepresentative
 } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
 
-import "./SearchInstitutions.css";
+import "./SearchAdministrations.css";
 
 import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
 
 /*
- * Defined a type for selected institution that will be filled with the form
+ * Defined a type for selected administration that will be filled with the form
  * it holds every property of FoundNotRegisteredAdministration and all the properties of
  * FoundRegisteredAdministration not shared with FoundNotRegisteredAdministration, as optionals
  */
-type CustomInstitution = FoundNotRegisteredAdministration &
+type CustomAdministration = FoundNotRegisteredAdministration &
   Partial<
     Omit<FoundRegisteredAdministration, keyof FoundNotRegisteredAdministration>
   > & {
@@ -35,32 +35,34 @@ type CustomInstitution = FoundNotRegisteredAdministration &
     >;
   };
 
-interface ISearchInstitutionProps {
-  institutions: ReadonlyArray<FoundAdministration>;
-  onInstitutionSearch: (event: string) => void;
-  onInstitutionSelected: (event: ReadonlyArray<CustomInstitution>) => void;
-  selectedInstitution: CustomInstitution;
+interface ISearchAdministrationProps {
+  administrations: ReadonlyArray<FoundAdministration>;
+  onAdministrationSearch: (event: string) => void;
+  onAdministrationSelected: (
+    event: ReadonlyArray<CustomAdministration>
+  ) => void;
+  selectedAdministration: CustomAdministration;
 }
 
 /**
- * Component for institution search with autocomplete
+ * Component for administration search with autocomplete
  */
-export const SearchInstitutions = (props: ISearchInstitutionProps) => {
+export const SearchAdministrations = (props: ISearchAdministrationProps) => {
   /**
    * react-i18next translation hook
    */
   const { t } = useTranslation();
 
   const handleSearch = (query: string) => {
-    props.onInstitutionSearch(query);
+    props.onAdministrationSearch(query);
   };
 
-  const handleChange = (selected: ReadonlyArray<CustomInstitution>) => {
-    props.onInstitutionSelected(selected);
+  const handleChange = (selected: ReadonlyArray<CustomAdministration>) => {
+    props.onAdministrationSelected(selected);
   };
 
   return (
-    <div className="SearchInstitutions pt-2 pb-4">
+    <div className="SearchAdministrations pt-2 pb-4">
       <InputGroup>
         <InputGroupAddon addonType="prepend">
           <Button color="primary" className="py-0 px-2">
@@ -70,7 +72,7 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
                   <use xlinkHref={`${bootstrapItaliaImages}#it-search`} />
                 </svg>
               </Col>
-              <Col sm="8">{t("signUp.searchInstitutions.buttonText")}</Col>
+              <Col sm="8">{t("signUp.searchAdministrations.buttonText")}</Col>
             </Row>
           </Button>
         </InputGroupAddon>
@@ -80,17 +82,19 @@ export const SearchInstitutions = (props: ISearchInstitutionProps) => {
           delay={600}
           isLoading={false}
           multiple={false}
-          options={props.institutions}
+          options={props.administrations}
           labelKey="name"
           minLength={5}
           onSearch={handleSearch}
           onChange={handleChange}
-          placeholder={t("signUp.searchInstitutions.placeholder")}
-          promptText={t("signUp.searchInstitutions.searching")}
-          searchText={t("signUp.searchInstitutions.searching")}
-          emptyLabel={t("signUp.searchInstitutions.emptyLabel")}
+          placeholder={t("signUp.searchAdministrations.placeholder")}
+          promptText={t("signUp.searchAdministrations.searching")}
+          searchText={t("signUp.searchAdministrations.searching")}
+          emptyLabel={t("signUp.searchAdministrations.emptyLabel")}
           selected={
-            props.selectedInstitution.name ? [props.selectedInstitution] : []
+            props.selectedAdministration.name
+              ? [props.selectedAdministration]
+              : []
           }
         />
       </InputGroup>

@@ -12,12 +12,12 @@ import {
   Row
 } from "reactstrap";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
-import { SearchInstitutions } from "../RegistrationStepOne/SearchInstitutions";
+import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepTwoProps {
-  selectedInstitution: ComponentProps<
-    typeof SearchInstitutions
-  >["selectedInstitution"];
+  selectedAdministration: ComponentProps<
+    typeof SearchAdministrations
+  >["selectedAdministration"];
   onStepTwoInputChange: (inputName: string, inputValue: string) => void;
 }
 
@@ -62,7 +62,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                             name="firstName"
                             placeholder=""
                             value={
-                              props.selectedInstitution.legalRepresentative
+                              props.selectedAdministration.legalRepresentative
                                 .firstName
                             }
                             onChange={event =>
@@ -83,7 +83,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                             name="familyName"
                             placeholder=""
                             value={
-                              props.selectedInstitution.legalRepresentative
+                              props.selectedAdministration.legalRepresentative
                                 .familyName
                             }
                             onChange={event =>
@@ -118,7 +118,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                               "signUp.stepTwo.inputs.fcPlaceholder"
                             )}
                             value={
-                              props.selectedInstitution.legalRepresentative
+                              props.selectedAdministration.legalRepresentative
                                 .fiscalCode || ""
                             }
                             onChange={event =>
@@ -141,7 +141,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                               "signUp.stepTwo.inputs.phonePlaceholder"
                             )}
                             value={
-                              props.selectedInstitution.legalRepresentative
+                              props.selectedAdministration.legalRepresentative
                                 .phoneNumber || ""
                             }
                             onChange={event =>
@@ -164,8 +164,10 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                         <Button
                           color="primary"
                           className="w-50"
-                          // TODO: add function to call API to save institution and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
-                          onClick={() => console.log(props.selectedInstitution)}
+                          // TODO: add function to call API to save administration and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
+                          onClick={() =>
+                            console.log(props.selectedAdministration)
+                          }
                         >
                           {t("signUp.stepTwo.rightButton")}
                         </Button>

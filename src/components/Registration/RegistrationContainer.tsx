@@ -37,9 +37,9 @@ export const RegistrationContainer = withRouter(props => {
 
   const tokenContext = useContext(TokenContext);
 
-  const initialSelectedInstitution: ComponentProps<
+  const initialSelectedAdministration: ComponentProps<
     typeof RegistrationStepOne
-  >["selectedInstitution"] = {
+  >["selectedAdministration"] = {
     fiscalCode: "" as OrganizationFiscalCode,
     ipaCode: "",
     legalRepresentative: {
@@ -56,10 +56,10 @@ export const RegistrationContainer = withRouter(props => {
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const [institutions, setInstitutions] = useState([]);
+  const [administrations, setAdministrations] = useState([]);
 
-  const [selectedInstitution, setSelectedInstitution] = useState({
-    ...initialSelectedInstitution
+  const [selectedAdministration, setSelectedAdministration] = useState({
+    ...initialSelectedAdministration
   });
 
   const handleIntitutionSearch = (searchString: string) => {
@@ -80,16 +80,16 @@ export const RegistrationContainer = withRouter(props => {
         return response.json();
       })
       .then(responseData => {
-        setInstitutions(responseData);
+        setAdministrations(responseData);
       });
   };
 
-  const handleInstitutionSelected = (
+  const handleAdministrationSelected = (
     event: ReadonlyArray<
-      ComponentProps<typeof RegistrationStepOne>["selectedInstitution"]
+      ComponentProps<typeof RegistrationStepOne>["selectedAdministration"]
     >
   ) => {
-    const newInstitution =
+    const newAdministration =
       event.length === 0
         ? {
             fiscalCode: "" as OrganizationFiscalCode,
@@ -106,15 +106,15 @@ export const RegistrationContainer = withRouter(props => {
             selectedPecIndex: -1
           }
         : event[0];
-    setSelectedInstitution(newInstitution);
+    setSelectedAdministration(newAdministration);
   };
 
   const handlePecCheckboxChange = (selectedPecIndex: number) => {
-    setSelectedInstitution(
+    setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
-        >["selectedInstitution"]
+        >["selectedAdministration"]
       ) => {
         return { ...prevState, selectedPecIndex };
       }
@@ -122,11 +122,11 @@ export const RegistrationContainer = withRouter(props => {
   };
 
   const handleScopeCheckboxChange = (selectedScope: ScopeEnum) => {
-    setSelectedInstitution(
+    setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
-        >["selectedInstitution"]
+        >["selectedAdministration"]
       ) => {
         return { ...prevState, scope: selectedScope };
       }
@@ -134,11 +134,11 @@ export const RegistrationContainer = withRouter(props => {
   };
 
   const handleStepTwoInputChange = (inputName: string, inputValue: string) => {
-    setSelectedInstitution(
+    setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
-        >["selectedInstitution"]
+        >["selectedAdministration"]
       ) => {
         return {
           ...prevState,
@@ -162,17 +162,17 @@ export const RegistrationContainer = withRouter(props => {
           <RegistrationStepOne
             onPecCheckboxChange={handlePecCheckboxChange}
             onScopeCheckboxChange={handleScopeCheckboxChange}
-            institutions={institutions}
-            onInstitutionSearch={handleIntitutionSearch}
-            onInstitutionSelected={handleInstitutionSelected}
-            selectedInstitution={selectedInstitution}
+            administrations={administrations}
+            onAdministrationSearch={handleIntitutionSearch}
+            onAdministrationSelected={handleAdministrationSelected}
+            selectedAdministration={selectedAdministration}
             openConfirmModal={toggleConfirmationModal}
           />
         );
       case "2":
         return (
           <RegistrationStepTwo
-            selectedInstitution={selectedInstitution}
+            selectedAdministration={selectedAdministration}
             onStepTwoInputChange={handleStepTwoInputChange}
           />
         );
