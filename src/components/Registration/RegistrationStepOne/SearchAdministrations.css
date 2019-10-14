@@ -1,0 +1,21 @@
+.SearchAdministrations .input-group-prepend {
+    pointer-events: none;
+}
+
+.SearchAdministrations .rbt-input-main {
+    font-weight: normal;
+}
+
+.SearchAdministrations .rbt-input-hint {
+    line-height: 2.755;
+}
+
+.SearchAdministrations .rbt-menu.dropdown-menu.show::-webkit-scrollbar {
+    width: 7px;
+    -webkit-appearance: none;
+}
+
+.SearchAdministrations .rbt-menu.dropdown-menu.show::-webkit-scrollbar-thumb {
+    background-color: rgb(0, 102, 204);
+    border-radius: 7px
+}

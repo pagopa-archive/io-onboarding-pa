@@ -12,6 +12,9 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
+import { ScopeEnum } from "../../../generated/definitions/api/FoundRegisteredAdministration";
+import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
@@ -34,32 +37,32 @@ export const RegistrationContainer = withRouter(props => {
 
   const tokenContext = useContext(TokenContext);
 
-  const initialSelectedInstitution: ComponentProps<
+  const initialSelectedAdministration: ComponentProps<
     typeof RegistrationStepOne
-  >["selectedInstitution"] = {
-    fiscalCode: "",
+  >["selectedAdministration"] = {
+    fiscalCode: "" as OrganizationFiscalCode,
     ipaCode: "",
     legalRepresentative: {
       familyName: "",
       firstName: "",
-      fiscalCode: "",
+      fiscalCode: "" as FiscalCode,
       phoneNumber: ""
     },
     name: "",
     pecs: [],
-    scope: null,
-    selectedPecIndex: null
+    scope: undefined,
+    selectedPecIndex: -1
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const [institutions, setInstitutions] = useState([]);
+  const [administrations, setAdministrations] = useState([]);
 
-  const [selectedInstitution, setSelectedInstitution] = useState({
-    ...initialSelectedInstitution
+  const [selectedAdministration, setSelectedAdministration] = useState({
+    ...initialSelectedAdministration
   });
 
-  const handleIntitutionSearch = (searchString: string) => {
+  const handleAdministrationSearch = (searchString: string) => {
     const url =
       customWindow._env_.IO_ONBOARDING_PA_API_HOST +
       ":" +
@@ -77,53 +80,53 @@ export const RegistrationContainer = withRouter(props => {
         return response.json();
       })
       .then(responseData => {
-        setInstitutions(responseData);
+        setAdministrations(responseData);
       });
   };
 
-  const handleInstitutionSelected = (
+  const handleAdministrationSelected = (
     event: ReadonlyArray<
-      ComponentProps<typeof RegistrationStepOne>["selectedInstitution"]
+      ComponentProps<typeof RegistrationStepOne>["selectedAdministration"]
     >
   ) => {
-    const newInstitution =
+    const newAdministration =
       event.length === 0
         ? {
-            fiscalCode: "",
+            fiscalCode: "" as OrganizationFiscalCode,
             ipaCode: "",
             legalRepresentative: {
               familyName: "",
               firstName: "",
-              fiscalCode: "",
+              fiscalCode: "" as FiscalCode,
               phoneNumber: ""
             },
             name: "",
             pecs: [],
-            scope: null,
-            selectedPecIndex: null
+            scope: undefined,
+            selectedPecIndex: -1
           }
         : event[0];
-    setSelectedInstitution(newInstitution);
+    setSelectedAdministration(newAdministration);
   };
 
   const handlePecCheckboxChange = (selectedPecIndex: number) => {
-    setSelectedInstitution(
+    setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
-        >["selectedInstitution"]
+        >["selectedAdministration"]
       ) => {
         return { ...prevState, selectedPecIndex };
       }
     );
   };
 
-  const handleScopeCheckboxChange = (selectedScope: string) => {
-    setSelectedInstitution(
+  const handleScopeCheckboxChange = (selectedScope: ScopeEnum) => {
+    setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
-        >["selectedInstitution"]
+        >["selectedAdministration"]
       ) => {
         return { ...prevState, scope: selectedScope };
       }
@@ -131,11 +134,11 @@ export const RegistrationContainer = withRouter(props => {
   };
 
   const handleStepTwoInputChange = (inputName: string, inputValue: string) => {
-    setSelectedInstitution(
+    setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
-        >["selectedInstitution"]
+        >["selectedAdministration"]
       ) => {
         return {
           ...prevState,
@@ -159,17 +162,17 @@ export const RegistrationContainer = withRouter(props => {
           <RegistrationStepOne
             onPecCheckboxChange={handlePecCheckboxChange}
             onScopeCheckboxChange={handleScopeCheckboxChange}
-            institutions={institutions}
-            onInstitutionSearch={handleIntitutionSearch}
-            onInstitutionSelected={handleInstitutionSelected}
-            selectedInstitution={selectedInstitution}
+            administrations={administrations}
+            onAdministrationSearch={handleAdministrationSearch}
+            onAdministrationSelected={handleAdministrationSelected}
+            selectedAdministration={selectedAdministration}
             openConfirmModal={toggleConfirmationModal}
           />
         );
       case "2":
         return (
           <RegistrationStepTwo
-            selectedInstitution={selectedInstitution}
+            selectedAdministration={selectedAdministration}
             onStepTwoInputChange={handleStepTwoInputChange}
           />
         );

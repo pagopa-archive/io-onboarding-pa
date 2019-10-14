@@ -14,15 +14,17 @@ import {
   Row
 } from "reactstrap";
 
-import { SearchInstitutions } from "./SearchInstitutions";
+import { ScopeEnum } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
+
+import { SearchAdministrations } from "./SearchAdministrations";
 
 import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 
 interface IRegistrationStepOneProps
-  extends ComponentProps<typeof SearchInstitutions>,
+  extends ComponentProps<typeof SearchAdministrations>,
     RouteComponentProps<{ registrationStep: string }> {
   onPecCheckboxChange: (selectedPecIndex: number) => void;
-  onScopeCheckboxChange: (selectedScope: string) => void;
+  onScopeCheckboxChange: (selectedScope: ScopeEnum) => void;
   openConfirmModal: () => void;
 }
 
@@ -47,10 +49,10 @@ export const RegistrationStepOne = withRouter(
      * Function called when scope checkbox is clicked
      */
     const onScopeCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onScopeCheckboxChange(event.target.value);
+      props.onScopeCheckboxChange(event.target.value as ScopeEnum);
     };
 
-    const pecRadioButtons = props.selectedInstitution.pecs.map(
+    const pecRadioButtons = props.selectedAdministration.pecs.map(
       (pec, pecIndex) => {
         return (
           <FormGroup check className="radio" key={pecIndex}>
@@ -60,7 +62,9 @@ export const RegistrationStepOne = withRouter(
               id={`radio-${pec}`}
               name="selectedPecIndex"
               value={pecIndex}
-              checked={props.selectedInstitution.selectedPecIndex === pecIndex}
+              checked={
+                props.selectedAdministration.selectedPecIndex === pecIndex
+              }
               onChange={onPecCheckboxChange}
             />
             <Label check className="form-check-label" htmlFor={`radio-${pec}`}>
@@ -71,12 +75,15 @@ export const RegistrationStepOne = withRouter(
       }
     );
 
-    const institutionScopes: ReadonlyArray<{ label: string; value: string }> = [
+    const administrationScopes: ReadonlyArray<{
+      label: string;
+      value: string;
+    }> = [
       { label: t("signUp.stepOne.scopeRadio.localLabel"), value: "LOCAL" },
       { label: t("signUp.stepOne.scopeRadio.nationalLabel"), value: "NATIONAL" }
     ];
 
-    const scopeRadioButtons = institutionScopes.map(scope => {
+    const scopeRadioButtons = administrationScopes.map(scope => {
       return (
         <FormGroup check className="radio" key={scope.value}>
           <Input
@@ -85,7 +92,7 @@ export const RegistrationStepOne = withRouter(
             id={`radio-${scope.value}`}
             name="scope"
             value={scope.value}
-            checked={props.selectedInstitution.scope === scope.value}
+            checked={props.selectedAdministration.scope === scope.value}
             onChange={onScopeCheckboxChange}
           />
           <Label
@@ -110,11 +117,13 @@ export const RegistrationStepOne = withRouter(
                   <p className="mt-4">{t("signUp.stepOne.description")}</p>
                   <Row className="mt-5">
                     <Col>
-                      <SearchInstitutions
-                        institutions={props.institutions}
-                        onInstitutionSearch={props.onInstitutionSearch}
-                        onInstitutionSelected={props.onInstitutionSelected}
-                        selectedInstitution={props.selectedInstitution}
+                      <SearchAdministrations
+                        administrations={props.administrations}
+                        onAdministrationSearch={props.onAdministrationSearch}
+                        onAdministrationSelected={
+                          props.onAdministrationSelected
+                        }
+                        selectedAdministration={props.selectedAdministration}
                       />
                       <Form
                         action=""
@@ -135,7 +144,9 @@ export const RegistrationStepOne = withRouter(
                               name="cf-input"
                               placeholder=""
                               readOnly
-                              value={props.selectedInstitution.fiscalCode || ""}
+                              value={
+                                props.selectedAdministration.fiscalCode || ""
+                              }
                             />
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}
@@ -155,7 +166,7 @@ export const RegistrationStepOne = withRouter(
                               name="admin-name-input"
                               placeholder=""
                               readOnly
-                              value={props.selectedInstitution.name || ""}
+                              value={props.selectedAdministration.name || ""}
                             />
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}
@@ -196,10 +207,10 @@ export const RegistrationStepOne = withRouter(
                             className="w-50"
                             onClick={() => props.history.push("/sign-up/2")}
                             disabled={
-                              !props.selectedInstitution.name ||
-                              props.selectedInstitution.selectedPecIndex ===
+                              !props.selectedAdministration.name ||
+                              props.selectedAdministration.selectedPecIndex ===
                                 null ||
-                              !props.selectedInstitution.scope
+                              !props.selectedAdministration.scope
                             }
                           >
                             {t("signUp.stepOne.rightButton")}

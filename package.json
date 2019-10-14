@@ -11,12 +11,14 @@
     "start-fe-mock": "export $(grep -v '^#' .env.io-onboarding-pa-mock-backend.development | xargs) && chmod +x ./scripts/env.sh && source ./scripts/env.sh && cp env-config.js ./public/ && rm -rf env-config.js && npm run start-fe",
     "start-with-mock": "npm run start-server & npm run start-fe-mock",
     "start": "npm run start-fe",
-    "prebuild": "rimraf dist && yarn generate:locales",
+    "prebuild": "rimraf dist && yarn generate:all",
     "build": "parcel build ./public/index.html --public-url / --no-minify ./public/env-config.js",
     "postversion": "git push && git push --tags",
     "test": "jest",
     "lint": "tslint --project .",
-    "generate:locales": "rimraf locales/locales.ts && ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' ./scripts/make-locales.ts"
+    "generate:locales": "rimraf locales/locales.ts && ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' ./scripts/make-locales.ts",
+    "generate:api-definitions": "rimraf generated/definitions/api && mkdir -p generated/definitions/api && gen-api-models --api-spec https://raw.githubusercontent.com/teamdigitale/io-onboarding-pa-api/master/openapi.yml --out-dir generated/definitions/api --no-strict",
+    "generate:all": "yarn generate:locales && yarn generate:api-definitions"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.12",
@@ -38,6 +40,7 @@
     "enzyme-to-json": "^3.3.4",
     "fs-extra": "^7.0.0",
     "italia-tslint-rules": "*",
+    "italia-utils": "aymen94/io-utils-build",
     "jest": "^24.8.0",
     "js-yaml": "^3.13.1",
     "json-server": "^0.15.1",
