@@ -62,7 +62,7 @@ export const RegistrationContainer = withRouter(props => {
     ...initialSelectedAdministration
   });
 
-  const handleIntitutionSearch = (searchString: string) => {
+  const handleAdministrationSearch = (searchString: string) => {
     const url =
       customWindow._env_.IO_ONBOARDING_PA_API_HOST +
       ":" +
@@ -163,7 +163,7 @@ export const RegistrationContainer = withRouter(props => {
             onPecCheckboxChange={handlePecCheckboxChange}
             onScopeCheckboxChange={handleScopeCheckboxChange}
             administrations={administrations}
-            onAdministrationSearch={handleIntitutionSearch}
+            onAdministrationSearch={handleAdministrationSearch}
             onAdministrationSelected={handleAdministrationSelected}
             selectedAdministration={selectedAdministration}
             openConfirmModal={toggleConfirmationModal}
