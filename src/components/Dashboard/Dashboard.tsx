@@ -66,6 +66,7 @@ export const Dashboard = withRouter(props => {
           return response.json();
         })
         .then(responseData => {
+          // TODO: aggiungere codice per gestione risposta servizio profile
           console.log(responseData);
         });
     }
