@@ -43,11 +43,9 @@ export const Dashboard = withRouter(props => {
      * Set token in token context
      */
     tokenContext.setToken(getCookie("sessionToken"));
-    console.log("setToken called!", tokenContext.token);
   }, []);
 
   useEffect(() => {
-    console.log("Enter use effect with toker", tokenContext.token);
     if (tokenContext.token) {
       const url =
         customWindow._env_.IO_ONBOARDING_PA_API_HOST +
@@ -66,7 +64,7 @@ export const Dashboard = withRouter(props => {
           return response.json();
         })
         .then(responseData => {
-          // TODO: aggiungere codice per gestione risposta servizio profile
+          // TODO: add code to manage get profile response, tracked with stories #169127957 and #168752398
           console.log(responseData);
         });
     }
