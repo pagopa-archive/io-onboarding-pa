@@ -53,5 +53,13 @@
       "scope": null,
       "selectedPecIndex": null
     }
-  ]
+  ],
+  "profile": {
+    "email": "example@email.com",
+    "familyName": "Rossi",
+    "firstName": "Mario",
+    "fiscalCode": "RSSMRA80A01H501U",
+    "role": "ORG_DELEGATE",
+    "workEmail": "work-email@email.com"
+  }
 }
