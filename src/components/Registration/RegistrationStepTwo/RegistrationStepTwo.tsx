@@ -62,12 +62,12 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                             name="firstName"
                             placeholder=""
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .firstName
+                              props.selectedAdministration.legal_representative
+                                .given_name
                             }
                             onChange={event =>
                               props.onStepTwoInputChange(
-                                "firstName",
+                                "given_name",
                                 event.target.value
                               )
                             }
@@ -83,12 +83,12 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                             name="familyName"
                             placeholder=""
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .familyName
+                              props.selectedAdministration.legal_representative
+                                .family_name
                             }
                             onChange={event =>
                               props.onStepTwoInputChange(
-                                "familyName",
+                                "family_name",
                                 event.target.value
                               )
                             }
@@ -118,12 +118,12 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                               "signUp.stepTwo.inputs.fcPlaceholder"
                             )}
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .fiscalCode || ""
+                              props.selectedAdministration.legal_representative
+                                .fiscal_code || ""
                             }
                             onChange={event =>
                               props.onStepTwoInputChange(
-                                "fiscalCode",
+                                "fiscal_code",
                                 event.target.value
                               )
                             }
@@ -141,12 +141,12 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                               "signUp.stepTwo.inputs.phonePlaceholder"
                             )}
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .phoneNumber || ""
+                              props.selectedAdministration.legal_representative
+                                .phone_number || ""
                             }
                             onChange={event =>
                               props.onStepTwoInputChange(
-                                "phoneNumber",
+                                "phone_number",
                                 event.target.value
                               )
                             }

@@ -7,11 +7,11 @@ import { Button, Col, InputGroup, InputGroupAddon, Row } from "reactstrap";
 import { FoundAdministration } from "../../../../generated/definitions/api/FoundAdministration";
 import {
   FoundNotRegisteredAdministration,
-  FoundNotRegisteredAdministrationLegalRepresentative
+  FoundNotRegisteredAdministrationLegal_representative
 } from "../../../../generated/definitions/api/FoundNotRegisteredAdministration";
 import {
   FoundRegisteredAdministration,
-  FoundRegisteredAdministrationLegalRepresentative
+  FoundRegisteredAdministrationLegal_representative
 } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
 
 import "./SearchAdministrations.css";
@@ -27,10 +27,10 @@ type CustomAdministration = FoundNotRegisteredAdministration &
   Partial<
     Omit<FoundRegisteredAdministration, keyof FoundNotRegisteredAdministration>
   > & {
-    legalRepresentative: Partial<
+    legal_representative: Partial<
       Omit<
-        FoundRegisteredAdministrationLegalRepresentative,
-        keyof FoundNotRegisteredAdministrationLegalRepresentative
+        FoundRegisteredAdministrationLegal_representative,
+        keyof FoundNotRegisteredAdministrationLegal_representative
       >
     >;
   };

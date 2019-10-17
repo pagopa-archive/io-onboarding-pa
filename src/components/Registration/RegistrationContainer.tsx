@@ -13,8 +13,8 @@ import {
   Row
 } from "reactstrap";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
-import { ScopeEnum } from "../../../generated/definitions/api/FoundRegisteredAdministration";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
+import { OrganizationScope } from "../../../generated/definitions/api/OrganizationScope";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
@@ -40,18 +40,18 @@ export const RegistrationContainer = withRouter(props => {
   const initialSelectedAdministration: ComponentProps<
     typeof RegistrationStepOne
   >["selectedAdministration"] = {
-    fiscalCode: "" as OrganizationFiscalCode,
-    ipaCode: "",
-    legalRepresentative: {
-      familyName: "",
-      firstName: "",
-      fiscalCode: "" as FiscalCode,
-      phoneNumber: ""
+    fiscal_code: "" as OrganizationFiscalCode,
+    ipa_code: "",
+    legal_representative: {
+      family_name: "",
+      fiscal_code: "" as FiscalCode,
+      given_name: "",
+      phone_number: ""
     },
     name: "",
-    pecs: [],
+    pecs: {},
     scope: undefined,
-    selectedPecIndex: -1
+    selectedPecLabel: ""
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -92,36 +92,36 @@ export const RegistrationContainer = withRouter(props => {
     const newAdministration =
       event.length === 0
         ? {
-            fiscalCode: "" as OrganizationFiscalCode,
-            ipaCode: "",
-            legalRepresentative: {
-              familyName: "",
-              firstName: "",
-              fiscalCode: "" as FiscalCode,
-              phoneNumber: ""
+            fiscal_code: "" as OrganizationFiscalCode,
+            ipa_code: "",
+            legal_representative: {
+              family_name: "",
+              fiscal_code: "" as FiscalCode,
+              given_name: "",
+              phone_number: ""
             },
             name: "",
-            pecs: [],
+            pecs: {},
             scope: undefined,
-            selectedPecIndex: -1
+            selectedPecLabel: ""
           }
         : event[0];
     setSelectedAdministration(newAdministration);
   };
 
-  const handlePecCheckboxChange = (selectedPecIndex: number) => {
+  const handlePecCheckboxChange = (selectedPecLabel: string) => {
     setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
         >["selectedAdministration"]
       ) => {
-        return { ...prevState, selectedPecIndex };
+        return { ...prevState, selectedPecLabel };
       }
     );
   };
 
-  const handleScopeCheckboxChange = (selectedScope: ScopeEnum) => {
+  const handleScopeCheckboxChange = (selectedScope: OrganizationScope) => {
     setSelectedAdministration(
       (
         prevState: ComponentProps<
@@ -142,8 +142,8 @@ export const RegistrationContainer = withRouter(props => {
       ) => {
         return {
           ...prevState,
-          legalRepresentative: {
-            ...prevState.legalRepresentative,
+          legal_representative: {
+            ...prevState.legal_representative,
             [inputName]: inputValue
           }
         };

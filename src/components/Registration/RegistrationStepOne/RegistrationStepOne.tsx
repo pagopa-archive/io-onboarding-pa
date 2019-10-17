@@ -14,7 +14,7 @@ import {
   Row
 } from "reactstrap";
 
-import { ScopeEnum } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
+import { OrganizationScope } from "../../../../generated/definitions/api/OrganizationScope";
 
 import { SearchAdministrations } from "./SearchAdministrations";
 
@@ -23,8 +23,8 @@ import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchAdministrations>,
     RouteComponentProps<{ registrationStep: string }> {
-  onPecCheckboxChange: (selectedPecIndex: number) => void;
-  onScopeCheckboxChange: (selectedScope: ScopeEnum) => void;
+  onPecCheckboxChange: (selectedPecLabel: string) => void;
+  onScopeCheckboxChange: (selectedScope: OrganizationScope) => void;
   openConfirmModal: () => void;
 }
 
@@ -42,33 +42,35 @@ export const RegistrationStepOne = withRouter(
      * Function called when pecs checkbox is clicked
      */
     const onPecCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onPecCheckboxChange(parseInt(event.target.value, 10));
+      props.onPecCheckboxChange(event.target.value);
     };
 
     /**
      * Function called when scope checkbox is clicked
      */
     const onScopeCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onScopeCheckboxChange(event.target.value as ScopeEnum);
+      props.onScopeCheckboxChange(event.target.value as OrganizationScope);
     };
-
-    const pecRadioButtons = props.selectedAdministration.pecs.map(
-      (pec, pecIndex) => {
+    const pecRadioButtons = Object.keys(props.selectedAdministration.pecs).map(
+      key => {
+        console.log(props.selectedAdministration, props.selectedAdministration.selectedPecLabel, key, props.selectedAdministration.selectedPecLabel === key)
         return (
-          <FormGroup check className="radio" key={pecIndex}>
+          <FormGroup check className="radio" key={key}>
             <Input
               className="form-check-input"
               type="radio"
-              id={`radio-${pec}`}
+              id={`radio-pec-${key}`}
               name="selectedPecIndex"
-              value={pecIndex}
-              checked={
-                props.selectedAdministration.selectedPecIndex === pecIndex
-              }
+              value={key}
+              checked={props.selectedAdministration.selectedPecLabel === key}
               onChange={onPecCheckboxChange}
             />
-            <Label check className="form-check-label" htmlFor={`radio-${pec}`}>
-              {pec}
+            <Label
+              check
+              className="form-check-label"
+              htmlFor={`radio-pec-${key}`}
+            >
+              {props.selectedAdministration.pecs[key]}
             </Label>
           </FormGroup>
         );
@@ -145,7 +147,7 @@ export const RegistrationStepOne = withRouter(
                               placeholder=""
                               readOnly
                               value={
-                                props.selectedAdministration.fiscalCode || ""
+                                props.selectedAdministration.fiscal_code || ""
                               }
                             />
                             <FormText color="muted">
@@ -208,7 +210,7 @@ export const RegistrationStepOne = withRouter(
                             onClick={() => props.history.push("/sign-up/2")}
                             disabled={
                               !props.selectedAdministration.name ||
-                              props.selectedAdministration.selectedPecIndex ===
+                              props.selectedAdministration.selectedPecLabel ===
                                 null ||
                               !props.selectedAdministration.scope
                             }
