@@ -7,11 +7,11 @@ import { Button, Col, InputGroup, InputGroupAddon, Row } from "reactstrap";
 import { FoundAdministration } from "../../../../generated/definitions/api/FoundAdministration";
 import {
   FoundNotRegisteredAdministration,
-  FoundNotRegisteredAdministrationLegalRepresentative
+  FoundNotRegisteredAdministrationLegal_representative
 } from "../../../../generated/definitions/api/FoundNotRegisteredAdministration";
 import {
   FoundRegisteredAdministration,
-  FoundRegisteredAdministrationLegalRepresentative
+  FoundRegisteredAdministrationLegal_representative
 } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
 
 import "./SearchAdministrations.css";
@@ -27,10 +27,10 @@ type CustomAdministration = FoundNotRegisteredAdministration &
   Partial<
     Omit<FoundRegisteredAdministration, keyof FoundNotRegisteredAdministration>
   > & {
-    legalRepresentative: Partial<
+    legal_representative: Partial<
       Omit<
-        FoundRegisteredAdministrationLegalRepresentative,
-        keyof FoundNotRegisteredAdministrationLegalRepresentative
+        FoundRegisteredAdministrationLegal_representative,
+        keyof FoundNotRegisteredAdministrationLegal_representative
       >
     >;
   };
@@ -60,6 +60,10 @@ export const SearchAdministrations = (props: ISearchAdministrationProps) => {
   const handleChange = (selected: ReadonlyArray<CustomAdministration>) => {
     props.onAdministrationSelected(selected);
   };
+
+  const selectedAdministration = props.selectedAdministration.name
+    ? [props.selectedAdministration]
+    : [];
 
   return (
     <div className="SearchAdministrations pt-2 pb-4">
@@ -91,11 +95,7 @@ export const SearchAdministrations = (props: ISearchAdministrationProps) => {
           promptText={t("signUp.searchAdministrations.searching")}
           searchText={t("signUp.searchAdministrations.searching")}
           emptyLabel={t("signUp.searchAdministrations.emptyLabel")}
-          selected={
-            props.selectedAdministration.name
-              ? [props.selectedAdministration]
-              : []
-          }
+          selected={selectedAdministration}
         />
       </InputGroup>
     </div>

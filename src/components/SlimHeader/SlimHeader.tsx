@@ -10,11 +10,11 @@ import "./SlimHeader.css";
 export const SlimHeader = () => {
   return (
     <AppHeader
-      fixed
+      fixed={true}
       className="SlimHeader it-header-slim-wrapper border-bottom-0 w-100"
     >
-      <Container fluid className="it-header-slim-wrapper-content">
-        <Nav className="d-md-down-none" navbar>
+      <Container fluid={true} className="it-header-slim-wrapper-content">
+        <Nav className="d-md-down-none" navbar={true}>
           <NavItem className="px-3">
             <a
               target="_blank"
@@ -25,7 +25,7 @@ export const SlimHeader = () => {
             </a>
           </NavItem>
         </Nav>
-        <Nav className="ml-auto" navbar>
+        <Nav className="ml-auto" navbar={true}>
           <NavItem className="px-3">
             <a
               target="_blank"

@@ -12,12 +12,14 @@ import { ScrollToTop } from "./components/ScrollToTop";
  * Entry point for app, with first level routing
  */
 export const App = () => {
+  const redirectToHome = () => <Redirect to="/home" />;
+
   return (
     <BrowserRouter>
       <ScrollToTop>
         <div className="App vh-100">
           <Switch>
-            <Route exact path="/" component={() => <Redirect to="/home" />} />
+            <Route exact={true} path="/" component={redirectToHome} />
             <Route path="/home" component={Home} />
             <Route
               path="/(creating-docs|docs-sent)"

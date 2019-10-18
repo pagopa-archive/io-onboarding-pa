@@ -10,11 +10,12 @@ import { App } from "./App";
 import { AlertContextProvider } from "./context/alert-context";
 import { TokenContextProvider } from "./context/token-context";
 
-render(
+const app = (
   <TokenContextProvider>
     <AlertContextProvider>
       <App />
     </AlertContextProvider>
-  </TokenContextProvider>,
-  document.getElementById("root")
+  </TokenContextProvider>
 );
+
+render(app, document.getElementById("root"));

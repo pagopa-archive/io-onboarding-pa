@@ -25,9 +25,11 @@ export const SpidLogin = withRouter(props => {
    */
   const { t } = useTranslation();
 
+  const navigateToHome = () => props.history.push("/home");
+
   return (
     <div className="SpidLogin">
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col sm="2">
             <Row>
@@ -35,9 +37,7 @@ export const SpidLogin = withRouter(props => {
                 <Button
                   color="link"
                   className="btn-icon mt-4 pt-3 pl-4"
-                  onClick={() => {
-                    return props.history.push("/home");
-                  }}
+                  onClick={navigateToHome}
                 >
                   <svg className="icon icon-primary">
                     <use
@@ -106,9 +106,7 @@ export const SpidLogin = withRouter(props => {
             <a
               className="btn btn-outline-primary"
               role="button"
-              onClick={() => {
-                return props.history.push("/home");
-              }}
+              onClick={navigateToHome}
             >
               {t("spidLogin.backHome")}
             </a>

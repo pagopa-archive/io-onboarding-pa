@@ -1,7 +1,8 @@
 {
     "defaultSeverity": "error",
     "extends": [
-      "italia-tslint-rules/strong"
+        "italia-tslint-rules/strong",
+        "italia-tslint-rules/react"
     ],
     "jsRules": {},
     "rules": {},

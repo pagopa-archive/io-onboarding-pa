@@ -38,6 +38,7 @@ i18n
     },
     lng: "it",
     resources
-  });
+  })
+  .catch(error => error);
 
 export default i18n;

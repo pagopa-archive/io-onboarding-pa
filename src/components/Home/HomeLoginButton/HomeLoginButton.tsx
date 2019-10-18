@@ -1,7 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, MouseEvent } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Media, Row } from "reactstrap";
-import ioLogoWhite from "../../../assets/img/io-logo-white.svg";
 
 /**
  * props for LoginHomeButton component
@@ -22,12 +21,18 @@ export const HomeLoginButton = withRouter<
   IHomeLoginButtonProps,
   FC<IHomeLoginButtonProps>
 >((props: IHomeLoginButtonProps) => {
+  /**
+   * Navigate to link provided in props
+   */
+  const navigateTo = (link: string) => (_: MouseEvent) =>
+    props.history.push(link);
+
   return (
     <Col sm={{ size: 3, offset: props.offset }}>
       <Row>
         <Col>
           <Media
-            object
+            object={true}
             src={props.img}
             alt="NewCo Logo"
             height={props.imgHeight}
@@ -39,9 +44,7 @@ export const HomeLoginButton = withRouter<
           <Button
             color="primary"
             className="w-75"
-            onClick={() => {
-              return props.history.push(props.link);
-            }}
+            onClick={navigateTo(props.link)}
           >
             {props.buttonText}
           </Button>

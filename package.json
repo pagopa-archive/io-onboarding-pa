@@ -15,7 +15,7 @@
     "build": "parcel build ./public/index.html --public-url / --no-minify ./public/env-config.js",
     "postversion": "git push && git push --tags",
     "test": "jest",
-    "lint": "tslint --project .",
+    "lint": "tslint --project . --exclude locales/locales.ts",
     "generate:locales": "rimraf locales/locales.ts && ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' ./scripts/make-locales.ts",
     "generate:api-definitions": "rimraf generated/definitions/api && mkdir -p generated/definitions/api && gen-api-models --api-spec https://raw.githubusercontent.com/teamdigitale/io-onboarding-pa-api/master/openapi.yml --out-dir generated/definitions/api --no-strict",
     "generate:all": "yarn generate:locales && yarn generate:api-definitions"

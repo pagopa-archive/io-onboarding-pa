@@ -51,6 +51,12 @@ export const SpidLoginButton = withRouter(() => {
   ];
 
   /**
+   * Function to open/close spid dropdown
+   */
+  const toggleSpidDropdown = () =>
+    setIsSpidDropdownOpen((prevState: boolean) => !prevState);
+
+  /**
    * Function to shuffle idp order at each render
    */
   const sliceIndex = Math.floor(Math.random() * spidProvidersInfo.length);
@@ -88,17 +94,15 @@ export const SpidLoginButton = withRouter(() => {
     <div className="SpidButton">
       <ButtonDropdown
         isOpen={isSpidDropdownOpen}
-        toggle={() => {
-          setIsSpidDropdownOpen((prevState: boolean) => !prevState);
-        }}
+        toggle={toggleSpidDropdown}
         className="w-100"
       >
         <DropdownToggle
-          caret
+          caret={true}
           tag="button"
           className="btn btn-primary btn-icon toggle-spid"
         >
-          <Media object src={spidLogo} alt="Spid Logo" width={29} />
+          <Media object={true} src={spidLogo} alt="Spid Logo" width={29} />
           <span>Log in con SPID</span>
         </DropdownToggle>
         <DropdownMenu>{spidDropDownItems}</DropdownMenu>

@@ -13,8 +13,8 @@ import {
   Row
 } from "reactstrap";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
-import { ScopeEnum } from "../../../generated/definitions/api/FoundRegisteredAdministration";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
+import { OrganizationScope } from "../../../generated/definitions/api/OrganizationScope";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
@@ -40,18 +40,18 @@ export const RegistrationContainer = withRouter(props => {
   const initialSelectedAdministration: ComponentProps<
     typeof RegistrationStepOne
   >["selectedAdministration"] = {
-    fiscalCode: "" as OrganizationFiscalCode,
-    ipaCode: "",
-    legalRepresentative: {
-      familyName: "",
-      firstName: "",
-      fiscalCode: "" as FiscalCode,
-      phoneNumber: ""
+    fiscal_code: "" as OrganizationFiscalCode,
+    ipa_code: "",
+    legal_representative: {
+      family_name: "",
+      fiscal_code: "" as FiscalCode,
+      given_name: "",
+      phone_number: ""
     },
     name: "",
-    pecs: [],
+    pecs: {},
     scope: undefined,
-    selectedPecIndex: -1
+    selectedPecLabel: ""
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -81,6 +81,9 @@ export const RegistrationContainer = withRouter(props => {
       })
       .then(responseData => {
         setAdministrations(responseData);
+      })
+      .catch(error => {
+        return error;
       });
   };
 
@@ -92,36 +95,36 @@ export const RegistrationContainer = withRouter(props => {
     const newAdministration =
       event.length === 0
         ? {
-            fiscalCode: "" as OrganizationFiscalCode,
-            ipaCode: "",
-            legalRepresentative: {
-              familyName: "",
-              firstName: "",
-              fiscalCode: "" as FiscalCode,
-              phoneNumber: ""
+            fiscal_code: "" as OrganizationFiscalCode,
+            ipa_code: "",
+            legal_representative: {
+              family_name: "",
+              fiscal_code: "" as FiscalCode,
+              given_name: "",
+              phone_number: ""
             },
             name: "",
-            pecs: [],
+            pecs: {},
             scope: undefined,
-            selectedPecIndex: -1
+            selectedPecLabel: ""
           }
         : event[0];
     setSelectedAdministration(newAdministration);
   };
 
-  const handlePecCheckboxChange = (selectedPecIndex: number) => {
+  const handlePecCheckboxChange = (selectedPecLabel: string) => {
     setSelectedAdministration(
       (
         prevState: ComponentProps<
           typeof RegistrationStepOne
         >["selectedAdministration"]
       ) => {
-        return { ...prevState, selectedPecIndex };
+        return { ...prevState, selectedPecLabel };
       }
     );
   };
 
-  const handleScopeCheckboxChange = (selectedScope: ScopeEnum) => {
+  const handleScopeCheckboxChange = (selectedScope: OrganizationScope) => {
     setSelectedAdministration(
       (
         prevState: ComponentProps<
@@ -142,8 +145,8 @@ export const RegistrationContainer = withRouter(props => {
       ) => {
         return {
           ...prevState,
-          legalRepresentative: {
-            ...prevState.legalRepresentative,
+          legal_representative: {
+            ...prevState.legal_representative,
             [inputName]: inputValue
           }
         };
@@ -154,6 +157,8 @@ export const RegistrationContainer = withRouter(props => {
   const toggleConfirmationModal = () => {
     setShowConfirmModal((prevState: boolean) => !prevState);
   };
+
+  const navigateToDashboard = () => props.history.push("/dashboard");
 
   const registrationBody = (step => {
     switch (step) {
@@ -208,7 +213,7 @@ export const RegistrationContainer = withRouter(props => {
 
   return (
     <div className="RegistrationContainer">
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col sm="2">
             <RegistrationStepButtons
@@ -235,7 +240,7 @@ export const RegistrationContainer = withRouter(props => {
           <Row className="w-100 pt-4">
             <Col sm="6" className="text-left">
               <Button
-                outline
+                outline={true}
                 color="secondary"
                 onClick={toggleConfirmationModal}
               >
@@ -246,7 +251,7 @@ export const RegistrationContainer = withRouter(props => {
               <Button
                 color="primary"
                 className="btn btn-primary"
-                onClick={() => props.history.push("/dashboard")}
+                onClick={navigateToDashboard}
               >
                 {t("signUp.backModal.rightButton")}
               </Button>

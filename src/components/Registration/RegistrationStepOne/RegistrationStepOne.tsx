@@ -14,7 +14,7 @@ import {
   Row
 } from "reactstrap";
 
-import { ScopeEnum } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
+import { OrganizationScope } from "../../../../generated/definitions/api/OrganizationScope";
 
 import { SearchAdministrations } from "./SearchAdministrations";
 
@@ -23,8 +23,8 @@ import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchAdministrations>,
     RouteComponentProps<{ registrationStep: string }> {
-  onPecCheckboxChange: (selectedPecIndex: number) => void;
-  onScopeCheckboxChange: (selectedScope: ScopeEnum) => void;
+  onPecCheckboxChange: (selectedPecIndex: string) => void;
+  onScopeCheckboxChange: (selectedScope: OrganizationScope) => void;
   openConfirmModal: () => void;
 }
 
@@ -42,33 +42,35 @@ export const RegistrationStepOne = withRouter(
      * Function called when pecs checkbox is clicked
      */
     const onPecCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onPecCheckboxChange(parseInt(event.target.value, 10));
+      props.onPecCheckboxChange(event.target.value);
     };
 
     /**
      * Function called when scope checkbox is clicked
      */
     const onScopeCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onScopeCheckboxChange(event.target.value as ScopeEnum);
+      props.onScopeCheckboxChange(event.target.value as OrganizationScope);
     };
 
-    const pecRadioButtons = props.selectedAdministration.pecs.map(
-      (pec, pecIndex) => {
+    const pecRadioButtons = Object.keys(props.selectedAdministration.pecs).map(
+      key => {
         return (
-          <FormGroup check className="radio" key={pecIndex}>
+          <FormGroup check={true} className="radio" key={key}>
             <Input
               className="form-check-input"
               type="radio"
-              id={`radio-${pec}`}
+              id={`radio-pec-${key}`}
               name="selectedPecIndex"
-              value={pecIndex}
-              checked={
-                props.selectedAdministration.selectedPecIndex === pecIndex
-              }
+              value={key}
+              checked={props.selectedAdministration.selectedPecLabel === key}
               onChange={onPecCheckboxChange}
             />
-            <Label check className="form-check-label" htmlFor={`radio-${pec}`}>
-              {pec}
+            <Label
+              check={true}
+              className="form-check-label"
+              htmlFor={`radio-pec-${key}`}
+            >
+              {props.selectedAdministration.pecs[key]}
             </Label>
           </FormGroup>
         );
@@ -85,7 +87,7 @@ export const RegistrationStepOne = withRouter(
 
     const scopeRadioButtons = administrationScopes.map(scope => {
       return (
-        <FormGroup check className="radio" key={scope.value}>
+        <FormGroup check={true} className="radio" key={scope.value}>
           <Input
             className="form-check-input"
             type="radio"
@@ -96,7 +98,7 @@ export const RegistrationStepOne = withRouter(
             onChange={onScopeCheckboxChange}
           />
           <Label
-            check
+            check={true}
             className="form-check-label"
             htmlFor={`radio-${scope.value}`}
           >
@@ -106,9 +108,11 @@ export const RegistrationStepOne = withRouter(
       );
     });
 
+    const goToSignUpStepTwo = () => props.history.push("/sign-up/2");
+
     return (
       <div className="RegistrationStepOne">
-        <Container fluid>
+        <Container fluid={true}>
           <Row>
             <Col sm="10">
               <Row>
@@ -131,7 +135,7 @@ export const RegistrationStepOne = withRouter(
                         encType="multipart/form-data"
                         className="form-horizontal w-100 mt-5"
                       >
-                        <FormGroup row>
+                        <FormGroup row={true}>
                           <Col sm="4">
                             <Label htmlFor="cf-input">
                               {t("signUp.stepOne.inputs.cfLabel")}
@@ -143,17 +147,15 @@ export const RegistrationStepOne = withRouter(
                               id="cf-input"
                               name="cf-input"
                               placeholder=""
-                              readOnly
-                              value={
-                                props.selectedAdministration.fiscalCode || ""
-                              }
+                              readOnly={true}
+                              value={props.selectedAdministration.fiscal_code}
                             />
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}
                             </FormText>
                           </Col>
                         </FormGroup>
-                        <FormGroup row>
+                        <FormGroup row={true}>
                           <Col sm="4">
                             <Label htmlFor="admin-name-input">
                               {t("signUp.stepOne.inputs.administrationLabel")}
@@ -165,15 +167,15 @@ export const RegistrationStepOne = withRouter(
                               id="admin-name-input"
                               name="admin-name-input"
                               placeholder=""
-                              readOnly
-                              value={props.selectedAdministration.name || ""}
+                              readOnly={true}
+                              value={props.selectedAdministration.name}
                             />
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}
                             </FormText>
                           </Col>
                         </FormGroup>
-                        <FormGroup row>
+                        <FormGroup row={true}>
                           <Col sm="4">
                             <Label htmlFor="text-input">
                               {t("signUp.stepOne.inputs.pecLabel")}
@@ -181,7 +183,7 @@ export const RegistrationStepOne = withRouter(
                           </Col>
                           <Col sm="8">{pecRadioButtons}</Col>
                         </FormGroup>
-                        <FormGroup row className="mb-5">
+                        <FormGroup row={true} className="mb-5">
                           <Col sm="4">
                             <Label htmlFor="text-input">
                               {t("signUp.stepOne.inputs.scopeLabel")}
@@ -193,7 +195,7 @@ export const RegistrationStepOne = withRouter(
                       <Row className="pb-5">
                         <Col size={6} className="text-left">
                           <Button
-                            outline
+                            outline={true}
                             color="secondary"
                             className="w-50"
                             onClick={props.openConfirmModal}
@@ -205,10 +207,10 @@ export const RegistrationStepOne = withRouter(
                           <Button
                             color="primary"
                             className="w-50"
-                            onClick={() => props.history.push("/sign-up/2")}
+                            onClick={goToSignUpStepTwo}
                             disabled={
                               !props.selectedAdministration.name ||
-                              props.selectedAdministration.selectedPecIndex ===
+                              props.selectedAdministration.selectedPecLabel ===
                                 null ||
                               !props.selectedAdministration.scope
                             }
@@ -224,7 +226,7 @@ export const RegistrationStepOne = withRouter(
             </Col>
             <Col sm="2">
               <Media
-                object
+                object={true}
                 src={logoSignupStepOne}
                 alt="Signup step one logo"
                 className="pt-5 w-75"

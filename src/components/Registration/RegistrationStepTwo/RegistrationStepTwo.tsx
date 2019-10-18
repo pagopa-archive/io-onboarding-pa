@@ -1,4 +1,4 @@
-import React, { ComponentProps } from "react";
+import React, { ChangeEvent, ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -30,9 +30,15 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
    */
   const { t } = useTranslation();
 
+  const onStepTwoInputChange = (inputName: string) => (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    props.onStepTwoInputChange(inputName, event.target.value);
+  };
+
   return (
     <div className="RegistrationStepTwo">
-      <Container fluid>
+      <Container fluid={true}>
         <Row>
           <Col sm="10">
             <Row>
@@ -51,47 +57,37 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                       <p className="pt-2">
                         {t("signUp.stepTwo.legalRep.description")}
                       </p>
-                      <FormGroup row className="pt-4 mb-4">
+                      <FormGroup row={true} className="pt-4 mb-4">
                         <Col sm="6">
-                          <Label htmlFor="firstName-input" className="active">
+                          <Label htmlFor="given_name-input" className="active">
                             {t("signUp.stepTwo.inputs.nameLabel")}
                           </Label>
                           <Input
                             type="text"
-                            id="firstName-input"
-                            name="firstName"
+                            id="given_name-input"
+                            name="given_name"
                             placeholder=""
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .firstName
+                              props.selectedAdministration.legal_representative
+                                .given_name
                             }
-                            onChange={event =>
-                              props.onStepTwoInputChange(
-                                "firstName",
-                                event.target.value
-                              )
-                            }
+                            onChange={onStepTwoInputChange("given_name")}
                           />
                         </Col>
                         <Col sm="6">
-                          <Label htmlFor="surname-input" className="active">
+                          <Label htmlFor="family_name-input" className="active">
                             {t("signUp.stepTwo.inputs.surnameLabel")}
                           </Label>
                           <Input
                             type="text"
-                            id="familyName-input"
-                            name="familyName"
+                            id="family_name-input"
+                            name="family_name"
                             placeholder=""
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .familyName
+                              props.selectedAdministration.legal_representative
+                                .family_name
                             }
-                            onChange={event =>
-                              props.onStepTwoInputChange(
-                                "familyName",
-                                event.target.value
-                              )
-                            }
+                            onChange={onStepTwoInputChange("family_name")}
                           />
                         </Col>
                       </FormGroup>
@@ -105,58 +101,55 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           www.indicepa.gov.it
                         </a>
                       </p>
-                      <FormGroup row className="pt-4">
+                      <FormGroup row={true} className="pt-4">
                         <Col sm="6">
-                          <Label htmlFor="fc-input" className="active">
+                          <Label htmlFor="fiscal_code-input" className="active">
                             {t("signUp.stepTwo.inputs.fcLabel")}
                           </Label>
                           <Input
                             type="text"
-                            id="fiscalCode-input"
-                            name="fiscalCode"
+                            id="fiscal_code-input"
+                            name="fiscal_code"
                             placeholder={t(
                               "signUp.stepTwo.inputs.fcPlaceholder"
                             )}
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .fiscalCode || ""
+                              props.selectedAdministration.legal_representative
+                                .fiscal_code || ""
                             }
-                            onChange={event =>
-                              props.onStepTwoInputChange(
-                                "fiscalCode",
-                                event.target.value
-                              )
-                            }
+                            onChange={onStepTwoInputChange("fiscal_code")}
                           />
                         </Col>
                         <Col sm="6">
-                          <Label htmlFor="phone-input" className="active">
+                          <Label
+                            htmlFor="phone_number-input"
+                            className="active"
+                          >
                             {t("signUp.stepTwo.inputs.phoneLabel")}
                           </Label>
                           <Input
                             type="text"
-                            id="phoneNumber-input"
-                            name="phoneNumber"
+                            id="phone_number-input"
+                            name="phone_number"
                             placeholder={t(
                               "signUp.stepTwo.inputs.phonePlaceholder"
                             )}
                             value={
-                              props.selectedAdministration.legalRepresentative
-                                .phoneNumber || ""
+                              props.selectedAdministration.legal_representative
+                                .phone_number || ""
                             }
-                            onChange={event =>
-                              props.onStepTwoInputChange(
-                                "phoneNumber",
-                                event.target.value
-                              )
-                            }
+                            onChange={onStepTwoInputChange("phone_number")}
                           />
                         </Col>
                       </FormGroup>
                     </Form>
                     <Row className="pb-5 pb-5">
                       <Col size={6} className="text-left">
-                        <Button outline color="secondary" className="w-50">
+                        <Button
+                          outline={true}
+                          color="secondary"
+                          className="w-50"
+                        >
                           {t("signUp.stepTwo.leftButton")}
                         </Button>
                       </Col>
@@ -165,9 +158,6 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           color="primary"
                           className="w-50"
                           // TODO: add function to call API to save administration and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
-                          onClick={() =>
-                            console.log(props.selectedAdministration)
-                          }
                         >
                           {t("signUp.stepTwo.rightButton")}
                         </Button>
@@ -180,7 +170,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
           </Col>
           <Col sm="2">
             <Media
-              object
+              object={true}
               src={logoSignupStepTwoNew}
               alt="Signup step one logo"
               className="pt-5 w-75"
