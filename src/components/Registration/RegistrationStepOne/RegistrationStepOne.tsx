@@ -62,7 +62,7 @@ export const RegistrationStepOne = withRouter(
               id={`radio-pec-${key}`}
               name="selectedPecIndex"
               value={key}
-              checked={props.selectedAdministration.selectedPecLabel === key}
+              checked={props.selectedAdministration.selected_pec_label === key}
               onChange={onPecCheckboxChange}
             />
             <Label
@@ -210,8 +210,8 @@ export const RegistrationStepOne = withRouter(
                             onClick={goToSignUpStepTwo}
                             disabled={
                               !props.selectedAdministration.name ||
-                              props.selectedAdministration.selectedPecLabel ===
-                                null ||
+                              props.selectedAdministration
+                                .selected_pec_label === null ||
                               !props.selectedAdministration.scope
                             }
                           >

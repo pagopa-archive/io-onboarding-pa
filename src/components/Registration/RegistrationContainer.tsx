@@ -51,7 +51,7 @@ export const RegistrationContainer = withRouter(props => {
     name: "",
     pecs: {},
     scope: undefined,
-    selectedPecLabel: ""
+    selected_pec_label: ""
   };
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -106,7 +106,7 @@ export const RegistrationContainer = withRouter(props => {
             name: "",
             pecs: {},
             scope: undefined,
-            selectedPecLabel: ""
+            selected_pec_label: ""
           }
         : event[0];
     setSelectedAdministration(newAdministration);
