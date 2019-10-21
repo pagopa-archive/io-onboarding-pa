@@ -5,6 +5,9 @@
         "italia-tslint-rules/react"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        "jsx-no-multiline-js": false,
+        "no-big-function": false
+    },
     "rulesDirectory": []
 }

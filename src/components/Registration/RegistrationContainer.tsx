@@ -80,7 +80,7 @@ export const RegistrationContainer = withRouter(props => {
         return response.json();
       })
       .then(responseData => {
-        setAdministrations(responseData);
+        setAdministrations(responseData.administrations);
       })
       .catch(error => {
         return error;
