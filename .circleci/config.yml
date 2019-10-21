@@ -42,6 +42,11 @@ jobs:
       - checkout
       - *restore_node_cache
       - *install_node_modules
+
+      # Generate models and locales
+      - run: yarn generate:all
+
+      # Run tests
       - run: yarn test
       - run: 'bash <(curl -s https://codecov.io/bash)'
 
