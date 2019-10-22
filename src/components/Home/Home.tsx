@@ -24,7 +24,7 @@ export const Home = () => {
   /**
    * array containing three login elements props
    */
-  const homeLoginButtonsArray: ReadonlyArray<
+  const homeLoginButtonsDataArray: ReadonlyArray<
     ComponentProps<typeof HomeLoginButton>
   > = [
     {
@@ -53,16 +53,36 @@ export const Home = () => {
     }
   ];
 
+  /**
+   * create jsx for buttons
+   */
+  const homeLoginButtons = homeLoginButtonsDataArray.map(homeLoginButton => (
+    <HomeLoginButton
+      key={homeLoginButton.link}
+      buttonText={homeLoginButton.buttonText}
+      img={homeLoginButton.img}
+      imgHeight={homeLoginButton.imgHeight}
+      text={homeLoginButton.text}
+      link={homeLoginButton.link}
+      offset={homeLoginButton.offset}
+    />
+  ));
+
   return (
     <div className="Home h-100">
       <div className="container-fluid d-flex h-100 flex-column custom-background-container overflow-auto">
         <Row className="pt-4 pl-4">
           <Col sm="auto">
-            <Media object src={logoTD} alt="Team Digitale Logo" height="40" />
+            <Media
+              object={true}
+              src={logoTD}
+              alt="Team Digitale Logo"
+              height="40"
+            />
           </Col>
           <Col sm="auto" className="pl-5">
             <Media
-              object
+              object={true}
               src="https://via.placeholder.com/189x40.png?text=NewCo_Logo"
               alt="NewCo Logo"
             />
@@ -70,7 +90,12 @@ export const Home = () => {
         </Row>
         <Row className="pt-3 mt-4">
           <Col>
-            <Media object src={ioLogoWhite} alt="NewCo Logo" height="60" />
+            <Media
+              object={true}
+              src={ioLogoWhite}
+              alt="NewCo Logo"
+              height="60"
+            />
           </Col>
         </Row>
         <Row className="pt-4 mt-4">
@@ -83,19 +108,7 @@ export const Home = () => {
             <p className="text-white">{t("home.profileSelect")}</p>
           </Col>
         </Row>
-        <Row className="pt-2 mt-2 text-center">
-          {homeLoginButtonsArray.map(homeLoginButton => (
-            <HomeLoginButton
-              key={homeLoginButton.link}
-              buttonText={homeLoginButton.buttonText}
-              img={homeLoginButton.img}
-              imgHeight={homeLoginButton.imgHeight}
-              text={homeLoginButton.text}
-              link={homeLoginButton.link}
-              offset={homeLoginButton.offset}
-            />
-          ))}
-        </Row>
+        <Row className="pt-2 mt-2 text-center">{homeLoginButtons}</Row>
       </div>
     </div>
   );

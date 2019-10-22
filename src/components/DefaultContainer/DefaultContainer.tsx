@@ -32,6 +32,9 @@ export const DefaultContainer = () => {
     role: ""
   });
 
+  const navigateToDashboard = () => <Dashboard />;
+  const navigateToUserSettings = () => <UserSettings />;
+
   return (
     <div className="DefaultContainer">
       <SlimHeader />
@@ -41,11 +44,11 @@ export const DefaultContainer = () => {
         <Route path="/spid-login" component={SpidLogin} />
         <Route
           path="/sign-up/:signUpStep"
-          exact
+          exact={true}
           component={RegistrationContainer}
         />
-        <Route path="/dashboard" render={() => <Dashboard />} />
-        <Route path="/profile" render={() => <UserSettings />} />
+        <Route path="/dashboard" render={navigateToDashboard} />
+        <Route path="/profile" render={navigateToUserSettings} />
       </div>
     </div>
   );

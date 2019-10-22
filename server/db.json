@@ -1,59 +1,71 @@
 {
-  "administrations": [
-    {
-      "fiscalCode": "86000470830",
-      "ipaCode": "c_e043",
-      "legalRepresentative": {
-        "familyName": "Spano'",
-        "firstName": "Ignazio Alfonso",
-        "fiscalCode": null,
-        "phoneNumber": null
+  "administrations": {
+    "administrations": [
+      {
+        "fiscal_code": "86000470830",
+        "ipa_code": "c_e043",
+        "legal_representative": {
+          "family_name": "Spano'",
+          "given_name": "Ignazio Alfonso"
+        },
+        "name": "Comune di Gioiosa Marea",
+        "pecs": {
+          "1": "indirizzo00@email.pec.it",
+          "2": "indirizzo01@email.pec.it"
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e043"
+          }
+        ]
       },
-      "name": "Comune di Gioiosa Marea",
-      "pecs": [
-        "protocollo@pec.comunegioiosamarea.it",
-        "affarigenerali@pec.comunegioiosamarea.it"
-      ],
-      "scope": null,
-      "selectedPecIndex": null
-    },
-    {
-      "fiscalCode": "81000930800",
-      "ipaCode": "c_e044",
-      "legalRepresentative": {
-        "familyName": "ALI'",
-        "firstName": "Gianfranco",
-        "fiscalCode": null,
-        "phoneNumber": null
+      {
+        "fiscal_code": "81000930800",
+        "ipa_code": "c_e044",
+        "legal_representative": {
+          "family_name": "ALI'",
+          "given_name": "Gianfranco"
+        },
+        "name": "Comune di Gioiosa Jonica",
+        "pecs": {
+          "1": "indirizzo10@email.pec.it",
+          "2": "indirizzo11@email.pec.it",
+          "3": "indirizzo12@email.pec.it",
+          "4": "indirizzo13@email.pec.it"
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e044"
+          }
+        ]
       },
-      "name": "Comune di Gioiosa Jonica",
-      "pecs": [
-        "affarigenerali.gioiosa@asmepec.it",
-        "tecnico.gioiosa@asmepec.it",
-        "ragioneria.gioiosa@asmepec.it",
-        "vigili.gioiosa@asmepec.it"
-      ],
-      "scope": null,
-      "selectedPecIndex": null
-    },
-    {
-      "fiscalCode": "00282520808",
-      "ipaCode": "c_e956",
-      "legalRepresentative": {
-        "familyName": "Sergio",
-        "firstName": "Mazzia",
-        "fiscalCode": null,
-        "phoneNumber": null
-      },
-      "name": "Comune di Marina di Gioiosa Ionica",
-      "pecs": [
-        "protocollo.marinadigioiosa@asmepec.it",
-        "ragioneria.marinadigioiosa@asmepec.it"
-      ],
-      "scope": null,
-      "selectedPecIndex": null
-    }
-  ],
+      {
+        "fiscal_code": "00282520808",
+        "ipa_code": "c_e956",
+        "legal_representative": {
+          "family_name": "Sergio",
+          "given_name": "Mazzia",
+          "fiscal_code": "BCDFGH12A21Z123E",
+          "phone_number": "3333333333"
+        },
+        "name": "Comune di Marina di Gioiosa Ionica",
+        "pecs": {
+          "1": "indirizzo20@email.pec.it",
+          "2": "indirizzo21@email.pec.it"
+        },
+        "scope": "LOCAL",
+        "selectedPecLabel": "1",
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e0956"
+          }
+        ]
+      }
+    ]
+  },
   "profile": {
     "email": "example@email.com",
     "familyName": "Rossi",

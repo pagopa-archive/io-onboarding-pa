@@ -39,9 +39,6 @@ export const Dashboard = withRouter(props => {
    * Set token in token context
    */
   useEffect(() => {
-    /**
-     * Set token in token context
-     */
     tokenContext.setToken(getCookie("sessionToken"));
   }, []);
 
@@ -65,21 +62,25 @@ export const Dashboard = withRouter(props => {
         })
         .then(responseData => {
           // TODO: add code to manage get profile response, tracked with stories #169127957 and #168752398
-          console.log(responseData);
+          return responseData;
+        })
+        .catch(error => {
+          // TODO: manage error in promise, tracked with story #169033467
+          return error;
         });
     }
   }, [tokenContext.token]);
+
+  /**
+   * Navigate to signup page
+   */
+  const navigateToSignUpStepOne = () => props.history.push("sign-up/1");
 
   return (
     <div className="Dashboard">
       <Row>
         <Col className="text-center">
-          <Button
-            color="danger"
-            onClick={() => {
-              return props.history.push("sign-up/1");
-            }}
-          >
+          <Button color="danger" onClick={navigateToSignUpStepOne}>
             DUMMY BUTTON REGISTRATION
           </Button>
         </Col>

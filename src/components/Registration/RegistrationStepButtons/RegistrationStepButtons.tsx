@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -26,11 +26,22 @@ export const RegistrationStepButtons = withRouter(
     /**
      * Function to go to selected registration step or open modal to return to Dashboard if at step 0
      */
-    const goToRegistrationStep = (signUpStep: number) => {
+    const goToRegistrationStep = (signUpStep: number) => (_: MouseEvent) => {
       return signUpStep === 0
         ? props.openConfirmModal()
-        : props.history.push("/sign-up/" + signUpStep);
+        : props.history.push("/sign-up/" + signUpStep.toString());
     };
+
+    /**
+     * Define button class checking if it is relative to current step or future step
+     */
+    const buttonClass = (el: number) =>
+      (el.toString() === props.match.params.signUpStep
+        ? "btn-link"
+        : ""
+      ).concat(
+        el >= parseInt(props.match.params.signUpStep, 10) ? " step-button" : ""
+      );
 
     /**
      * Create three button elements with step numbers from 1 to 3
@@ -40,19 +51,18 @@ export const RegistrationStepButtons = withRouter(
     const stepButtons = [...Array(4).keys()].slice(1).map(el => (
       <Button
         color="secondary"
-        outline
+        outline={true}
         size="xs"
         key={el}
         type="button"
-        onClick={() => goToRegistrationStep(el)}
-        className={`
-      ${el.toString() === props.match.params.signUpStep ? "btn-link" : ""}
-      ${el >= parseInt(props.match.params.signUpStep, 10) ? "step-button" : ""}
-      `}
+        onClick={goToRegistrationStep(el)}
+        className={buttonClass(el)}
       >
         {el}
       </Button>
     ));
+
+    const previousStep = parseInt(props.match.params.signUpStep, 10) - 1;
 
     return (
       <Col className="RegistrationStepButtons pl-4">
@@ -61,11 +71,7 @@ export const RegistrationStepButtons = withRouter(
             <Button
               color="link"
               className="btn-icon mt-5 pl-0"
-              onClick={() =>
-                goToRegistrationStep(
-                  parseInt(props.match.params.signUpStep, 10) - 1
-                )
-              }
+              onClick={goToRegistrationStep(previousStep)}
             >
               <svg className="icon icon-primary">
                 <use xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`} />

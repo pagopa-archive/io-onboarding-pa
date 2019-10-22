@@ -31,7 +31,9 @@ jobs:
       - *restore_node_cache
       - *install_node_modules
       - *save_node_cache
-      # TODO: add additional steps here
+
+      # Build app
+      - run: yarn generate:all
       - run: yarn build
 
   tests:
@@ -40,6 +42,11 @@ jobs:
       - checkout
       - *restore_node_cache
       - *install_node_modules
+
+      # Generate models and locales
+      - run: yarn generate:all
+
+      # Run tests
       - run: yarn test
       - run: 'bash <(curl -s https://codecov.io/bash)'
 
