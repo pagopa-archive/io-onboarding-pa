@@ -42,7 +42,7 @@ export const CentralHeader = withRouter((props: ICentralHeaderProps) => {
    * add user icon if user name is set
    */
   const userIcon =
-    props.userName !== "" && props.userName !== " " ? (
+    props.userName.trim() !== "" ? (
       <svg className="icon icon-white">
         <use xlinkHref={`${bootstrapItaliaImages}#it-user`} />
       </svg>
