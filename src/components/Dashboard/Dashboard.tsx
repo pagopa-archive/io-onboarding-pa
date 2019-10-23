@@ -1,13 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Row } from "reactstrap";
+import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { TokenContext } from "../../context/token-context";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
+
+interface IDashboardProps extends RouteComponentProps {
+  onGetUserProfile: (userProfile: UserProfile) => void;
+}
 
 /**
  * Component for delegate dashboard
  */
-export const Dashboard = withRouter(props => {
+export const Dashboard = withRouter((props: IDashboardProps) => {
   const tokenContext = useContext(TokenContext);
 
   /**
@@ -61,8 +66,7 @@ export const Dashboard = withRouter(props => {
           return response.json();
         })
         .then(responseData => {
-          // TODO: add code to manage get profile response, tracked with stories #169127957 and #168752398
-          return responseData;
+          props.onGetUserProfile(responseData);
         })
         .catch(error => {
           // TODO: manage error in promise, tracked with story #169033467
