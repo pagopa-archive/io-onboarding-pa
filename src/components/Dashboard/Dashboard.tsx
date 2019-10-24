@@ -48,7 +48,8 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
   }, []);
 
   useEffect(() => {
-    if (tokenContext.token) {
+    // make api call only after onMount -> token to string in any case, no longer undefined
+    if (tokenContext.token !== undefined) {
       const url =
         customWindow._env_.IO_ONBOARDING_PA_API_HOST +
         ":" +
@@ -57,7 +58,7 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
       fetch(url, {
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + tokenContext.token
+          Authorization: `Bearer ${tokenContext.token}`
           // 'Content-Type': 'application/json'
         },
         method: "GET"

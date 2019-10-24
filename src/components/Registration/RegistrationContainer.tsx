@@ -71,7 +71,7 @@ export const RegistrationContainer = withRouter(props => {
     fetch(url, {
       headers: {
         Accept: "application/json",
-        Authorization: "Bearer " + tokenContext.token
+        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`
         // 'Content-Type': 'application/json'
       },
       method: "GET"
