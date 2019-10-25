@@ -1,3 +1,4 @@
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { useContext, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Row } from "reactstrap";
@@ -44,7 +45,18 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
    * Set token in token context
    */
   useEffect(() => {
-    tokenContext.setToken(getCookie("sessionToken"));
+    const token = getCookie("sessionToken");
+    if (
+      NonEmptyString.decode(token).isRight() ||
+      customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1"
+    ) {
+      tokenContext.setToken(token);
+    }
+    // if getCookie returns an empty string, it means the token has expired and user browser deleted it -> redirect user to login
+    // TODO: when available, redirect to logout page (tracked in story https://www.pivotaltracker.com/story/show/169033467)
+    else {
+      props.history.push("/home");
+    }
   }, []);
 
   useEffect(() => {

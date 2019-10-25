@@ -66,6 +66,7 @@
     "i18next": "^17.0.17",
     "i18next-browser-languagedetector": "^3.0.3",
     "io-ts": "1.8.5",
+    "italia-ts-commons": "^5.1.12",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.3",
     "react-bootstrap-typeahead": "^3.4.6",

@@ -1,5 +1,5 @@
 import { AppHeader } from "@coreui/react";
-import React, { Fragment } from "react";
+import React, { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
@@ -19,39 +19,18 @@ import { UserRoleEnum } from "../../../generated/definitions/api/UserRole";
 import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
 
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import "./CentralHeader.css";
 
-/**
- * Props for central header
+/*
+ * Component for badge containing user role
  */
-interface ICentralHeaderProps extends RouteComponentProps {
-  userName: string;
-  userRole: string;
-}
-
-/**
- * Central header right below Slim header, containing app title and user name and user role with dropdown to go to profile page and logout
- */
-export const CentralHeader = withRouter((props: ICentralHeaderProps) => {
-  /**
-   * react-i18next translation hook
-   */
+const UserRoleBadge = (props: { userRole: string }) => {
   const { t } = useTranslation();
-
-  /**
-   * add user icon if user name is set
-   */
-  const userIcon =
-    props.userName.trim() !== "" ? (
-      <svg className="icon icon-white">
-        <use xlinkHref={`${bootstrapItaliaImages}#it-user`} />
-      </svg>
-    ) : null;
-
   /**
    * switch from user role enum to string
    */
-  const userRole = (userRoleEnum => {
+  const badgeText = (userRoleEnum => {
     switch (userRoleEnum) {
       case UserRoleEnum.ORG_DELEGATE:
         return t("centralHeader.userBadge.delegate");
@@ -63,50 +42,91 @@ export const CentralHeader = withRouter((props: ICentralHeaderProps) => {
         return t("centralHeader.userBadge.admin");
     }
   })(props.userRole);
-  /**
-   * create badge for user role if user role is set
-   */
-  const userRoleBadge =
-    props.userRole !== "" ? <Badge color="white">{userRole}</Badge> : null;
 
+  return <Badge color="white">{badgeText}</Badge>;
+};
+
+/**
+ * Props for central header
+ */
+interface IUserNameWithDropdownProps
+  extends ComponentProps<typeof UserRoleBadge>,
+    RouteComponentProps {
+  userName: string;
+}
+
+/**
+ *  Component for user icon
+ */
+const UserIcon = () => {
+  return (
+    <svg className="icon icon-white">
+      <use xlinkHref={`${bootstrapItaliaImages}#it-user`} />
+    </svg>
+  );
+};
+
+/*
+ * Component for user name and role with dropdown
+ */
+const UserNameWithDropdown = withRouter((props: IUserNameWithDropdownProps) => {
+  const { t } = useTranslation();
   /**
    * function to navigate to profile
    */
   const navigateToProfile = () => props.history.push("/profile");
 
+  const userRoleBadge = NonEmptyString.decode(props.userRole).isRight() ? (
+    <UserRoleBadge userRole={props.userRole} />
+  ) : null;
+
+  const userIcon = NonEmptyString.decode(props.userName.trim()).isRight() ? (
+    <UserIcon />
+  ) : null;
+
+  return (
+    <Nav className="ml-auto" navbar={true}>
+      <UncontrolledDropdown nav={true} direction="down">
+        <DropdownToggle nav={true} className="text-white pb-0">
+          <Row>
+            <Col sm="auto">{userIcon}</Col>
+            <Col sm="auto" className="mt-auto">
+              <p className="mb-0 user-name-par">{props.userName}</p>
+            </Col>
+            <Col sm="auto" className="mt-auto">
+              {userRoleBadge}
+            </Col>
+          </Row>
+        </DropdownToggle>
+        <DropdownMenu right={true}>
+          <DropdownItem onClick={navigateToProfile}>
+            {t("centralHeader.userMenu.profile")}
+          </DropdownItem>
+          {/*TODO: add logout function*/}
+          <DropdownItem>{t("centralHeader.userMenu.logout")}</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    </Nav>
+  );
+});
+
+/**
+ * Central header right below Slim header, containing app title and user name and user role with dropdown to go to profile page and logout
+ */
+export const CentralHeader = (
+  props: ComponentProps<typeof UserNameWithDropdown>
+) => {
   /**
-   * create username with dropdown menu if user is set
+   * react-i18next translation hook
    */
+  const { t } = useTranslation();
+
   const userNameWithDropdown =
     props.userName !== "" ? (
-      <Fragment>
-        <Col sm="2" className="pr-0">
-          {userIcon}
-        </Col>
-        <Col sm="10" className="pl-0">
-          <Nav className="ml-auto" navbar={true}>
-            <UncontrolledDropdown nav={true} direction="down">
-              <DropdownToggle nav={true} className="text-white pb-0">
-                <Row>
-                  <Col sm="auto">
-                    <p className="mb-0">{props.userName}</p>
-                  </Col>
-                  <Col sm="auto">{userRoleBadge}</Col>
-                </Row>
-              </DropdownToggle>
-              <DropdownMenu right={true}>
-                <DropdownItem onClick={navigateToProfile}>
-                  {t("centralHeader.userMenu.profile")}
-                </DropdownItem>
-                {/*TODO: add logout function*/}
-                <DropdownItem>
-                  {t("centralHeader.userMenu.logout")}
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Nav>
-        </Col>
-      </Fragment>
+      <UserNameWithDropdown
+        userRole={props.userRole}
+        userName={props.userName}
+      />
     ) : null;
 
   return (
@@ -145,13 +165,11 @@ export const CentralHeader = withRouter((props: ICentralHeaderProps) => {
               </Row>
             </Col>
             <Col sm="2" className="text-white">
-              <Row className="h-100 align-items-end">
-                {userNameWithDropdown}
-              </Row>
+              {userNameWithDropdown}
             </Col>
           </Row>
         </Container>
       </div>
     </AppHeader>
   );
-});
+};
