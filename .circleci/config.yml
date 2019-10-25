@@ -20,7 +20,7 @@ save_node_cache: &save_node_cache
     key: *node_cache_key
 
 install_node_modules: &install_node_modules
-  run: yarn install --frozen-lockfile --no-progress --non-interactive --network-concurrency 1
+  run: yarn install --no-progress --non-interactive --network-concurrency 1
 
 version: 2
 jobs:
