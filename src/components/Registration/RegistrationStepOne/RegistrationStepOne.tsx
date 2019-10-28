@@ -23,7 +23,7 @@ import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchAdministrations>,
     RouteComponentProps<{ registrationStep: string }> {
-  onPecCheckboxChange: (selectedPecIndex: string) => void;
+  onPecCheckboxChange: (selectedPecLabel: string) => void;
   onScopeCheckboxChange: (selectedScope: OrganizationScope) => void;
   openConfirmModal: () => void;
 }
@@ -60,7 +60,7 @@ export const RegistrationStepOne = withRouter(
               className="form-check-input"
               type="radio"
               id={`radio-pec-${key}`}
-              name="selectedPecIndex"
+              name="selectedPecLabel"
               value={key}
               checked={props.selectedAdministration.selected_pec_label === key}
               onChange={onPecCheckboxChange}
