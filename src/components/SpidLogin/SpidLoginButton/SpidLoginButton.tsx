@@ -77,7 +77,11 @@ export const SpidLoginButton = withRouter(() => {
       <DropdownItem key={spidButton.name} className="p-0">
         <a
           className="w-100 d-block p-3"
-          href={`${customWindow._env_.IO_ONBOARDING_PA_API_HOST}:${customWindow._env_.IO_ONBOARDING_PA_API_PORT}/login?entityID=${spidButton.idp}&authLevel=SpidL2`}
+          href={
+            customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1"
+              ? "/dashboard"
+              : `${customWindow._env_.IO_ONBOARDING_PA_API_HOST}:${customWindow._env_.IO_ONBOARDING_PA_API_PORT}/login?entityID=${spidButton.idp}&authLevel=SpidL2`
+          }
         >
           <span className="spid-sr-only">{spidButton.name}</span>
           <img

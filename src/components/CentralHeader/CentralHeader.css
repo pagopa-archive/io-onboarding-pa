@@ -1,3 +1,7 @@
 .CentralHeader {
     z-index: 1020;
 }
+
+.CentralHeader .user-name-par {
+    line-height: 1.25;
+}

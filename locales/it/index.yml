@@ -18,6 +18,11 @@ translation:
     userMenu:
       profile: "Profilo"
       logout: "Logout"
+    userBadge:
+      delegate: "Delegato"
+      developer: "Sviluppatore"
+      legalRep: "Rappresentante legale"
+      admin: "Amministratore"
   spidLogin:
     back: "Torna indietro"
     title: "Accedi con SPID"

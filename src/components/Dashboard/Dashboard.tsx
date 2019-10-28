@@ -1,13 +1,19 @@
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { useContext, useEffect } from "react";
-import { withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Row } from "reactstrap";
+import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { TokenContext } from "../../context/token-context";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
+
+interface IDashboardProps extends RouteComponentProps {
+  onGetUserProfile: (userProfile: UserProfile) => void;
+}
 
 /**
  * Component for delegate dashboard
  */
-export const Dashboard = withRouter(props => {
+export const Dashboard = withRouter((props: IDashboardProps) => {
   const tokenContext = useContext(TokenContext);
 
   /**
@@ -39,11 +45,23 @@ export const Dashboard = withRouter(props => {
    * Set token in token context
    */
   useEffect(() => {
-    tokenContext.setToken(getCookie("sessionToken"));
+    const token = getCookie("sessionToken");
+    if (
+      NonEmptyString.is(token) ||
+      customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1"
+    ) {
+      tokenContext.setToken(token);
+    }
+    // if getCookie returns an empty string, it means the token has expired and user browser deleted it -> redirect user to login
+    // TODO: when available, redirect to logout page (tracked in story https://www.pivotaltracker.com/story/show/169033467)
+    else {
+      props.history.push("/home");
+    }
   }, []);
 
   useEffect(() => {
-    if (tokenContext.token) {
+    // make api call only after onMount -> token to string in any case, no longer undefined
+    if (tokenContext.token !== undefined) {
       const url =
         customWindow._env_.IO_ONBOARDING_PA_API_HOST +
         ":" +
@@ -52,7 +70,7 @@ export const Dashboard = withRouter(props => {
       fetch(url, {
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + tokenContext.token
+          Authorization: `Bearer ${tokenContext.token}`
           // 'Content-Type': 'application/json'
         },
         method: "GET"
@@ -61,8 +79,7 @@ export const Dashboard = withRouter(props => {
           return response.json();
         })
         .then(responseData => {
-          // TODO: add code to manage get profile response, tracked with stories #169127957 and #168752398
-          return responseData;
+          props.onGetUserProfile(responseData);
         })
         .catch(error => {
           // TODO: manage error in promise, tracked with story #169033467
