@@ -47,7 +47,7 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
   useEffect(() => {
     const token = getCookie("sessionToken");
     if (
-      NonEmptyString.decode(token).isRight() ||
+      NonEmptyString.is(token) ||
       customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1"
     ) {
       tokenContext.setToken(token);

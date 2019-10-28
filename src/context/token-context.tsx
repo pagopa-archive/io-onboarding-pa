@@ -7,6 +7,8 @@ interface ITokenContext {
 
 /**
  * Token context to save token for apis calls
+ * setToken and token declarations are default values required by createContext
+ * default values are immediately overwritten in TokenContext.Provider value prop
  */
 export const TokenContext = createContext<ITokenContext>({
   setToken: () => {

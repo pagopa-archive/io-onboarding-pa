@@ -76,11 +76,11 @@ const UserNameWithDropdown = withRouter((props: IUserNameWithDropdownProps) => {
    */
   const navigateToProfile = () => props.history.push("/profile");
 
-  const userRoleBadge = NonEmptyString.decode(props.userRole).isRight() ? (
+  const userRoleBadge = NonEmptyString.is(props.userRole) ? (
     <UserRoleBadge userRole={props.userRole} />
   ) : null;
 
-  const userIcon = NonEmptyString.decode(props.userName.trim()).isRight() ? (
+  const userIcon = NonEmptyString.is(props.userName.trim()) ? (
     <UserIcon />
   ) : null;
 

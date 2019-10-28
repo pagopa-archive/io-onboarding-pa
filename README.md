@@ -123,11 +123,12 @@ For demo purposes, some environment variables files are provided
 
 The table below describes all the Environment variables needed by the front end of the application.
 
-| Variable name                          | Description                               | type   |
-|----------------------------------------|-------------------------------------------|--------|
-| IO_ONBOARDING_PA_API_HOST              | The hostname of the APIs url              | string |
-| IO_ONBOARDING_PA_API_PORT              | The port for of APIs url                  | string |
-| IO_ONBOARDING_PA_SHOW_FAKE_IDP         | Show or hide fake IDP button in SPID dropdown button (0 to hide, 1 to show)   | string |
+| Variable name                          | Description                                                                                      | type   |
+|----------------------------------------|--------------------------------------------------------------------------------------------------|--------|
+| IO_ONBOARDING_PA_API_HOST              | The hostname of the APIs url                                                                     | string |
+| IO_ONBOARDING_PA_API_PORT              | The port for of APIs url                                                                         | string |
+| IO_ONBOARDING_PA_SHOW_FAKE_IDP         | Show or hide fake IDP button in SPID dropdown button (0 to hide, 1 to show)                      | string |
+| IO_ONBOARDING_PA_IS_MOCK_ENV           | Front end is running with mock backend or with real APIs (0 for real APIs, 1 for mock backend)   | string |
 
 ### Environment variables run-time injection
 
