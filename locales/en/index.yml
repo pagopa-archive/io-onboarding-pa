@@ -1,13 +1,24 @@
 ---
 translation:
+  common:
+    buttons:
+      back: "Torna indietro"
+      backHome: "Torna alla home"
+      cancel: "Annulla"
+      confirm: "Conferma"
+      search: "Ricerca"
+    user:
+      roles:
+        delegate: "Delegato Ente"
+        delegateShort: "Delegato"
+        developer: "Sviluppatore"
+        legalRep: "Legale Rappresentante Ente"
+        legalRepShort: "Leg. Rappr. Ente"
+        admin: "Amministratore"
   home:
     title: "IO Back-office"
     profileSelect: "Seleziona il profilo con cui vuoi accedere al back-office."
     loginButtons:
-      text:
-        developer: "Sviluppatore"
-        delegate: "Delegato Ente"
-        legalRep: "Legale Rappresentante Ente"
       description:
         developer: "Entra qui se ti occupi di sviluppo di servizi digitali per gli enti e le amministrazioni italiane"
         delegate: "Entra qui se lavori in una pubblica amministrazione e sei delegato alla gestione dei servizi digitali"
@@ -18,13 +29,7 @@ translation:
     userMenu:
       profile: "Profilo"
       logout: "Logout"
-    userBadge:
-      delegate: "Delegato"
-      developer: "Sviluppatore"
-      legalRep: "Rappresentante legale"
-      admin: "Amministratore"
   spidLogin:
-    back: "Torna indietro"
     title: "Accedi con SPID"
     description:
       title: "Cos'è SPID"
@@ -40,7 +45,6 @@ translation:
       text: "In questa fase di avvio del servizio le credenziali SPID sono utilizzabili solo per l'accesso ai servizi per il cittadino"
     moreInfo: "Maggiori informazioni su SPID"
     wrongLogin: "Se ti sei sbagliato e volevi accedere con un profilo diverso clicca qui sotto"
-    backHome: "Torna alla home"
   signUp:
     rightCol:
       title: "Guida all'utilizzo"
@@ -50,10 +54,6 @@ translation:
       title: "Annulla ricerca ente"
       text: "Sei sicuro di voler uscire dalla ricerca ente?"
       additionalText: "Verrai rediretto alla tua dashboard personale e potrai iniziare di nuovo la ricerca ente quando lo riterrai più opportuno."
-      leftButton: "Annulla"
-      rightButton: "Conferma"
-    stepButtons:
-      back: "Torna indietro"
     stepOne:
       scopeRadio:
         localLabel: "Locale (es. comuni, regioni)"
@@ -66,10 +66,7 @@ translation:
         administrationLabel: "Nome Amministrazione*"
         pecLabel: "Indirizzo PEC"
         scopeLabel: "Area di competenza"
-      leftButton: "Annulla"
-      rightButton: "Conferma"
     searchAdministrations:
-      buttonText: "Ricerca"
       placeholder: "Ricerca qui il tuo ente"
       searching: "Ricerca..."
       emptyLabel: "Nessun risultato"
@@ -87,5 +84,3 @@ translation:
         fcPlaceholder: "Inserisci il CF personale del legale rappresentante"
         phoneLabel: "Numero di telefono dell'ufficio del Legale Rappresentante"
         phonePlaceholder: "Inserisci il numero di telefono dell'ufficio"
-      leftButton: "Annulla"
-      rightButton: "Conferma"

@@ -28,7 +28,7 @@ export const Home = () => {
     ComponentProps<typeof HomeLoginButton>
   > = [
     {
-      buttonText: t("home.loginButtons.text.developer"),
+      buttonText: t("common.user.roles.developer"),
       img: logoHomeDev,
       imgHeight: 100,
       link: "developer-login",
@@ -36,7 +36,7 @@ export const Home = () => {
       text: t("home.loginButtons.description.developer")
     },
     {
-      buttonText: t("home.loginButtons.text.delegate"),
+      buttonText: t("common.user.roles.delegate"),
       img: logoHomeDel,
       imgHeight: 100,
       link: "spid-login",
@@ -44,7 +44,7 @@ export const Home = () => {
       text: t("home.loginButtons.description.delegate")
     },
     {
-      buttonText: t("home.loginButtons.text.legalRep"),
+      buttonText: t("common.user.roles.legalRep"),
       img: logoHomeRep,
       imgHeight: 100,
       link: "legal-rep-login",
