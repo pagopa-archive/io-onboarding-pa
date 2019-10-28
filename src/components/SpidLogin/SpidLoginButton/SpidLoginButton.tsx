@@ -78,7 +78,7 @@ export const SpidLoginButton = withRouter(() => {
         <a
           className="w-100 d-block p-3"
           href={
-            customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV
+            customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1"
               ? "/dashboard"
               : `${customWindow._env_.IO_ONBOARDING_PA_API_HOST}:${customWindow._env_.IO_ONBOARDING_PA_API_PORT}/login?entityID=${spidButton.idp}&authLevel=SpidL2`
           }
