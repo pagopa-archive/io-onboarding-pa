@@ -76,7 +76,7 @@ export const SearchAdministrations = (props: ISearchAdministrationProps) => {
                   <use xlinkHref={`${bootstrapItaliaImages}#it-search`} />
                 </svg>
               </Col>
-              <Col sm="8">{t("signUp.searchAdministrations.buttonText")}</Col>
+              <Col sm="8">{t("common.buttons.search")}</Col>
             </Row>
           </Button>
         </InputGroupAddon>

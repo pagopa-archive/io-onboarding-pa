@@ -200,7 +200,7 @@ export const RegistrationStepOne = withRouter(
                             className="w-50"
                             onClick={props.openConfirmModal}
                           >
-                            {t("signUp.stepOne.leftButton")}
+                            {t("common.buttons.cancel")}
                           </Button>
                         </Col>
                         <Col size={6} className="text-right">
@@ -215,7 +215,7 @@ export const RegistrationStepOne = withRouter(
                               !props.selectedAdministration.scope
                             }
                           >
-                            {t("signUp.stepOne.rightButton")}
+                            {t("common.buttons.confirm")}
                           </Button>
                         </Col>
                       </Row>

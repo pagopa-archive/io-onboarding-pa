@@ -244,7 +244,7 @@ export const RegistrationContainer = withRouter(props => {
                 color="secondary"
                 onClick={toggleConfirmationModal}
               >
-                {t("signUp.backModal.leftButton")}
+                {t("common.buttons.cancel")}
               </Button>
             </Col>
             <Col sm="6" className="text-right">
@@ -253,7 +253,7 @@ export const RegistrationContainer = withRouter(props => {
                 className="btn btn-primary"
                 onClick={navigateToDashboard}
               >
-                {t("signUp.backModal.rightButton")}
+                {t("common.buttons.confirm")}
               </Button>
             </Col>
           </Row>

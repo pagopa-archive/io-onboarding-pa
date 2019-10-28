@@ -76,7 +76,7 @@ export const RegistrationStepButtons = withRouter(
               <svg className="icon icon-primary">
                 <use xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`} />
               </svg>
-              <span>{t("signUp.stepButtons.back")}</span>
+              <span>{t("common.buttons.back")}</span>
             </Button>
           </Col>
         </Row>

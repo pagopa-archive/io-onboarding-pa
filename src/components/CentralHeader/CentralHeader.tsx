@@ -33,13 +33,13 @@ const UserRoleBadge = (props: { userRole: string }) => {
   const badgeText = (userRoleEnum => {
     switch (userRoleEnum) {
       case UserRoleEnum.ORG_DELEGATE:
-        return t("centralHeader.userBadge.delegate");
+        return t("common.user.roles.delegateShort");
       case UserRoleEnum.DEVELOPER:
-        return t("centralHeader.userBadge.developer");
+        return t("common.user.roles.developer");
       case UserRoleEnum.ORG_MANAGER:
-        return t("centralHeader.userBadge.legalRep");
+        return t("common.user.roles.legalRepShort");
       case UserRoleEnum.ADMIN:
-        return t("centralHeader.userBadge.admin");
+        return t("common.user.roles.admin");
     }
   })(props.userRole);
 
@@ -89,11 +89,13 @@ const UserNameWithDropdown = withRouter((props: IUserNameWithDropdownProps) => {
       <UncontrolledDropdown nav={true} direction="down">
         <DropdownToggle nav={true} className="text-white pb-0">
           <Row>
-            <Col sm="auto">{userIcon}</Col>
-            <Col sm="auto" className="mt-auto">
-              <p className="mb-0 user-name-par">{props.userName}</p>
+            <Col sm="2">{userIcon}</Col>
+            <Col sm="5" className="mt-auto">
+              <p className="mb-0 user-name-par text-truncate">
+                {props.userName}
+              </p>
             </Col>
-            <Col sm="auto" className="mt-auto">
+            <Col sm="5" className="mt-auto text-truncate">
               {userRoleBadge}
             </Col>
           </Row>

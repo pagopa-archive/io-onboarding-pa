@@ -44,7 +44,7 @@ export const SpidLogin = withRouter(props => {
                       xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`}
                     />
                   </svg>
-                  <span>{t("spidLogin.back")}</span>
+                  <span>{t("common.buttons.back")}</span>
                 </Button>
               </Col>
             </Row>
@@ -103,13 +103,9 @@ export const SpidLogin = withRouter(props => {
             <p className="card-text mt-4 pt-3 small">
               {t("spidLogin.wrongLogin")}
             </p>
-            <a
-              className="btn btn-outline-primary"
-              role="button"
-              onClick={navigateToHome}
-            >
-              {t("spidLogin.backHome")}
-            </a>
+            <Button color="primary" outline={true} onClick={navigateToHome}>
+              {t("common.buttons.backHome")}
+            </Button>
           </div>
         </Row>
       </Container>

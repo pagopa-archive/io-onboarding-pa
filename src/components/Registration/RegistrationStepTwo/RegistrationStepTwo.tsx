@@ -150,7 +150,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           color="secondary"
                           className="w-50"
                         >
-                          {t("signUp.stepTwo.leftButton")}
+                          {t("common.buttons.cancel")}
                         </Button>
                       </Col>
                       <Col size={6} className="text-right">
@@ -159,7 +159,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           className="w-50"
                           // TODO: add function to call API to save administration and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
                         >
-                          {t("signUp.stepTwo.rightButton")}
+                          {t("common.buttons.confirm")}
                         </Button>
                       </Col>
                     </Row>
