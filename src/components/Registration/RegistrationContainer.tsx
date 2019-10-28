@@ -119,7 +119,7 @@ export const RegistrationContainer = withRouter(props => {
           typeof RegistrationStepOne
         >["selectedAdministration"]
       ) => {
-        return { ...prevState, selectedPecLabel };
+        return { ...prevState, selected_pec_label: selectedPecLabel };
       }
     );
   };
