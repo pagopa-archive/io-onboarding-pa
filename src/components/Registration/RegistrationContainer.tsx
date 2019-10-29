@@ -159,11 +159,11 @@ export const RegistrationContainer = withRouter(props => {
   };
 
   const saveAdministration = (
-    administration: OrganizationRegistrationParams
+    organizationRegistrationParams: OrganizationRegistrationParams
   ) => {
     const url = urlDomainPort + "/organizations";
     fetch(url, {
-      body: JSON.stringify(administration),
+      body: JSON.stringify(organizationRegistrationParams),
       headers: {
         Accept: contentType,
         Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`,

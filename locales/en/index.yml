@@ -15,6 +15,8 @@ translation:
         legalRep: "Legale Rappresentante Ente"
         legalRepShort: "Leg. Rappr. Ente"
         admin: "Amministratore"
+    alerts:
+      registrationWrongData: "C'è stato qualche problema nel registrare il tuo ente, per favore ricontrolla i dati inseriti"
   home:
     title: "IO Back-office"
     profileSelect: "Seleziona il profilo con cui vuoi accedere al back-office."

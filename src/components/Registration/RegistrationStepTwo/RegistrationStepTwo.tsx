@@ -1,5 +1,5 @@
-import { NonEmptyString } from "italia-ts-commons/lib/strings";
-import React, { ChangeEvent, ComponentProps } from "react";
+import { exact } from "io-ts";
+import React, { ChangeEvent, ComponentProps, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -12,10 +12,9 @@ import {
   Media,
   Row
 } from "reactstrap";
-import { FiscalCode } from "../../../../generated/definitions/api/FiscalCode";
 import { OrganizationRegistrationParams } from "../../../../generated/definitions/api/OrganizationRegistrationParams";
-import { OrganizationScopeEnum } from "../../../../generated/definitions/api/OrganizationScope";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
+import { AlertContext } from "../../../context/alert-context";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepTwoProps {
@@ -37,6 +36,8 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
    */
   const { t } = useTranslation();
 
+  const alertContext = useContext(AlertContext);
+
   const onStepTwoInputChange = (inputName: string) => (
     event: ChangeEvent<HTMLInputElement>
   ) => {
@@ -44,23 +45,20 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
   };
 
   const saveAdministration = () => {
-    const administrationToSaveParams: OrganizationRegistrationParams = {
-      ipa_code: props.selectedAdministration.ipa_code as NonEmptyString,
-      legal_representative: {
-        family_name: props.selectedAdministration.legal_representative
-          .family_name as NonEmptyString,
-        fiscal_code: props.selectedAdministration.legal_representative
-          .fiscal_code as FiscalCode,
-        given_name: props.selectedAdministration.legal_representative
-          .given_name as NonEmptyString,
-        phone_number: props.selectedAdministration.legal_representative
-          .phone_number as NonEmptyString
+    OrganizationRegistrationParams.decode(props.selectedAdministration).fold(
+      _ => {
+        alertContext.setAlert({
+          alertColor: "danger",
+          alertText: t("common.alerts.registrationWrongData"),
+          showAlert: true
+        });
       },
-      scope: props.selectedAdministration.scope as OrganizationScopeEnum,
-      selected_pec_label: props.selectedAdministration
-        .selected_pec_label as NonEmptyString
-    };
-    props.onSaveAdministration(administrationToSaveParams);
+      rightResult => {
+        props.onSaveAdministration(
+          exact(OrganizationRegistrationParams).encode(rightResult)
+        );
+      }
+    );
   };
 
   return (
