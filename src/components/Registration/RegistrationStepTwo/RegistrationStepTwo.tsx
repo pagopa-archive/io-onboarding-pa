@@ -1,4 +1,5 @@
-import React, { ChangeEvent, ComponentProps } from "react";
+import { exact } from "io-ts";
+import React, { ChangeEvent, ComponentProps, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -11,7 +12,9 @@ import {
   Media,
   Row
 } from "reactstrap";
+import { OrganizationRegistrationParams } from "../../../../generated/definitions/api/OrganizationRegistrationParams";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
+import { AlertContext } from "../../../context/alert-context";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepTwoProps {
@@ -19,6 +22,9 @@ interface IRegistrationStepTwoProps {
     typeof SearchAdministrations
   >["selectedAdministration"];
   onStepTwoInputChange: (inputName: string, inputValue: string) => void;
+  onSaveAdministration: (
+    administrationToSave: OrganizationRegistrationParams
+  ) => void;
 }
 
 /**
@@ -30,10 +36,29 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
    */
   const { t } = useTranslation();
 
+  const alertContext = useContext(AlertContext);
+
   const onStepTwoInputChange = (inputName: string) => (
     event: ChangeEvent<HTMLInputElement>
   ) => {
     props.onStepTwoInputChange(inputName, event.target.value);
+  };
+
+  const saveAdministration = () => {
+    OrganizationRegistrationParams.decode(props.selectedAdministration).fold(
+      _ => {
+        alertContext.setAlert({
+          alertColor: "danger",
+          alertText: t("common.alerts.registrationWrongData"),
+          showAlert: true
+        });
+      },
+      rightResult => {
+        props.onSaveAdministration(
+          exact(OrganizationRegistrationParams).encode(rightResult)
+        );
+      }
+    );
   };
 
   return (
@@ -158,6 +183,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           color="primary"
                           className="w-50"
                           // TODO: add function to call API to save administration and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
+                          onClick={saveAdministration}
                         >
                           {t("common.buttons.confirm")}
                         </Button>

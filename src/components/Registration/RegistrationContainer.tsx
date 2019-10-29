@@ -22,6 +22,7 @@ import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
 import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepThree";
 import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
+import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
 import { TokenContext } from "../../context/token-context";
 
 export const RegistrationContainer = withRouter(props => {
@@ -34,6 +35,13 @@ export const RegistrationContainer = withRouter(props => {
    * Create window with custom element _env_ for environment variables
    */
   const customWindow = window as ICustomWindow;
+
+  const urlDomainPort =
+    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+    ":" +
+    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+
+  const contentType = "application/json";
 
   const tokenContext = useContext(TokenContext);
 
@@ -64,15 +72,11 @@ export const RegistrationContainer = withRouter(props => {
 
   const handleAdministrationSearch = (searchString: string) => {
     const url =
-      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-      ":" +
-      customWindow._env_.IO_ONBOARDING_PA_API_PORT +
-      `/public-administrations?search=${searchString}`;
+      urlDomainPort + `/public-administrations?search=${searchString}`;
     fetch(url, {
       headers: {
-        Accept: "application/json",
+        Accept: contentType,
         Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`
-        // 'Content-Type': 'application/json'
       },
       method: "GET"
     })
@@ -154,6 +158,30 @@ export const RegistrationContainer = withRouter(props => {
     );
   };
 
+  const saveAdministration = (
+    organizationRegistrationParams: OrganizationRegistrationParams
+  ) => {
+    const url = urlDomainPort + "/organizations";
+    fetch(url, {
+      body: JSON.stringify(organizationRegistrationParams),
+      headers: {
+        Accept: contentType,
+        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`,
+        "Content-Type": contentType
+      },
+      method: "POST"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(responseData => {
+        return responseData;
+      })
+      .catch(error => {
+        return error;
+      });
+  };
+
   const toggleConfirmationModal = () => {
     setShowConfirmModal((prevState: boolean) => !prevState);
   };
@@ -179,6 +207,7 @@ export const RegistrationContainer = withRouter(props => {
           <RegistrationStepTwo
             selectedAdministration={selectedAdministration}
             onStepTwoInputChange={handleStepTwoInputChange}
+            onSaveAdministration={saveAdministration}
           />
         );
       case "3":
