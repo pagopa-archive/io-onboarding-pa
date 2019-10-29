@@ -1,3 +1,4 @@
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { ChangeEvent, ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,6 +12,9 @@ import {
   Media,
   Row
 } from "reactstrap";
+import { FiscalCode } from "../../../../generated/definitions/api/FiscalCode";
+import { OrganizationRegistrationParams } from "../../../../generated/definitions/api/OrganizationRegistrationParams";
+import { OrganizationScopeEnum } from "../../../../generated/definitions/api/OrganizationScope";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
@@ -19,6 +23,9 @@ interface IRegistrationStepTwoProps {
     typeof SearchAdministrations
   >["selectedAdministration"];
   onStepTwoInputChange: (inputName: string, inputValue: string) => void;
+  onSaveAdministration: (
+    administrationToSave: OrganizationRegistrationParams
+  ) => void;
 }
 
 /**
@@ -34,6 +41,26 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
     event: ChangeEvent<HTMLInputElement>
   ) => {
     props.onStepTwoInputChange(inputName, event.target.value);
+  };
+
+  const saveAdministration = () => {
+    const administrationToSaveParams: OrganizationRegistrationParams = {
+      ipa_code: props.selectedAdministration.ipa_code as NonEmptyString,
+      legal_representative: {
+        family_name: props.selectedAdministration.legal_representative
+          .family_name as NonEmptyString,
+        fiscal_code: props.selectedAdministration.legal_representative
+          .fiscal_code as FiscalCode,
+        given_name: props.selectedAdministration.legal_representative
+          .given_name as NonEmptyString,
+        phone_number: props.selectedAdministration.legal_representative
+          .phone_number as NonEmptyString
+      },
+      scope: props.selectedAdministration.scope as OrganizationScopeEnum,
+      selected_pec_label: props.selectedAdministration
+        .selected_pec_label as NonEmptyString
+    };
+    props.onSaveAdministration(administrationToSaveParams);
   };
 
   return (
@@ -158,6 +185,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           color="primary"
                           className="w-50"
                           // TODO: add function to call API to save administration and to go to next step when available, see https://www.pivotaltracker.com/story/show/168752341
+                          onClick={saveAdministration}
                         >
                           {t("common.buttons.confirm")}
                         </Button>

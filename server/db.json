@@ -73,5 +73,16 @@
     "fiscal_code": "RSSMRA80A01H501U",
     "role": "ORG_DELEGATE",
     "work_email": "work-email@email.com"
+  },
+  "organizations": {
+    "ipa_code": "c_e043",
+    "legal_representative": {
+      "family_name": "Spano'",
+      "fiscal_code": "BCDFGH12A21Z123E",
+      "given_name": "Ignazio Alfonso",
+      "phone_number": "999999999"
+    },
+    "scope": "LOCAL",
+    "selected_pec_label": "2"
   }
 }
