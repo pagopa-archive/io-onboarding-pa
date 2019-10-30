@@ -6,7 +6,7 @@ import { Button, ButtonGroup, Col, Row } from "reactstrap";
 
 import "./RegistrationStepButtons.css";
 
-import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
+import { BackButton } from "../../BackButton/BackButton";
 
 interface IRegistrationStepButtonsProps
   extends RouteComponentProps<{ signUpStep: string }> {
@@ -68,16 +68,13 @@ export const RegistrationStepButtons = withRouter(
       <Col className="RegistrationStepButtons pl-4">
         <Row>
           <Col>
-            <Button
-              color="link"
-              className="btn-icon mt-5 pl-0"
-              onClick={goToRegistrationStep(previousStep)}
-            >
-              <svg className="icon icon-primary">
-                <use xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`} />
-              </svg>
-              <span>{t("common.buttons.back")}</span>
-            </Button>
+            <BackButton
+              path={
+                previousStep === 0 ? "/dashboard" : `/sign-up/${previousStep}`
+              }
+              text={t("common.buttons.back")}
+              additionalClasses={"mt-5 pl-0"}
+            />
           </Col>
         </Row>
         <Row>

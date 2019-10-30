@@ -102,10 +102,10 @@ const UserNameWithDropdown = withRouter((props: IUserNameWithDropdownProps) => {
         </DropdownToggle>
         <DropdownMenu right={true}>
           <DropdownItem onClick={navigateToProfile}>
-            {t("centralHeader.userMenu.profile")}
+            {t("common.buttons.profile")}
           </DropdownItem>
-          {/*TODO: add logout function*/}
-          <DropdownItem>{t("centralHeader.userMenu.logout")}</DropdownItem>
+          {/*TODO: add logout function - story https://www.pivotaltracker.com/story/show/169448479*/}
+          <DropdownItem>{t("common.buttons.logout")}</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     </Nav>

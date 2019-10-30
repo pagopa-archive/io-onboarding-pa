@@ -4,9 +4,13 @@ translation:
     buttons:
       back: "Torna indietro"
       backHome: "Torna alla home"
+      backDashboard: "Torna alla dashboard"
       cancel: "Annulla"
       confirm: "Conferma"
       search: "Ricerca"
+      profile: "Profilo"
+      logout: "Logout"
+      change: "Modifica"
     user:
       roles:
         delegate: "Delegato Ente"
@@ -28,9 +32,6 @@ translation:
   centralHeader:
     title: "Back-office"
     subtitle: "Gestisci il profilo del tuo ente su IO"
-    userMenu:
-      profile: "Profilo"
-      logout: "Logout"
   spidLogin:
     title: "Accedi con SPID"
     description:
@@ -86,3 +87,17 @@ translation:
         fcPlaceholder: "Inserisci il CF personale del legale rappresentante"
         phoneLabel: "Numero di telefono dell'ufficio del Legale Rappresentante"
         phonePlaceholder: "Inserisci il numero di telefono dell'ufficio"
+  userProfile:
+    title: "Il tuo profilo"
+    spidInfo:
+      title: "Informazioni personali del profilo SPID"
+      labels:
+        name: "Nome e Cognome"
+        email: "Email"
+        fc: "Codice Fiscale"
+    optionalInfo:
+      title: "Informazioni opzionali"
+      labels:
+        workMail: "Email di lavoro"
+      workMailUsageDescription: "Useremo questa email per contattarti in caso di bisogno."
+      noWorkMailDescription: "Se decidi di aggiungere un’email preferita di lavoro, useremo questa per contattarti in caso di bisogno."

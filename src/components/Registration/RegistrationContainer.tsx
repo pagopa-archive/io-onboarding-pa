@@ -56,6 +56,7 @@ export const RegistrationContainer = withRouter(props => {
       given_name: "",
       phone_number: ""
     },
+    links: [],
     name: "",
     pecs: {},
     scope: undefined,
@@ -107,6 +108,7 @@ export const RegistrationContainer = withRouter(props => {
               given_name: "",
               phone_number: ""
             },
+            links: [],
             name: "",
             pecs: {},
             scope: undefined,

@@ -10,7 +10,7 @@ import { Dashboard } from "../Dashboard/Dashboard";
 import { RegistrationContainer } from "../Registration/RegistrationContainer";
 import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
-import { UserSettings } from "../UserSettings/UserSettings";
+import { UserProfile as UserProfileComponent } from "../UserProfile/UserProfile";
 
 /**
  * part of Default Container state responsible of user profile entity
@@ -54,7 +54,9 @@ export const DefaultContainer = () => {
   const navigateToDashboard = (props: RouteComponentProps) => (
     <Dashboard {...props} onGetUserProfile={handleGetUserProfile} />
   );
-  const navigateToUserSettings = () => <UserSettings />;
+  const navigateToUserProfile = (props: RouteComponentProps) => (
+    <UserProfileComponent {...props} userProfile={userProfile} />
+  );
 
   return (
     <div className="DefaultContainer">
@@ -72,7 +74,7 @@ export const DefaultContainer = () => {
           component={RegistrationContainer}
         />
         <Route path="/dashboard" render={navigateToDashboard} />
-        <Route path="/profile" render={navigateToUserSettings} />
+        <Route path="/profile" render={navigateToUserProfile} />
       </div>
     </div>
   );
