@@ -33,3 +33,8 @@ h3 {
 .form-check [type=radio]+label {
   font-size: 16px;
 }
+
+.card:after {
+  margin: 0;
+  height: 0;
+}

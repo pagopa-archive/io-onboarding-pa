@@ -10,9 +10,8 @@ import {
   Container,
   Row
 } from "reactstrap";
+import { BackButton } from "../BackButton/BackButton";
 import { SpidLoginButton } from "./SpidLoginButton/SpidLoginButton";
-
-import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 
 import "./SpidLogin.css";
 
@@ -34,18 +33,11 @@ export const SpidLogin = withRouter(props => {
           <Col sm="2">
             <Row>
               <Col>
-                <Button
-                  color="link"
-                  className="btn-icon mt-4 pt-3 pl-4"
-                  onClick={navigateToHome}
-                >
-                  <svg className="icon icon-primary">
-                    <use
-                      xlinkHref={`${bootstrapItaliaImages}#it-chevron-left`}
-                    />
-                  </svg>
-                  <span>{t("common.buttons.back")}</span>
-                </Button>
+                <BackButton
+                  path="/home"
+                  text={t("common.buttons.back")}
+                  additionalClasses="mt-4 pt-3 pl-4"
+                />
               </Col>
             </Row>
           </Col>
