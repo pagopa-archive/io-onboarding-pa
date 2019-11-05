@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 
 interface IAddMailModalProps {
-  showAddMailModal: boolean;
+  isVisibleAddMailModal: boolean;
   toggleAddMailModal: () => void;
 }
 
@@ -40,7 +40,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
   };
 
   return (
-    <Modal isOpen={props.showAddMailModal} centered={true} size="lg">
+    <Modal isOpen={props.isVisibleAddMailModal} centered={true} size="lg">
       <ModalHeader>
         <p className="h4 pt-4 px-4">{t("common.modals.addMail.title")}</p>
       </ModalHeader>
@@ -94,7 +94,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
             <Button
               outline={true}
               color="secondary"
-              /*TODO: aggiungere chiamata al servizio per salvataggio mail sull'onClick - story https://www.pivotaltracker.com/story/show/168752431*/
+              /*TODO: add API call for profile update on click - story https://www.pivotaltracker.com/story/show/168752431*/
               onClick={props.toggleAddMailModal}
             >
               {t("common.buttons.skip")}
@@ -104,7 +104,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
             <Button
               color="primary"
               className="btn btn-primary"
-              /*TODO: aggiungere chiamata al servizio per salvataggio mail sull'onClick e attivazione tasto - stories https://www.pivotaltracker.com/story/show/168752431 e https://www.pivotaltracker.com/story/show/168752421*/
+              /*TODO: add API call for profile update on click and button activation - stories https://www.pivotaltracker.com/story/show/168752431 and https://www.pivotaltracker.com/story/show/168752421*/
               onClick={props.toggleAddMailModal}
             >
               {t("common.buttons.confirm")}

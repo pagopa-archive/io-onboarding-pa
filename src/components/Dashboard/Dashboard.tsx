@@ -20,9 +20,9 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
   /**
    * Create window with custom element _env_ for environment variables
    */
-  const customWindow = window as ICustomWindow;
+  const customWindow = (window as unknown) as ICustomWindow;
 
-  const [showAddMailmModal, setShowAddMailModal] = useState(false);
+  const [isVisibleAddMailModal, setIsVisibleAddMailModal] = useState(false);
 
   /**
    * Given a cookie key `cookieName`, returns the value of
@@ -84,7 +84,7 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
         .then(responseData => {
           props.onGetUserProfile(responseData);
           if (!responseData.work_email) {
-            setShowAddMailModal(true);
+            setIsVisibleAddMailModal(true);
           }
         })
         .catch(error => {
@@ -103,7 +103,7 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
    * Function to open/close add mail modal
    * */
   const toggleAddMailModal = () => {
-    setShowAddMailModal((prevState: boolean) => !prevState);
+    setIsVisibleAddMailModal((prevState: boolean) => !prevState);
   };
 
   return (
@@ -116,7 +116,7 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
         </Col>
       </Row>
       <AddMailModal
-        showAddMailModal={showAddMailmModal}
+        isVisibleAddMailModal={isVisibleAddMailModal}
         toggleAddMailModal={toggleAddMailModal}
       />
     </div>
