@@ -1,10 +1,11 @@
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Row } from "reactstrap";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { TokenContext } from "../../context/token-context";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
+import { AddMailModal } from "../Modal/AddMailModal";
 
 interface IDashboardProps extends RouteComponentProps {
   onGetUserProfile: (userProfile: UserProfile) => void;
@@ -19,7 +20,9 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
   /**
    * Create window with custom element _env_ for environment variables
    */
-  const customWindow = window as ICustomWindow;
+  const customWindow = (window as unknown) as ICustomWindow;
+
+  const [isVisibleAddMailModal, setIsVisibleAddMailModal] = useState(false);
 
   /**
    * Given a cookie key `cookieName`, returns the value of
@@ -80,6 +83,9 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
         })
         .then(responseData => {
           props.onGetUserProfile(responseData);
+          if (!responseData.work_email) {
+            setIsVisibleAddMailModal(true);
+          }
         })
         .catch(error => {
           // TODO: manage error in promise, tracked with story #169033467
@@ -93,6 +99,13 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
    */
   const navigateToSignUpStepOne = () => props.history.push("sign-up/1");
 
+  /*
+   * Function to open/close add mail modal
+   * */
+  const toggleAddMailModal = () => {
+    setIsVisibleAddMailModal((prevState: boolean) => !prevState);
+  };
+
   return (
     <div className="Dashboard">
       <Row>
@@ -102,6 +115,10 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
           </Button>
         </Col>
       </Row>
+      <AddMailModal
+        isVisibleAddMailModal={isVisibleAddMailModal}
+        toggleAddMailModal={toggleAddMailModal}
+      />
     </div>
   );
 });

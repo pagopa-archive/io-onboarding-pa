@@ -11,6 +11,7 @@ translation:
       profile: "Profilo"
       logout: "Logout"
       change: "Modifica"
+      skip: "Salta questo passaggio"
     user:
       roles:
         delegate: "Delegato Ente"
@@ -21,6 +22,13 @@ translation:
         admin: "Amministratore"
     alerts:
       registrationWrongData: "C'è stato qualche problema nel registrare il tuo ente, per favore ricontrolla i dati inseriti"
+    modals:
+      addMail:
+        title: "Aggiungi un'email di lavoro"
+        text: "Abbiamo salvato i tuoi dati personali dal login con SPID. Se vuoi aggiungere un’email di lavoro, useremo quella come prioritaria per contattarti in caso di bisogno e inviarti le comunicazioni ufficiali."
+        inputs:
+          newMailLabel: "E-mail di lavoro"
+          confirmNewMailLabel: "Ripeti l'e-mail di lavoro"
   home:
     title: "IO Back-office"
     profileSelect: "Seleziona il profilo con cui vuoi accedere al back-office."

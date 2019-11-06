@@ -34,7 +34,7 @@ export const RegistrationContainer = withRouter(props => {
   /**
    * Create window with custom element _env_ for environment variables
    */
-  const customWindow = window as ICustomWindow;
+  const customWindow = (window as unknown) as ICustomWindow;
 
   const urlDomainPort =
     customWindow._env_.IO_ONBOARDING_PA_API_HOST +
@@ -63,7 +63,7 @@ export const RegistrationContainer = withRouter(props => {
     selected_pec_label: ""
   };
 
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [isVisibleConfirmModal, setIsVisibleConfirmModal] = useState(false);
 
   const [administrations, setAdministrations] = useState([]);
 
@@ -185,7 +185,7 @@ export const RegistrationContainer = withRouter(props => {
   };
 
   const toggleConfirmationModal = () => {
-    setShowConfirmModal((prevState: boolean) => !prevState);
+    setIsVisibleConfirmModal((prevState: boolean) => !prevState);
   };
 
   const navigateToDashboard = () => props.history.push("/dashboard");
@@ -259,7 +259,7 @@ export const RegistrationContainer = withRouter(props => {
           </Col>
         </Row>
       </Container>
-      <Modal isOpen={showConfirmModal} toggle={toggleConfirmationModal}>
+      <Modal isOpen={isVisibleConfirmModal} toggle={toggleConfirmationModal}>
         <ModalHeader toggle={toggleConfirmationModal}>
           {t("signUp.backModal.title")}
         </ModalHeader>

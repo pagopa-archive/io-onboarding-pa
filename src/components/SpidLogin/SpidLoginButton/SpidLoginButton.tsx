@@ -22,7 +22,7 @@ export const SpidLoginButton = withRouter(() => {
   /**
    * Create window with custom element _env_ for environment variables
    */
-  const customWindow = window as ICustomWindow;
+  const customWindow = (window as unknown) as ICustomWindow;
 
   /**
    * Initial state for spidButton (dropdown closed)
