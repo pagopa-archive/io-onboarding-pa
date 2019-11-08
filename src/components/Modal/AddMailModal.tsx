@@ -148,7 +148,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
               color="secondary"
               onClick={updateUserMail(
                 props.spidMail,
-                t("common.alerts.skipMailSet")
+                t("common.alerts.setMailWithSpidMail")
               )}
             >
               {t("common.buttons.skip")}
@@ -159,7 +159,10 @@ export const AddMailModal = (props: IAddMailModalProps) => {
               color="primary"
               className="btn btn-primary"
               disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
-              onClick={updateUserMail(newMail, t("common.alerts.newMailSet"))}
+              onClick={updateUserMail(
+                newMail,
+                t("common.alerts.setMailWithNewMail")
+              )}
             >
               {t("common.buttons.confirm")}
             </Button>
