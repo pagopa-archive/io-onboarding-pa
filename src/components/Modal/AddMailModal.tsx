@@ -22,7 +22,8 @@ import { ICustomWindow } from "../../customTypes/CustomWindow";
 interface IAddMailModalProps {
   isVisibleAddMailModal: boolean;
   toggleAddMailModal: () => void;
-  spidMail: string;
+  spidMail: EmailAddress;
+  workMail?: EmailAddress;
   onWorkMailSet: (newUserMail: EmailAddress) => void;
 }
 
@@ -52,6 +53,19 @@ export const AddMailModal = (props: IAddMailModalProps) => {
 
   const [newMail, setNewMail] = useState("");
   const [confirmMail, setConfirmMail] = useState("");
+
+  /*
+   * Boolean variable to check if a work email different from spid one is already set
+   * */
+  const isWorkMailNotSet = !props.workMail || props.workMail === props.spidMail;
+
+  /*
+   * If a work mail different from spid one is already set, user in changing work email
+   * otherwise is adding work mail
+   * */
+  const workMailOperationType = isWorkMailNotSet
+    ? "addWorkMail"
+    : "changeWorkMail";
 
   const onChangeNewMailInput = (event: ChangeEvent<HTMLInputElement>) => {
     setNewMail(event.target.value);
@@ -85,6 +99,8 @@ export const AddMailModal = (props: IAddMailModalProps) => {
           alertText: alertMessage,
           showAlert: true
         });
+        setNewMail("");
+        setConfirmMail("");
       })
       .catch(error => {
         return error;
@@ -94,10 +110,14 @@ export const AddMailModal = (props: IAddMailModalProps) => {
   return (
     <Modal isOpen={props.isVisibleAddMailModal} centered={true} size="lg">
       <ModalHeader>
-        <p className="h4 pt-4 px-4">{t("common.modals.addMail.title")}</p>
+        <p className="h4 pt-4 px-4">
+          {t(`common.modals.${workMailOperationType}.title`)}
+        </p>
       </ModalHeader>
       <ModalBody className="pt-4">
-        <p className="px-4">{t("common.modals.addMail.text")}</p>
+        <p className="px-4">
+          {t(`common.modals.${workMailOperationType}.text`)}
+        </p>
         <Form
           action=""
           method="post"
@@ -107,7 +127,9 @@ export const AddMailModal = (props: IAddMailModalProps) => {
           <FormGroup row={true}>
             <Col sm="4 pl-0">
               <Label htmlFor="new_mail-input">
-                {t("common.modals.addMail.inputs.newMailLabel")}
+                {t(
+                  `common.modals.${workMailOperationType}.inputs.newMailLabel`
+                )}
               </Label>
             </Col>
             <Col sm="7">
@@ -124,7 +146,9 @@ export const AddMailModal = (props: IAddMailModalProps) => {
           <FormGroup row={true}>
             <Col sm="4 pl-0">
               <Label htmlFor="confirm_mail-input">
-                {t("common.modals.addMail.inputs.confirmNewMailLabel")}
+                {t(
+                  `common.modals.${workMailOperationType}.inputs.confirmNewMailLabel`
+                )}
               </Label>
             </Col>
             <Col sm="7">
@@ -146,12 +170,18 @@ export const AddMailModal = (props: IAddMailModalProps) => {
             <Button
               outline={true}
               color="secondary"
-              onClick={updateUserMail(
-                props.spidMail,
-                t("common.alerts.setMailWithSpidMail")
-              )}
+              onClick={
+                isWorkMailNotSet
+                  ? updateUserMail(
+                      props.spidMail,
+                      t("common.alerts.setMailWithSpidMail")
+                    )
+                  : props.toggleAddMailModal
+              }
             >
-              {t("common.buttons.skip")}
+              {isWorkMailNotSet
+                ? t("common.buttons.skip")
+                : t("common.buttons.cancel")}
             </Button>
           </Col>
           <Col sm="6" className="text-right">
@@ -161,7 +191,11 @@ export const AddMailModal = (props: IAddMailModalProps) => {
               disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
               onClick={updateUserMail(
                 newMail,
-                t("common.alerts.setMailWithNewMail")
+                `${t("common.alerts.setMailWithNewMail")} ${
+                  isWorkMailNotSet
+                    ? t("common.alerts.setMailWithNewMailAdditionalInfo")
+                    : ""
+                }`
               )}
             >
               {t("common.buttons.confirm")}

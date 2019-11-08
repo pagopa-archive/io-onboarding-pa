@@ -2,6 +2,7 @@
 translation:
   common:
     buttons:
+      add: "Aggiungi"
       back: "Torna indietro"
       backHome: "Torna alla home"
       backDashboard: "Torna alla dashboard"
@@ -23,14 +24,21 @@ translation:
     alerts:
       registrationWrongData: "C'è stato qualche problema nel registrare il tuo ente, per favore ricontrolla i dati inseriti"
       setMailWithSpidMail: "Continuerai a ricevere le comunicazioni sulla mail di login SPID. Potrai cambiare la mail successivamente nella sezione profilo in alto a destra."
-      setMailWithNewMail: "L’email è stata aggiornata con successo. Puoi controllare le informazioni di contatto nella sezione profilo in alto a destra."
+      setMailWithNewMail: "L’email è stata aggiornata con successo."
+      setMailWithNewMailAdditionalInfo: "Puoi controllare le informazioni di contatto nella sezione profilo in alto a destra."
     modals:
-      addMail:
+      addWorkMail:
         title: "Aggiungi un'email di lavoro"
         text: "Abbiamo salvato i tuoi dati personali dal login con SPID. Se vuoi aggiungere un’email di lavoro, useremo quella come prioritaria per contattarti in caso di bisogno e inviarti le comunicazioni ufficiali."
         inputs:
-          newMailLabel: "E-mail di lavoro"
-          confirmNewMailLabel: "Ripeti l'e-mail di lavoro"
+          newMailLabel: "Email di lavoro"
+          confirmNewMailLabel: "Ripeti l'email di lavoro"
+      changeWorkMail:
+        title: "Modifica la email di lavoro"
+        text: "Inserisci qui sotto la nuova email di lavoro, poi clicca su Conferma per effettuare la modifica."
+        inputs:
+          newMailLabel: "Nuova email di lavoro"
+          confirmNewMailLabel: "Ripeti la nuova email di lavoro"
   home:
     title: "IO Back-office"
     profileSelect: "Seleziona il profilo con cui vuoi accedere al back-office."
