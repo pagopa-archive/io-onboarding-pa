@@ -51,8 +51,22 @@ export const DefaultContainer = () => {
     setUserProfile(newUserProfile);
   };
 
+  /*
+   * Handle work mail set from modal and profile
+   * */
+  const handleWorkMailSet = (newWorkMail: EmailAddress) => {
+    setUserProfile((prevState: UserProfile) => {
+      return { ...prevState, work_email: newWorkMail };
+    });
+  };
+
   const navigateToDashboard = (props: RouteComponentProps) => (
-    <Dashboard {...props} onGetUserProfile={handleGetUserProfile} />
+    <Dashboard
+      {...props}
+      onGetUserProfile={handleGetUserProfile}
+      spidMail={userProfile.email}
+      onWorkMailSet={handleWorkMailSet}
+    />
   );
   const navigateToUserProfile = (props: RouteComponentProps) => (
     <UserProfileComponent {...props} userProfile={userProfile} />

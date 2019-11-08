@@ -22,6 +22,8 @@ translation:
         admin: "Amministratore"
     alerts:
       registrationWrongData: "C'è stato qualche problema nel registrare il tuo ente, per favore ricontrolla i dati inseriti"
+      skipMailSet: "Continuerai a ricevere le comunicazioni sulla mail di login SPID. Potrai cambiare la mail successivamente nella sezione profilo in alto a destra."
+      newMailSet: "L’email è stata aggiornata con successo. Puoi controllare le informazioni di contatto nella sezione profilo in alto a destra."
     modals:
       addMail:
         title: "Aggiungi un'email di lavoro"
