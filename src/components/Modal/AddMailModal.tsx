@@ -61,7 +61,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
     setConfirmMail(event.target.value);
   };
 
-  const updateUserMail = (newUserMail: string, isSpidMail: boolean) => (
+  const updateUserMail = (newUserMail: string, alertMessage: string) => (
     _: MouseEvent
   ) => {
     const url = urlDomainPort + `/profile`;
@@ -82,9 +82,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
         props.toggleAddMailModal();
         alertContext.setAlert({
           alertColor: "info",
-          alertText: isSpidMail
-            ? t("common.alerts.skipMailSet")
-            : t("common.alerts.newMailSet"),
+          alertText: alertMessage,
           showAlert: true
         });
       })
@@ -148,7 +146,10 @@ export const AddMailModal = (props: IAddMailModalProps) => {
             <Button
               outline={true}
               color="secondary"
-              onClick={updateUserMail(props.spidMail, true)}
+              onClick={updateUserMail(
+                props.spidMail,
+                t("common.alerts.skipMailSet")
+              )}
             >
               {t("common.buttons.skip")}
             </Button>
@@ -158,7 +159,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
               color="primary"
               className="btn btn-primary"
               disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
-              onClick={updateUserMail(newMail, false)}
+              onClick={updateUserMail(newMail, t("common.alerts.newMailSet"))}
             >
               {t("common.buttons.confirm")}
             </Button>
