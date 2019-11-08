@@ -1,5 +1,5 @@
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, MouseEvent, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -14,10 +14,16 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
+import { AlertContext } from "../../context/alert-context";
+import { TokenContext } from "../../context/token-context";
+import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 interface IAddMailModalProps {
   isVisibleAddMailModal: boolean;
   toggleAddMailModal: () => void;
+  spidMail: string;
+  onWorkMailSet: (newUserMail: EmailAddress) => void;
 }
 
 /*
@@ -29,6 +35,21 @@ export const AddMailModal = (props: IAddMailModalProps) => {
    */
   const { t } = useTranslation();
 
+  /**
+   * Create window with custom element _env_ for environment variables
+   */
+  const customWindow = (window as unknown) as ICustomWindow;
+
+  const urlDomainPort =
+    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+    ":" +
+    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+
+  const contentType = "application/json";
+
+  const tokenContext = useContext(TokenContext);
+  const alertContext = useContext(AlertContext);
+
   const [newMail, setNewMail] = useState("");
   const [confirmMail, setConfirmMail] = useState("");
 
@@ -38,6 +59,36 @@ export const AddMailModal = (props: IAddMailModalProps) => {
 
   const onChangeConfirmMailInput = (event: ChangeEvent<HTMLInputElement>) => {
     setConfirmMail(event.target.value);
+  };
+
+  const updateUserMail = (newUserMail: string, alertMessage: string) => (
+    _: MouseEvent
+  ) => {
+    const url = urlDomainPort + `/profile`;
+    fetch(url, {
+      body: JSON.stringify({ work_email: newUserMail as EmailAddress }),
+      headers: {
+        Accept: contentType,
+        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`,
+        "Content-Type": contentType
+      },
+      method: "PUT"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(() => {
+        props.onWorkMailSet(newUserMail as EmailAddress);
+        props.toggleAddMailModal();
+        alertContext.setAlert({
+          alertColor: "info",
+          alertText: alertMessage,
+          showAlert: true
+        });
+      })
+      .catch(error => {
+        return error;
+      });
   };
 
   return (
@@ -95,8 +146,10 @@ export const AddMailModal = (props: IAddMailModalProps) => {
             <Button
               outline={true}
               color="secondary"
-              /*TODO: add API call for profile update on click - story https://www.pivotaltracker.com/story/show/168752431*/
-              onClick={props.toggleAddMailModal}
+              onClick={updateUserMail(
+                props.spidMail,
+                t("common.alerts.setMailWithSpidMail")
+              )}
             >
               {t("common.buttons.skip")}
             </Button>
@@ -106,8 +159,10 @@ export const AddMailModal = (props: IAddMailModalProps) => {
               color="primary"
               className="btn btn-primary"
               disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
-              /*TODO: add API call for profile update on click - story https://www.pivotaltracker.com/story/show/168752431*/
-              onClick={props.toggleAddMailModal}
+              onClick={updateUserMail(
+                newMail,
+                t("common.alerts.setMailWithNewMail")
+              )}
             >
               {t("common.buttons.confirm")}
             </Button>

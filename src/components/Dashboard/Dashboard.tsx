@@ -2,6 +2,7 @@ import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Row } from "reactstrap";
+import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { TokenContext } from "../../context/token-context";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
@@ -9,6 +10,8 @@ import { AddMailModal } from "../Modal/AddMailModal";
 
 interface IDashboardProps extends RouteComponentProps {
   onGetUserProfile: (userProfile: UserProfile) => void;
+  spidMail: string;
+  onWorkMailSet: (newWorkMail: EmailAddress) => void;
 }
 
 /**
@@ -106,6 +109,10 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
     setIsVisibleAddMailModal((prevState: boolean) => !prevState);
   };
 
+  const onWorkMailSet = (newWorkMail: EmailAddress) => {
+    props.onWorkMailSet(newWorkMail);
+  };
+
   return (
     <div className="Dashboard">
       <Row>
@@ -118,6 +125,8 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
       <AddMailModal
         isVisibleAddMailModal={isVisibleAddMailModal}
         toggleAddMailModal={toggleAddMailModal}
+        spidMail={props.spidMail}
+        onWorkMailSet={onWorkMailSet}
       />
     </div>
   );
