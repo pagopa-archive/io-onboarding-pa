@@ -106,7 +106,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
               color="primary"
               className="btn btn-primary"
               disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
-              /*TODO: add API call for profile update on click and button activation - stories https://www.pivotaltracker.com/story/show/168752431 and https://www.pivotaltracker.com/story/show/168752421*/
+              /*TODO: add API call for profile update on click - story https://www.pivotaltracker.com/story/show/168752431*/
               onClick={props.toggleAddMailModal}
             >
               {t("common.buttons.confirm")}
