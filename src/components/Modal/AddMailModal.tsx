@@ -1,3 +1,4 @@
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { ChangeEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -104,7 +105,8 @@ export const AddMailModal = (props: IAddMailModalProps) => {
             <Button
               color="primary"
               className="btn btn-primary"
-              /*TODO: add API call for profile update on click and button activation - stories https://www.pivotaltracker.com/story/show/168752431 and https://www.pivotaltracker.com/story/show/168752421*/
+              disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
+              /*TODO: add API call for profile update on click - story https://www.pivotaltracker.com/story/show/168752431*/
               onClick={props.toggleAddMailModal}
             >
               {t("common.buttons.confirm")}
