@@ -8,12 +8,15 @@ import "./i18n";
 
 import { App } from "./App";
 import { AlertContextProvider } from "./context/alert-context";
+import { LoadingPageContextProvider } from "./context/loading-page-context";
 import { TokenContextProvider } from "./context/token-context";
 
 const app = (
   <TokenContextProvider>
     <AlertContextProvider>
-      <App />
+      <LoadingPageContextProvider>
+        <App />
+      </LoadingPageContextProvider>
     </AlertContextProvider>
   </TokenContextProvider>
 );

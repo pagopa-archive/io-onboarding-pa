@@ -22,7 +22,7 @@ export const AlertContext = createContext<IAlertContext>({
 });
 
 /**
- * Token context provider component to use token in the app
+ * Alert context provider component to use alert in the app
  */
 export const AlertContextProvider = (props: { children: ReactNode }) => {
   const [alert, setAlert] = useState({

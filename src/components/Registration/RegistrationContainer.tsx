@@ -23,7 +23,10 @@ import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepT
 import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
+import { LoadingPageContext } from "../../context/loading-page-context";
 import { TokenContext } from "../../context/token-context";
+
+import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 
 export const RegistrationContainer = withRouter(props => {
   /**
@@ -44,6 +47,8 @@ export const RegistrationContainer = withRouter(props => {
   const contentType = "application/json";
 
   const tokenContext = useContext(TokenContext);
+
+  const loadingModalContext = useContext(LoadingPageContext);
 
   const initialSelectedAdministration: ComponentProps<
     typeof RegistrationStepOne
@@ -182,6 +187,14 @@ export const RegistrationContainer = withRouter(props => {
       .catch(error => {
         return error;
       });
+    loadingModalContext.setLoadingPage({
+      image: documentCreationLoadingPageImage,
+      isButtonVisible: false,
+      isLoadingBarVisible: true,
+      text: t("loadingPages.documentsCreation.text"),
+      title: t("loadingPages.documentsCreation.title")
+    });
+    props.history.push("/creating-docs");
   };
 
   const toggleConfirmationModal = () => {
