@@ -59,10 +59,8 @@ export const AddMailModal = (props: IAddMailModalProps) => {
    * */
   const isWorkMailNotSet = !props.workMail || props.workMail === props.spidMail;
 
-  /*
-   * If a work mail different from spid one is already set, user in changing work email
-   * otherwise is adding work mail
-   * */
+  // If a work mail different from spid one is already set, user in changing work email
+  // otherwise is adding work mail
   const workMailOperationType = isWorkMailNotSet
     ? "addWorkMail"
     : "changeWorkMail";
