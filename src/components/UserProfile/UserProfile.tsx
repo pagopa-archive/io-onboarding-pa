@@ -14,6 +14,7 @@ import { BackButton } from "../BackButton/BackButton";
 
 interface IUserProfileProps {
   userProfile: UserProfileType;
+  toggleAddMailModal: () => void;
 }
 
 /**
@@ -130,9 +131,16 @@ export const UserProfile = (props: IUserProfileProps) => {
                       </Row>
                       <Row>
                         <Col className="mt-4">
-                          <Button color="primary">
+                          <Button
+                            color="primary"
+                            onClick={props.toggleAddMailModal}
+                          >
                             {/*TODO: add change mail function - story https://www.pivotaltracker.com/story/show/168752431*/}
-                            {t("common.buttons.change")}
+                            {!props.userProfile.work_email ||
+                            props.userProfile.email ===
+                              props.userProfile.work_email
+                              ? t("common.buttons.add")
+                              : t("common.buttons.change")}
                           </Button>
                         </Col>
                       </Row>

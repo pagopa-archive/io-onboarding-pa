@@ -7,6 +7,7 @@ import { UserRole } from "../../../generated/definitions/api/UserRole";
 import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
+import { AddMailModal } from "../Modal/AddMailModal";
 import { RegistrationContainer } from "../Registration/RegistrationContainer";
 import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
@@ -44,6 +45,8 @@ export const DefaultContainer = () => {
     IDefaultContainerUserProfileState
   >(initialUserProfile);
 
+  const [isVisibleAddMailModal, setIsVisibleAddMailModal] = useState(false);
+
   /*
    * Handle response from getUserProfile
    * */
@@ -60,16 +63,29 @@ export const DefaultContainer = () => {
     });
   };
 
+  /*
+   * Function to open/close add mail modal
+   * */
+  const toggleAddMailModal = () => {
+    setIsVisibleAddMailModal((prevState: boolean) => !prevState);
+  };
+
   const navigateToDashboard = (props: RouteComponentProps) => (
     <Dashboard
       {...props}
       onGetUserProfile={handleGetUserProfile}
       spidMail={userProfile.email}
       onWorkMailSet={handleWorkMailSet}
+      toggleAddMailModal={toggleAddMailModal}
     />
   );
+
   const navigateToUserProfile = (props: RouteComponentProps) => (
-    <UserProfileComponent {...props} userProfile={userProfile} />
+    <UserProfileComponent
+      {...props}
+      userProfile={userProfile}
+      toggleAddMailModal={toggleAddMailModal}
+    />
   );
 
   return (
@@ -90,6 +106,13 @@ export const DefaultContainer = () => {
         <Route path="/dashboard" render={navigateToDashboard} />
         <Route path="/profile" render={navigateToUserProfile} />
       </div>
+      <AddMailModal
+        isVisibleAddMailModal={isVisibleAddMailModal}
+        toggleAddMailModal={toggleAddMailModal}
+        spidMail={userProfile.email}
+        workMail={userProfile.work_email}
+        onWorkMailSet={handleWorkMailSet}
+      />
     </div>
   );
 };
