@@ -1,13 +1,17 @@
 import React, { createContext, ReactNode, useState } from "react";
 
-interface ILoadingPage {
+interface ILoadingPageOptionals {
   image: string;
   title: string;
   text: string;
   isLoadingBarVisible: boolean;
   isButtonVisible: boolean;
-  buttonText?: string;
-  buttonFunction?: () => void;
+  buttonText: string;
+  buttonFunction: () => void;
+}
+
+interface ILoadingPage extends Partial<ILoadingPageOptionals> {
+  isVisible: boolean;
 }
 
 interface ILoadingPageContext {
@@ -20,11 +24,7 @@ interface ILoadingPageContext {
  */
 export const LoadingPageContext = createContext<ILoadingPageContext>({
   loadingPage: {
-    image: "",
-    isButtonVisible: false,
-    isLoadingBarVisible: false,
-    text: "",
-    title: ""
+    isVisible: false
   },
   setLoadingPage: () => {
     return;
@@ -36,11 +36,7 @@ export const LoadingPageContext = createContext<ILoadingPageContext>({
  */
 export const LoadingPageContextProvider = (props: { children: ReactNode }) => {
   const [loadingPage, setLoadingPage] = useState({
-    image: "",
-    isButtonVisible: false,
-    isLoadingBarVisible: false,
-    text: "",
-    title: ""
+    isVisible: false
   });
 
   return (

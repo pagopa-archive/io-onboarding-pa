@@ -6,7 +6,7 @@ import { LoadingPageContext } from "../../context/loading-page-context";
 import "./LoadingPage.css";
 
 /**
- * Progress bar
+ * Progress bar (visible in pages shown to wait for an operation to be completed)
  */
 export const LoadingPageProgressBar = () => {
   return (
@@ -22,7 +22,7 @@ export const LoadingPageProgressBar = () => {
 };
 
 /**
- * Button
+ * Button (visible in pages shown to inform user and prompt for a confirmation)
  */
 export const LoadingPageButton = () => {
   const loadingPageContext = useContext(LoadingPageContext);

@@ -48,7 +48,7 @@ export const RegistrationContainer = withRouter(props => {
 
   const tokenContext = useContext(TokenContext);
 
-  const loadingModalContext = useContext(LoadingPageContext);
+  const loadingPageContext = useContext(LoadingPageContext);
 
   const initialSelectedAdministration: ComponentProps<
     typeof RegistrationStepOne
@@ -187,14 +187,14 @@ export const RegistrationContainer = withRouter(props => {
       .catch(error => {
         return error;
       });
-    loadingModalContext.setLoadingPage({
+    loadingPageContext.setLoadingPage({
       image: documentCreationLoadingPageImage,
       isButtonVisible: false,
       isLoadingBarVisible: true,
+      isVisible: true,
       text: t("loadingPages.documentsCreation.text"),
       title: t("loadingPages.documentsCreation.title")
     });
-    props.history.push("/creating-docs");
   };
 
   const toggleConfirmationModal = () => {
