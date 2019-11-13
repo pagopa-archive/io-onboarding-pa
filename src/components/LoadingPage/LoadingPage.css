@@ -1,0 +1,10 @@
+.LoadingPage {
+    text-align: center;
+    z-index: 1040;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.LoadingPage .custom-background-container {
+    background-image: linear-gradient(270deg, #0066CC 26%, #0C00D3 78%);
+}
