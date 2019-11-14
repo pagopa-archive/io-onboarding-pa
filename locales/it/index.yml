@@ -27,6 +27,7 @@ translation:
       setMailWithSpidMail: "Continuerai a ricevere le comunicazioni sulla email di login SPID. Potrai cambiare la email successivamente nella sezione profilo in alto a destra."
       setMailWithNewMail: "L’email è stata aggiornata con successo."
       setMailWithNewMailAdditionalInfo: "Puoi controllare le informazioni di contatto nella sezione profilo in alto a destra."
+      documentsSent: "Il tuo ente è in attesa di essere confermato dal Legale Rappresentante e verificato da PagoPA SpA. Senza la firma del Legale Rappresentante non possiamo generare il profilo ente sul Backoffice, ricordagli di aprire la mail, firmare i documenti e inviarli all’indirizzo digitale indicato nella mail."
     modals:
       addWorkMail:
         title: "Aggiungi un'email di lavoro"
