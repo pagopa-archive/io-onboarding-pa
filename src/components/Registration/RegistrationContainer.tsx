@@ -1,7 +1,7 @@
 import React, { ComponentProps, Fragment, useContext } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import {
   Button,
   Col,
@@ -24,285 +24,319 @@ import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import { TokenContext } from "../../context/token-context";
 
+import { useCookies } from "react-cookie";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 
-export const RegistrationContainer = withRouter(props => {
-  /**
-   * react-i18next translation hook
-   */
-  const { t } = useTranslation();
+interface IRegistrationContainerProps
+  extends RouteComponentProps<{ signUpStep: string }> {
+  userFiscalCode: string;
+}
 
-  /**
-   * Create window with custom element _env_ for environment variables
-   */
-  const customWindow = (window as unknown) as ICustomWindow;
+export const RegistrationContainer = withRouter(
+  (props: IRegistrationContainerProps) => {
+    /**
+     * react-i18next translation hook
+     */
+    const { t } = useTranslation();
 
-  const urlDomainPort =
-    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-    ":" +
-    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+    /**
+     * Create window with custom element _env_ for environment variables
+     */
+    const customWindow = (window as unknown) as ICustomWindow;
 
-  const contentType = "application/json";
+    const urlDomainPort =
+      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+      ":" +
+      customWindow._env_.IO_ONBOARDING_PA_API_PORT;
 
-  const tokenContext = useContext(TokenContext);
+    const contentType = "application/json";
 
-  const loadingPageContext = useContext(LoadingPageContext);
+    const [cookies] = useCookies(["sessionToken"]);
 
-  const initialSelectedAdministration: ComponentProps<
-    typeof RegistrationStepOne
-  >["selectedAdministration"] = {
-    fiscal_code: "" as OrganizationFiscalCode,
-    ipa_code: "",
-    legal_representative: {
-      family_name: "",
-      fiscal_code: "" as FiscalCode,
-      given_name: "",
-      phone_number: ""
-    },
-    links: [],
-    name: "",
-    pecs: {},
-    scope: undefined,
-    selected_pec_label: ""
-  };
+    const loadingPageContext = useContext(LoadingPageContext);
 
-  const [isVisibleConfirmModal, setIsVisibleConfirmModal] = useState(false);
-
-  const [administrations, setAdministrations] = useState([]);
-
-  const [selectedAdministration, setSelectedAdministration] = useState({
-    ...initialSelectedAdministration
-  });
-
-  const handleAdministrationSearch = (searchString: string) => {
-    const url =
-      urlDomainPort + `/public-administrations?search=${searchString}`;
-    fetch(url, {
-      headers: {
-        Accept: contentType,
-        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`
+    const initialSelectedAdministration: ComponentProps<
+      typeof RegistrationStepOne
+    >["selectedAdministration"] = {
+      fiscal_code: "" as OrganizationFiscalCode,
+      ipa_code: "",
+      legal_representative: {
+        family_name: "",
+        fiscal_code: "" as FiscalCode,
+        given_name: "",
+        phone_number: ""
       },
-      method: "GET"
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        setAdministrations(responseData.administrations);
-      })
-      .catch(error => {
-        return error;
-      });
-  };
+      links: [],
+      name: "",
+      pecs: {},
+      scope: undefined,
+      selected_pec_label: ""
+    };
 
-  const handleAdministrationSelected = (
-    event: ReadonlyArray<
-      ComponentProps<typeof RegistrationStepOne>["selectedAdministration"]
-    >
-  ) => {
-    const newAdministration =
-      event.length === 0
-        ? {
-            fiscal_code: "" as OrganizationFiscalCode,
-            ipa_code: "",
-            legal_representative: {
-              family_name: "",
-              fiscal_code: "" as FiscalCode,
-              given_name: "",
-              phone_number: ""
-            },
-            links: [],
-            name: "",
-            pecs: {},
-            scope: undefined,
-            selected_pec_label: ""
-          }
-        : event[0];
-    setSelectedAdministration(newAdministration);
-  };
+    const [isVisibleConfirmModal, setIsVisibleConfirmModal] = useState(false);
 
-  const handlePecCheckboxChange = (selectedPecLabel: string) => {
-    setSelectedAdministration(
-      (
-        prevState: ComponentProps<
-          typeof RegistrationStepOne
-        >["selectedAdministration"]
-      ) => {
-        return { ...prevState, selected_pec_label: selectedPecLabel };
-      }
-    );
-  };
+    const [administrations, setAdministrations] = useState([]);
 
-  const handleScopeCheckboxChange = (selectedScope: OrganizationScope) => {
-    setSelectedAdministration(
-      (
-        prevState: ComponentProps<
-          typeof RegistrationStepOne
-        >["selectedAdministration"]
-      ) => {
-        return { ...prevState, scope: selectedScope };
-      }
-    );
-  };
-
-  const handleStepTwoInputChange = (inputName: string, inputValue: string) => {
-    setSelectedAdministration(
-      (
-        prevState: ComponentProps<
-          typeof RegistrationStepOne
-        >["selectedAdministration"]
-      ) => {
-        return {
-          ...prevState,
-          legal_representative: {
-            ...prevState.legal_representative,
-            [inputName]: inputValue
-          }
-        };
-      }
-    );
-  };
-
-  const saveAdministration = (
-    organizationRegistrationParams: OrganizationRegistrationParams
-  ) => {
-    const url = urlDomainPort + "/organizations";
-    fetch(url, {
-      body: JSON.stringify(organizationRegistrationParams),
-      headers: {
-        Accept: contentType,
-        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`,
-        "Content-Type": contentType
-      },
-      method: "POST"
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        return responseData;
-      })
-      .catch(error => {
-        return error;
-      });
-    loadingPageContext.setLoadingPage({
-      image: documentCreationLoadingPageImage,
-      isButtonVisible: false,
-      isLoadingBarVisible: true,
-      isVisible: true,
-      text: t("loadingPages.documentsCreation.text"),
-      title: t("loadingPages.documentsCreation.title")
+    const [selectedAdministration, setSelectedAdministration] = useState({
+      ...initialSelectedAdministration
     });
-  };
 
-  const toggleConfirmationModal = () => {
-    setIsVisibleConfirmModal((prevState: boolean) => !prevState);
-  };
+    const [
+      isViewedDocumentsCheckboxChecked,
+      setIsViewedDocumentsCheckboxChecked
+    ] = useState(false);
 
-  const navigateToDashboard = () => props.history.push("/dashboard");
+    const handleAdministrationSearch = (searchString: string) => {
+      const url =
+        urlDomainPort + `/public-administrations?search=${searchString}`;
+      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
+      fetch(url, {
+        headers: {
+          Accept: contentType,
+          Authorization: `Bearer ${cookies.sessionToken}`
+        },
+        method: "GET"
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(responseData => {
+          setAdministrations(responseData.administrations);
+        })
+        .catch(error => {
+          return error;
+        });
+    };
 
-  const registrationBody = (step => {
-    switch (step) {
-      case "1":
-        return (
-          <RegistrationStepOne
-            onPecCheckboxChange={handlePecCheckboxChange}
-            onScopeCheckboxChange={handleScopeCheckboxChange}
-            administrations={administrations}
-            onAdministrationSearch={handleAdministrationSearch}
-            onAdministrationSelected={handleAdministrationSelected}
-            selectedAdministration={selectedAdministration}
-            openConfirmModal={toggleConfirmationModal}
-          />
-        );
-      case "2":
-        return (
-          <RegistrationStepTwo
-            selectedAdministration={selectedAdministration}
-            onStepTwoInputChange={handleStepTwoInputChange}
-            onSaveAdministration={saveAdministration}
-          />
-        );
-      case "3":
-        return <RegistrationStepThree />;
-    }
-  })(props.match.params.signUpStep);
+    const handleAdministrationSelected = (
+      event: ReadonlyArray<
+        ComponentProps<typeof RegistrationStepOne>["selectedAdministration"]
+      >
+    ) => {
+      const newAdministration =
+        event.length === 0
+          ? {
+              fiscal_code: "" as OrganizationFiscalCode,
+              ipa_code: "",
+              legal_representative: {
+                family_name: "",
+                fiscal_code: "" as FiscalCode,
+                given_name: "",
+                phone_number: ""
+              },
+              links: [],
+              name: "",
+              pecs: {},
+              scope: undefined,
+              selected_pec_label: ""
+            }
+          : event[0];
+      setSelectedAdministration(newAdministration);
+    };
 
-  const rightColumnContent = (step => {
-    switch (step) {
-      case "1":
-        return (
-          <Fragment>
-            <p className="pr-3 mt-5">{t("signUp.rightCol.title")}</p>
-            <p className="small pr-3">{t("signUp.rightCol.text")}</p>
-            <p className="small pr-2">
-              {t("signUp.rightCol.additionalInfo")}&nbsp;
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="http://www.indicepa.gov.it"
-              >
-                www.indicepa.gov.it
-              </a>
-            </p>
-          </Fragment>
-        );
-      case "2":
-      case "3":
-        return null;
-    }
-  })(props.match.params.signUpStep);
+    const handlePecCheckboxChange = (selectedPecLabel: string) => {
+      setSelectedAdministration(
+        (
+          prevState: ComponentProps<
+            typeof RegistrationStepOne
+          >["selectedAdministration"]
+        ) => {
+          return { ...prevState, selected_pec_label: selectedPecLabel };
+        }
+      );
+    };
 
-  return (
-    <div className="RegistrationContainer">
-      <Container fluid={true}>
-        <Row>
-          <Col sm="2">
-            <RegistrationStepButtons
+    const handleScopeCheckboxChange = (selectedScope: OrganizationScope) => {
+      setSelectedAdministration(
+        (
+          prevState: ComponentProps<
+            typeof RegistrationStepOne
+          >["selectedAdministration"]
+        ) => {
+          return { ...prevState, scope: selectedScope };
+        }
+      );
+    };
+
+    const handleStepTwoInputChange = (
+      inputName: string,
+      inputValue: string
+    ) => {
+      setSelectedAdministration(
+        (
+          prevState: ComponentProps<
+            typeof RegistrationStepOne
+          >["selectedAdministration"]
+        ) => {
+          return {
+            ...prevState,
+            legal_representative: {
+              ...prevState.legal_representative,
+              [inputName]: inputValue
+            }
+          };
+        }
+      );
+    };
+
+    const saveAdministration = (
+      organizationRegistrationParams: OrganizationRegistrationParams
+    ) => {
+      const url = urlDomainPort + "/organizations";
+      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
+      fetch(url, {
+        body: JSON.stringify(organizationRegistrationParams),
+        headers: {
+          Accept: contentType,
+          Authorization: `Bearer ${cookies.sessionToken}`,
+          "Content-Type": contentType
+        },
+        method: "POST"
+      })
+        .then(response => {
+          props.history.push("/sign-up/3");
+          loadingPageContext.setLoadingPage({ isVisible: false });
+          return response.json();
+        })
+        .then(responseData => {
+          return responseData;
+        })
+        .catch(error => {
+          return error;
+        });
+      loadingPageContext.setLoadingPage({
+        image: documentCreationLoadingPageImage,
+        isButtonVisible: false,
+        isLoadingBarVisible: true,
+        isVisible: true,
+        text: t("loadingPages.documentsCreation.text"),
+        title: t("loadingPages.documentsCreation.title")
+      });
+    };
+
+    const handleIsViewedDocumentsCheckboxChanged = () => {
+      setIsViewedDocumentsCheckboxChecked(prevState => !prevState);
+    };
+
+    const toggleConfirmationModal = () => {
+      setIsVisibleConfirmModal((prevState: boolean) => !prevState);
+    };
+
+    const navigateToDashboard = () => props.history.push("/dashboard");
+
+    const registrationBody = (step => {
+      switch (step) {
+        case "1":
+          return (
+            <RegistrationStepOne
+              onPecCheckboxChange={handlePecCheckboxChange}
+              onScopeCheckboxChange={handleScopeCheckboxChange}
+              administrations={administrations}
+              onAdministrationSearch={handleAdministrationSearch}
+              onAdministrationSelected={handleAdministrationSelected}
+              selectedAdministration={selectedAdministration}
               openConfirmModal={toggleConfirmationModal}
             />
-          </Col>
-          <Col sm="8">{registrationBody}</Col>
-          <Col sm="2">
-            <Row>
-              <Col>{rightColumnContent}</Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-      <Modal isOpen={isVisibleConfirmModal} toggle={toggleConfirmationModal}>
-        <ModalHeader toggle={toggleConfirmationModal}>
-          {t("signUp.backModal.title")}
-        </ModalHeader>
-        <ModalBody className="pt-4">
-          <p>{t("signUp.backModal.text")}</p>
-          <p>{t("signUp.backModal.additionalText")}</p>
-        </ModalBody>
-        <ModalFooter>
-          <Row className="w-100 pt-4">
-            <Col sm="6" className="text-left">
-              <Button
-                outline={true}
-                color="secondary"
-                onClick={toggleConfirmationModal}
-              >
-                {t("common.buttons.cancel")}
-              </Button>
+          );
+        case "2":
+          return (
+            <RegistrationStepTwo
+              selectedAdministration={selectedAdministration}
+              onStepTwoInputChange={handleStepTwoInputChange}
+              onSaveAdministration={saveAdministration}
+            />
+          );
+        case "3":
+          return (
+            <RegistrationStepThree
+              selectedAdministration={selectedAdministration}
+              userFiscalCode={props.userFiscalCode}
+              isViewedDocumentsCheckboxChecked={
+                isViewedDocumentsCheckboxChecked
+              }
+              onIsViewedDocumentsCheckboxChanged={
+                handleIsViewedDocumentsCheckboxChanged
+              }
+            />
+          );
+      }
+    })(props.match.params.signUpStep);
+
+    const rightColumnContent = (step => {
+      switch (step) {
+        case "1":
+          return (
+            <Fragment>
+              <p className="pr-3 mt-5">{t("signUp.rightCol.title")}</p>
+              <p className="small pr-3">{t("signUp.rightCol.text")}</p>
+              <p className="small pr-2">
+                {t("signUp.rightCol.additionalInfo")}&nbsp;
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="http://www.indicepa.gov.it"
+                >
+                  www.indicepa.gov.it
+                </a>
+              </p>
+            </Fragment>
+          );
+        case "2":
+        case "3":
+          return null;
+      }
+    })(props.match.params.signUpStep);
+
+    return (
+      <div className="RegistrationContainer">
+        <Container fluid={true}>
+          <Row>
+            <Col sm="2">
+              <RegistrationStepButtons
+                openConfirmModal={toggleConfirmationModal}
+              />
             </Col>
-            <Col sm="6" className="text-right">
-              <Button
-                color="primary"
-                className="btn btn-primary"
-                onClick={navigateToDashboard}
-              >
-                {t("common.buttons.confirm")}
-              </Button>
+            <Col sm="8">{registrationBody}</Col>
+            <Col sm="2">
+              <Row>
+                <Col>{rightColumnContent}</Col>
+              </Row>
             </Col>
           </Row>
-        </ModalFooter>
-      </Modal>
-    </div>
-  );
-});
+        </Container>
+        <Modal isOpen={isVisibleConfirmModal} toggle={toggleConfirmationModal}>
+          <ModalHeader toggle={toggleConfirmationModal}>
+            {t("signUp.backModal.title")}
+          </ModalHeader>
+          <ModalBody className="pt-4">
+            <p>{t("signUp.backModal.text")}</p>
+            <p>{t("signUp.backModal.additionalText")}</p>
+          </ModalBody>
+          <ModalFooter>
+            <Row className="w-100 pt-4">
+              <Col sm="6" className="text-left">
+                <Button
+                  outline={true}
+                  color="secondary"
+                  onClick={toggleConfirmationModal}
+                >
+                  {t("common.buttons.cancel")}
+                </Button>
+              </Col>
+              <Col sm="6" className="text-right">
+                <Button
+                  color="primary"
+                  className="btn btn-primary"
+                  onClick={navigateToDashboard}
+                >
+                  {t("common.buttons.confirm")}
+                </Button>
+              </Col>
+            </Row>
+          </ModalFooter>
+        </Modal>
+      </div>
+    );
+  }
+);

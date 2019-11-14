@@ -13,6 +13,7 @@ translation:
       logout: "Logout"
       change: "Modifica"
       skip: "Salta questo passaggio"
+      viewDocument: "Visualizza documento"
     user:
       roles:
         delegate: "Delegato Ente"
@@ -109,6 +110,17 @@ translation:
         fcPlaceholder: "Inserisci il CF personale del legale rappresentante"
         phoneLabel: "Numero di telefono dell'ufficio del Legale Rappresentante"
         phonePlaceholder: "Inserisci il numero di telefono dell'ufficio"
+    stepThree:
+      title: "Verifica e invio documenti legali"
+      description: "Visualizza i documenti creati e, se tutte le informazioni sono corrette, procedi all’invio della documentazione al tuo Legale Rappresentante e alla società PagoPA SpA."
+      additionalDescription: "Il Legale Rappresentante riceverà i documenti via PEC, dovrà procedere alla firma digitale degli stessi e inviarli nuovamente a PagoPA SpA per verifica, seguendo le istruzioni contenute nella mail."
+      contract:
+        title: "Accordo ente/PagoPA SpA"
+        description: "Questo documento viene generato una sola volta alla creazione di ogni profilo ente. Verificane la correttezza prima di procedere con la creazione del profilo ente."
+      mandate:
+        title: "Delega gestione profilo dell’ente su IO"
+        description: "Questo documento è la tua delega personale alla gestione del profilo digitale dell’ente. Ogni tuo collega che richieda una delega dovrà generare il proprio documento al primo accesso. Verificane la correttezza prima di procedere con la creazione del profilo ente."
+      checkboxLabel: "Confermo che le informazioni nei documenti sono complete e corrette"
   userProfile:
     title: "Il tuo profilo"
     spidInfo:
