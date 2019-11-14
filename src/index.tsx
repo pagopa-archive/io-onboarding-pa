@@ -6,19 +6,19 @@ import { render } from "react-dom";
 
 import "./i18n";
 
+import { CookiesProvider } from "react-cookie";
 import { App } from "./App";
 import { AlertContextProvider } from "./context/alert-context";
 import { LoadingPageContextProvider } from "./context/loading-page-context";
-import { TokenContextProvider } from "./context/token-context";
 
 const app = (
-  <TokenContextProvider>
-    <AlertContextProvider>
-      <LoadingPageContextProvider>
+  <AlertContextProvider>
+    <LoadingPageContextProvider>
+      <CookiesProvider>
         <App />
-      </LoadingPageContextProvider>
-    </AlertContextProvider>
-  </TokenContextProvider>
+      </CookiesProvider>
+    </LoadingPageContextProvider>
+  </AlertContextProvider>
 );
 
 render(app, document.getElementById("root"));

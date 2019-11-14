@@ -1,4 +1,6 @@
-import React, { ComponentProps, Fragment, MouseEvent, useContext } from "react";
+import * as FileSaver from "file-saver";
+import React, { ComponentProps, Fragment, MouseEvent } from "react";
+import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -12,7 +14,6 @@ import {
   Row
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
-import { TokenContext } from "../../../context/token-context";
 import { ICustomWindow } from "../../../customTypes/CustomWindow";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
@@ -51,45 +52,21 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
     ":" +
     customWindow._env_.IO_ONBOARDING_PA_API_PORT;
 
-  const tokenContext = useContext(TokenContext);
-
-  const showFile = (blob: Blob, documentName: string) => {
-    // It is necessary to create a new blob object with mime-type explicitly set
-    // otherwise only Chrome works like it should
-    const newBlob = new Blob([blob], { type: "application/pdf" });
-
-    // IE doesn't allow using a blob object directly as link href
-    // instead it is necessary to use msSaveOrOpenBlob
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(newBlob);
-      return;
-    }
-
-    // For other browsers:
-    // Create a link pointing to the ObjectURL containing the blob.
-    const data = window.URL.createObjectURL(newBlob);
-    const link = document.createElement("a");
-    link.setAttribute("href", data);
-    link.setAttribute("download", documentName);
-    link.click();
-    setTimeout(() => {
-      // For Firefox it is necessary to delay revoking the ObjectURL
-      window.URL.revokeObjectURL(data);
-    }, 100);
-  };
+  const [cookies] = useCookies(["sessionToken"]);
 
   const downloadDocument = () => (_: MouseEvent) => {
     const url =
       urlDomainPort +
       `/organizations/${props.ipaCode}/documents/${props.documentName}`;
+    // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
     fetch(url, {
       headers: {
-        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`
+        Authorization: `Bearer ${cookies.sessionToken}`
       },
       method: "GET"
     })
       .then(response => response.blob())
-      .then(blob => showFile(blob, props.documentName))
+      .then(blob => FileSaver.saveAs(blob, props.documentName))
       .catch(error => error);
   };
 
@@ -128,9 +105,9 @@ export const RegistrationStepThree = (props: IRegistrationStepThreeProps) => {
   /**
    * array containing two documents download sections props
    */
-  const downloadDocsSectionsDataArray: ReadonlyArray<
-    ComponentProps<typeof DownloadDocsSection>
-  > = [
+  const downloadDocsSectionsDataArray: ReadonlyArray<ComponentProps<
+    typeof DownloadDocsSection
+  >> = [
     {
       documentName: "contract.pdf",
       documentType: "contract",

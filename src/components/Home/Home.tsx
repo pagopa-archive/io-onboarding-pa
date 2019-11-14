@@ -24,9 +24,9 @@ export const Home = () => {
   /**
    * array containing three login elements props
    */
-  const homeLoginButtonsDataArray: ReadonlyArray<
-    ComponentProps<typeof HomeLoginButton>
-  > = [
+  const homeLoginButtonsDataArray: ReadonlyArray<ComponentProps<
+    typeof HomeLoginButton
+  >> = [
     {
       buttonText: t("common.user.roles.developer"),
       img: logoHomeDev,

@@ -1,5 +1,6 @@
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { ChangeEvent, MouseEvent, useContext, useState } from "react";
+import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -16,7 +17,6 @@ import {
 } from "reactstrap";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { AlertContext } from "../../context/alert-context";
-import { TokenContext } from "../../context/token-context";
 import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 interface IAddMailModalProps {
@@ -48,7 +48,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
 
   const contentType = "application/json";
 
-  const tokenContext = useContext(TokenContext);
+  const [cookies] = useCookies(["sessionToken"]);
   const alertContext = useContext(AlertContext);
 
   const [newMail, setNewMail] = useState("");
@@ -81,7 +81,7 @@ export const AddMailModal = (props: IAddMailModalProps) => {
       body: JSON.stringify({ work_email: newUserMail as EmailAddress }),
       headers: {
         Accept: contentType,
-        Authorization: `Bearer ${tokenContext.token ? tokenContext.token : ""}`,
+        Authorization: `Bearer ${cookies.sessionToken}`,
         "Content-Type": contentType
       },
       method: "PUT"

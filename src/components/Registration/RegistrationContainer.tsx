@@ -24,8 +24,8 @@ import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import { TokenContext } from "../../context/token-context";
 
+import { useCookies } from "react-cookie";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 
 interface IRegistrationContainerProps
@@ -52,7 +52,7 @@ export const RegistrationContainer = withRouter(
 
     const contentType = "application/json";
 
-    const tokenContext = useContext(TokenContext);
+    const [cookies] = useCookies(["sessionToken"]);
 
     const loadingPageContext = useContext(LoadingPageContext);
 
@@ -90,12 +90,11 @@ export const RegistrationContainer = withRouter(
     const handleAdministrationSearch = (searchString: string) => {
       const url =
         urlDomainPort + `/public-administrations?search=${searchString}`;
+      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
       fetch(url, {
         headers: {
           Accept: contentType,
-          Authorization: `Bearer ${
-            tokenContext.token ? tokenContext.token : ""
-          }`
+          Authorization: `Bearer ${cookies.sessionToken}`
         },
         method: "GET"
       })
@@ -185,13 +184,12 @@ export const RegistrationContainer = withRouter(
       organizationRegistrationParams: OrganizationRegistrationParams
     ) => {
       const url = urlDomainPort + "/organizations";
+      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
       fetch(url, {
         body: JSON.stringify(organizationRegistrationParams),
         headers: {
           Accept: contentType,
-          Authorization: `Bearer ${
-            tokenContext.token ? tokenContext.token : ""
-          }`,
+          Authorization: `Bearer ${cookies.sessionToken}`,
           "Content-Type": contentType
         },
         method: "POST"
