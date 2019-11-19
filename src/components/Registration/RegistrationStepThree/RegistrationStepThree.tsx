@@ -15,8 +15,13 @@ import {
   Row
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
+import { BackendClient } from "../../../clients/api";
 import { AlertContext } from "../../../context/alert-context";
-import { manageErrors } from "../../../utils/api-utils";
+import {
+  baseUrlBackendClient,
+  manageApiResponse,
+  manageErrors
+} from "../../../utils/api-utils";
 import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
@@ -107,16 +112,6 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
 export const RegistrationStepThree = withRouter(
   (props: IRegistrationStepThreeProps) => {
     /**
-     * Create window with custom element _env_ for environment variables
-     */
-    const customWindow = (window as unknown) as ICustomWindow;
-
-    const urlDomainPort =
-      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-      ":" +
-      customWindow._env_.IO_ONBOARDING_PA_API_PORT;
-
-    /**
      * react-i18next translation hook
      */
     const { t } = useTranslation();
@@ -167,17 +162,17 @@ export const RegistrationStepThree = withRouter(
     );
 
     const onSendDocuments = () => {
-      const url =
-        urlDomainPort +
-        `/organizations/${props.selectedAdministration.ipa_code}/signed-documents`;
-      // TODO: use generated classes for api when management for this response with 204 - no content is available (tracked in story https://www.pivotaltracker.com/story/show/169836423)
-      fetch(url, {
-        headers: {
-          Authorization: `Bearer ${cookies.sessionToken}`
-        },
-        method: "POST"
-      })
-        .then(_ => {
+      const params = {
+        ipaCode: props.selectedAdministration.ipa_code as string
+      };
+      baseUrlBackendClient(cookies.sessionToken)
+        .sendDocuments({
+          ...params
+        })
+        .then((response: ReturnType<typeof BackendClient>["sendDocuments"]) =>
+          manageApiResponse(response)
+        )
+        .then((_: ReturnType<typeof BackendClient>["sendDocuments"]) => {
           props.history.push("/dashboard");
           alertContext.setAlert({
             alertColor: "warning",

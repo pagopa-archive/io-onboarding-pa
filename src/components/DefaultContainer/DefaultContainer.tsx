@@ -123,29 +123,39 @@ export const DefaultContainer = withRouter(props => {
     if (isTokenValidAndUserProfileUnset) {
       baseUrlBackendClient(cookies.sessionToken)
         .getProfile({})
-        .then((response: ReturnType<typeof BackendClient>["getProfile"]) => {
-          return manageApiResponse(response);
-        })
-        .then(
-          (managedResponse: ReturnType<typeof BackendClient>["getProfile"]) => {
-            handleGetUserProfile(managedResponse);
-            if (!managedResponse.work_email) {
-              toggleAddMailModal();
+        .then(response => {
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status < 300) {
+              if (UserProfile.is(respValue.value)) {
+                const userProfileResp = respValue.value;
+                handleGetUserProfile(userProfileResp);
+                if (!userProfileResp.work_email) {
+                  toggleAddMailModal();
+                }
+              }
+            } else {
+              const alertText = t(
+                `common.errors.getUserProfile.${respValue.status}`
+              )
+                ? t(`common.errors.getUserProfile.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrors(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
             }
+          } else {
+            // cosa fare nel caso di risposta left?
           }
-        )
-        .catch((error: Error) =>
-          manageErrors(
-            error.message,
-            () =>
-              alertContext.setAlert({
-                alertColor: "danger",
-                alertText: t(`common.errors.${error.message}`),
-                showAlert: true
-              }),
-            () => props.history.push("/home")
-          )
-        );
+        })
+        .catch((error: Error) => error);
     }
   }, [cookies.sessionToken]);
 

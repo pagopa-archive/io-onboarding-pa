@@ -1,9 +1,12 @@
 import {
   ApiHeaderJson,
   composeHeaderProducers,
+  composeResponseDecoders,
+  constantResponseDecoder,
   createFetchRequestForApi,
   RequestHeaderProducer,
-  RequestHeaders
+  RequestHeaders,
+  TypeofApiCall
 } from "italia-ts-commons/lib/requests";
 import {
   createOrganizationsDefaultDecoder,
@@ -16,7 +19,6 @@ import {
   LogoutT,
   searchPublicAdministrationsDefaultDecoder,
   SearchPublicAdministrationsT,
-  sendDocumentsDefaultDecoder,
   SendDocumentsT,
   updateProfileDefaultDecoder,
   UpdateProfileT
@@ -33,17 +35,46 @@ function ParamAuthorizationBearerHeaderProducer<
   };
 }
 
-//
-// Create client
-//
+/*
+ * Custom decoder to temporary fix problem with 204-no content response
+ * TODO: change it with generetad class - tracked with story https://www.pivotaltracker.com/story/show/169836423
+ */
+// Decodes the success response with a custom success type
+// tslint:disable-next-line:typedef
+function sendDocumentsCustomDecoder() {
+  return composeResponseDecoders(
+    composeResponseDecoders(
+      composeResponseDecoders(
+        composeResponseDecoders(
+          composeResponseDecoders(
+            composeResponseDecoders(
+              constantResponseDecoder<undefined, 204>(204, undefined),
+              constantResponseDecoder<undefined, 400>(400, undefined)
+            ),
+            constantResponseDecoder<undefined, 401>(401, undefined)
+          ),
+          constantResponseDecoder<undefined, 403>(403, undefined)
+        ),
+        constantResponseDecoder<undefined, 404>(404, undefined)
+      ),
+      constantResponseDecoder<undefined, 429>(429, undefined)
+    ),
+    constantResponseDecoder<undefined, 503>(503, undefined)
+  );
+}
 
-// tslint:disable-next-line:no-any
+// Decodes the success response with the type defined in the specs
+const sendDocumentsCustomDefaultDecoder = () => sendDocumentsCustomDecoder();
+
+/*
+ * Create client
+ */
+
 export function BackendClient(
   baseUrl: string,
   token: string,
   fetchApi: typeof fetch = defaultRetryingFetch()
-  // tslint:disable-next-line:no-any
-): any {
+) {
   const options = {
     baseUrl,
     fetchApi
@@ -90,7 +121,7 @@ export function BackendClient(
     headers: composeHeaderProducers(tokenHeaderProducer, ApiHeaderJson),
     method: "post",
     query: _ => ({}),
-    response_decoder: sendDocumentsDefaultDecoder(),
+    response_decoder: sendDocumentsCustomDefaultDecoder(),
     url: params => `/organizations/${params.ipaCode}/signed-documents`
   };
 
@@ -122,7 +153,7 @@ export function BackendClient(
   };
 
   return {
-    createOrganization: withBearerToken(
+    createOrganizations: withBearerToken(
       createFetchRequestForApi(createOrganizationsT, options)
     ),
     getDocument: withBearerToken(
