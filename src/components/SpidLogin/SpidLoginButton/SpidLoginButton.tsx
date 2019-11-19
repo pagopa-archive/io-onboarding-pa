@@ -11,7 +11,7 @@ import {
 import spidLogo from "../../../assets/img/spid-ico-circle-bb.svg";
 import images from "../../../assets/img/spid/*.svg";
 
-import { ICustomWindow } from "../../../customTypes/CustomWindow";
+import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
 
 import "./SpidLoginButton.css";
 

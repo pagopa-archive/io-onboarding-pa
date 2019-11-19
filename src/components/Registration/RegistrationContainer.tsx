@@ -15,7 +15,6 @@ import {
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
 import { OrganizationScope } from "../../../generated/definitions/api/OrganizationScope";
-import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
 import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
@@ -23,10 +22,18 @@ import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepT
 import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
+import { BackendClient } from "../../clients/api";
 import { LoadingPageContext } from "../../context/loading-page-context";
+import {
+  baseUrlBackendClient,
+  manageApiResponse,
+  manageErrors
+} from "../../utils/api-utils";
 
 import { useCookies } from "react-cookie";
+import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
+import { AlertContext } from "../../context/alert-context";
 
 interface IRegistrationContainerProps
   extends RouteComponentProps<{ signUpStep: string }> {
@@ -40,21 +47,10 @@ export const RegistrationContainer = withRouter(
      */
     const { t } = useTranslation();
 
-    /**
-     * Create window with custom element _env_ for environment variables
-     */
-    const customWindow = (window as unknown) as ICustomWindow;
-
-    const urlDomainPort =
-      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-      ":" +
-      customWindow._env_.IO_ONBOARDING_PA_API_PORT;
-
-    const contentType = "application/json";
-
     const [cookies] = useCookies(["sessionToken"]);
 
     const loadingPageContext = useContext(LoadingPageContext);
+    const alertContext = useContext(AlertContext);
 
     const initialSelectedAdministration: ComponentProps<
       typeof RegistrationStepOne
@@ -87,26 +83,44 @@ export const RegistrationContainer = withRouter(
       setIsViewedDocumentsCheckboxChecked
     ] = useState(false);
 
+    const handleAPIError = (error: Error) => {
+      manageErrors(
+        error.message,
+        () =>
+          alertContext.setAlert({
+            alertColor: "danger",
+            alertText: t(`common.errors.${error.message}`),
+            showAlert: true
+          }),
+        () => props.history.push("/home")
+      );
+    };
+
     const handleAdministrationSearch = (searchString: string) => {
-      const url =
-        urlDomainPort + `/public-administrations?search=${searchString}`;
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
-      fetch(url, {
-        headers: {
-          Accept: contentType,
-          Authorization: `Bearer ${cookies.sessionToken}`
-        },
-        method: "GET"
-      })
-        .then(response => {
-          return response.json();
+      const params = {
+        administrationSearchParam: searchString as AdministrationSearchParam
+      };
+      baseUrlBackendClient(cookies.sessionToken)
+        .searchPublicAdministrations({
+          ...params
         })
-        .then(responseData => {
-          setAdministrations(responseData.administrations);
-        })
-        .catch(error => {
-          return error;
-        });
+        .then(
+          (
+            response: ReturnType<
+              typeof BackendClient
+            >["searchPublicAdministrations"]
+          ) => {
+            return manageApiResponse(response);
+          }
+        )
+        .then(
+          (
+            responseData: ReturnType<typeof BackendClient>["createOrganization"]
+          ) => {
+            setAdministrations(responseData.administrations);
+          }
+        )
+        .catch((error: Error) => handleAPIError(error));
     };
 
     const handleAdministrationSelected = (
@@ -183,28 +197,25 @@ export const RegistrationContainer = withRouter(
     const saveAdministration = (
       organizationRegistrationParams: OrganizationRegistrationParams
     ) => {
-      const url = urlDomainPort + "/organizations";
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
-      fetch(url, {
-        body: JSON.stringify(organizationRegistrationParams),
-        headers: {
-          Accept: contentType,
-          Authorization: `Bearer ${cookies.sessionToken}`,
-          "Content-Type": contentType
-        },
-        method: "POST"
-      })
-        .then(response => {
+      const params = {
+        organizationRegistrationParams
+      };
+      baseUrlBackendClient(cookies.sessionToken)
+        .createOrganization({
+          ...params
+        })
+        .then(
+          (
+            response: ReturnType<typeof BackendClient>["createOrganization"]
+          ) => {
+            loadingPageContext.setLoadingPage({ isVisible: false });
+            return manageApiResponse(response);
+          }
+        )
+        .then((_: ReturnType<typeof BackendClient>["createOrganization"]) => {
           props.history.push("/sign-up/3");
-          loadingPageContext.setLoadingPage({ isVisible: false });
-          return response.json();
         })
-        .then(responseData => {
-          return responseData;
-        })
-        .catch(error => {
-          return error;
-        });
+        .catch((error: Error) => handleAPIError(error));
       loadingPageContext.setLoadingPage({
         image: documentCreationLoadingPageImage,
         isButtonVisible: false,

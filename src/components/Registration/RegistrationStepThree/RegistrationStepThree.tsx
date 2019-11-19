@@ -16,7 +16,8 @@ import {
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
 import { AlertContext } from "../../../context/alert-context";
-import { ICustomWindow } from "../../../customTypes/CustomWindow";
+import { manageErrors } from "../../../utils/api-utils";
+import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepThreeProps extends RouteComponentProps {
@@ -37,13 +38,25 @@ interface IDocumentInfo {
   documentName: string;
 }
 
-interface IDocumentDownloadSectionProps extends IDocumentInfo {
+interface IDocumentDownloadSectionProps
+  extends RouteComponentProps,
+    IDocumentInfo {
   ipaCode: string;
   cookie: string;
-  urlDomainPort: string;
+  handleAPIError: (error: Error) => void;
 }
 
 const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
+  /**
+   * Create window with custom element _env_ for environment variables
+   */
+  const customWindow = (window as unknown) as ICustomWindow;
+
+  const urlDomainPort =
+    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+    ":" +
+    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+
   /**
    * react-i18next translation hook
    */
@@ -51,9 +64,9 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
 
   const downloadDocument = () => (_: MouseEvent) => {
     const url =
-      props.urlDomainPort +
+      urlDomainPort +
       `/organizations/${props.ipaCode}/documents/${props.documentName}`;
-    // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
+    // TODO: use generated classes for api when binary files are avaliable (tracked in story https://www.pivotaltracker.com/story/show/169818047)
     fetch(url, {
       headers: {
         Authorization: `Bearer ${props.cookie}`
@@ -62,7 +75,7 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
     })
       .then(response => response.blob())
       .then(blob => FileSaver.saveAs(blob, props.documentName))
-      .catch(error => error);
+      .catch((error: Error) => props.handleAPIError(error));
   };
 
   return (
@@ -94,11 +107,6 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
 export const RegistrationStepThree = withRouter(
   (props: IRegistrationStepThreeProps) => {
     /**
-     * react-i18next translation hook
-     */
-    const { t } = useTranslation();
-
-    /**
      * Create window with custom element _env_ for environment variables
      */
     const customWindow = (window as unknown) as ICustomWindow;
@@ -108,9 +116,27 @@ export const RegistrationStepThree = withRouter(
       ":" +
       customWindow._env_.IO_ONBOARDING_PA_API_PORT;
 
+    /**
+     * react-i18next translation hook
+     */
+    const { t } = useTranslation();
+
     const [cookies] = useCookies(["sessionToken"]);
 
     const alertContext = useContext(AlertContext);
+
+    const handleAPIError = (error: Error) => {
+      manageErrors(
+        error.message,
+        () =>
+          alertContext.setAlert({
+            alertColor: "danger",
+            alertText: t(`common.errors.${error.message}`),
+            showAlert: true
+          }),
+        () => props.history.push("/home")
+      );
+    };
 
     /**
      * array containing two documents download sections props
@@ -129,12 +155,13 @@ export const RegistrationStepThree = withRouter(
     const downloadDocsSections = downloadDocsSectionsDataArray.map(
       downloadDocSection => (
         <DownloadDocsSection
+          {...props}
           key={downloadDocSection.documentType}
           documentType={downloadDocSection.documentType}
           documentName={downloadDocSection.documentName}
           ipaCode={props.selectedAdministration.ipa_code}
           cookie={cookies.sessionToken}
-          urlDomainPort={urlDomainPort}
+          handleAPIError={handleAPIError}
         />
       )
     );
@@ -143,7 +170,7 @@ export const RegistrationStepThree = withRouter(
       const url =
         urlDomainPort +
         `/organizations/${props.selectedAdministration.ipa_code}/signed-documents`;
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
+      // TODO: use generated classes for api when management for this response with 204 - no content is available (tracked in story https://www.pivotaltracker.com/story/show/169836423)
       fetch(url, {
         headers: {
           Authorization: `Bearer ${cookies.sessionToken}`
@@ -158,7 +185,7 @@ export const RegistrationStepThree = withRouter(
             showAlert: true
           });
         })
-        .catch(error => error);
+        .catch((error: Error) => handleAPIError(error));
     };
 
     return (

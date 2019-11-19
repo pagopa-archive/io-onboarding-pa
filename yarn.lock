@@ -4780,9 +4780,9 @@ italia-tslint-rules@*:
     tslint-sonarts "^1.9.0"
     typestrict "^1.0.2"
 
-italia-utils@aymen94/io-utils-build:
-  version "4.1.0"
-  resolved "https://codeload.github.com/aymen94/io-utils-build/tar.gz/4a59a9bc23301bd30d37542dccb3faf8394f618f"
+italia-utils@teamdigitale/io-utils-build-oas3#4.1.1-beta.3:
+  version "4.1.1-beta.3"
+  resolved "https://codeload.github.com/teamdigitale/io-utils-build-oas3/tar.gz/8a586fc36c2abde905eeffa95455d147774b8885"
   dependencies:
     fs-extra "^6.0.0"
     italia-ts-commons "^5.0.1"

@@ -1,13 +1,21 @@
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { UserRole } from "../../../generated/definitions/api/UserRole";
+import { BackendClient } from "../../clients/api";
+import { AlertContext } from "../../context/alert-context";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import { ICustomWindow } from "../../customTypes/CustomWindow";
+import {
+  baseUrlBackendClient,
+  manageApiResponse,
+  manageErrors
+} from "../../utils/api-utils";
+import { ICustomWindow } from "../../utils/customTypes/CustomWindow";
 import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
@@ -34,7 +42,13 @@ interface IDefaultContainerUserProfileState {
  * Component containing slim header, central header and app body with second level routing
  */
 export const DefaultContainer = withRouter(props => {
+  /**
+   * react-i18next translation hook
+   */
+  const { t } = useTranslation();
+
   const loadingPageContext = useContext(LoadingPageContext);
+  const alertContext = useContext(AlertContext);
 
   const [cookies] = useCookies(["sessionToken"]);
 
@@ -107,33 +121,31 @@ export const DefaultContainer = withRouter(props => {
       !NonEmptyString.is(userProfile.given_name) &&
       location.pathname !== "/spid-login";
     if (isTokenValidAndUserProfileUnset) {
-      const url =
-        customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-        ":" +
-        customWindow._env_.IO_ONBOARDING_PA_API_PORT +
-        "/profile";
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440
-      fetch(url, {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${cookies.sessionToken}`
-          // 'Content-Type': 'application/json'
-        },
-        method: "GET"
-      })
-        .then(response => {
-          return response.json();
+      baseUrlBackendClient(cookies.sessionToken)
+        .getProfile({})
+        .then((response: ReturnType<typeof BackendClient>["getProfile"]) => {
+          return manageApiResponse(response);
         })
-        .then(responseData => {
-          handleGetUserProfile(responseData);
-          if (!responseData.work_email) {
-            toggleAddMailModal();
+        .then(
+          (managedResponse: ReturnType<typeof BackendClient>["getProfile"]) => {
+            handleGetUserProfile(managedResponse);
+            if (!managedResponse.work_email) {
+              toggleAddMailModal();
+            }
           }
-        })
-        .catch(error => {
-          // TODO: manage error in promise, tracked with story #169033467
-          return error;
-        });
+        )
+        .catch((error: Error) =>
+          manageErrors(
+            error.message,
+            () =>
+              alertContext.setAlert({
+                alertColor: "danger",
+                alertText: t(`common.errors.${error.message}`),
+                showAlert: true
+              }),
+            () => props.history.push("/home")
+          )
+        );
     }
   }, [cookies.sessionToken]);
 

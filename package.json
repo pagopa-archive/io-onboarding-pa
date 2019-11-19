@@ -15,9 +15,9 @@
     "build": "parcel build ./public/index.html --public-url / --no-minify ./public/env-config.js",
     "postversion": "git push && git push --tags",
     "test": "jest",
-    "lint": "tslint --project . --exclude locales/locales.ts",
+    "lint": "tslint --project . --exclude locales/locales.ts --exclude generated/definitions/api/requestTypes.ts",
     "generate:locales": "rimraf locales/locales.ts && ts-node --skip-project -O '{\"lib\":[\"es2015\"]}' ./scripts/make-locales.ts",
-    "generate:api-definitions": "rimraf generated/definitions/api && mkdir -p generated/definitions/api && gen-api-models --api-spec https://raw.githubusercontent.com/teamdigitale/io-onboarding-pa-api/master/openapi.yml --out-dir generated/definitions/api --no-strict",
+    "generate:api-definitions": "rimraf generated/definitions/api && mkdir -p generated/definitions/api && gen-api-models --api-spec https://raw.githubusercontent.com/teamdigitale/io-onboarding-pa-api/master/openapi.yml --out-dir generated/definitions/api --no-strict --request-types --response-decoders",
     "generate:all": "yarn generate:locales && yarn generate:api-definitions"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "enzyme-to-json": "^3.3.4",
     "fs-extra": "^7.0.0",
     "italia-tslint-rules": "*",
-    "italia-utils": "aymen94/io-utils-build",
+    "italia-utils": "teamdigitale/io-utils-build-oas3#4.1.1-beta.3",
     "jest": "^24.8.0",
     "js-yaml": "^3.13.1",
     "json-server": "^0.15.1",
