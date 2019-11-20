@@ -22,12 +22,15 @@ import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepT
 import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
-import { BackendClient } from "../../clients/api";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import { baseUrlBackendClient, manageErrors } from "../../utils/api-utils";
+import {
+  baseUrlBackendClient,
+  manageErrorReturnCodes
+} from "../../utils/api-utils";
 
 import { useCookies } from "react-cookie";
 import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
+import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 import { AlertContext } from "../../context/alert-context";
 
@@ -47,6 +50,13 @@ export const RegistrationContainer = withRouter(
 
     const loadingPageContext = useContext(LoadingPageContext);
     const alertContext = useContext(AlertContext);
+    const showGenericErrorAlert = () => {
+      alertContext.setAlert({
+        alertColor: "danger",
+        alertText: t("common.errors.genericError.500"),
+        showAlert: true
+      });
+    };
 
     const initialSelectedAdministration: ComponentProps<
       typeof RegistrationStepOne
@@ -68,7 +78,9 @@ export const RegistrationContainer = withRouter(
 
     const [isVisibleConfirmModal, setIsVisibleConfirmModal] = useState(false);
 
-    const [administrations, setAdministrations] = useState([]);
+    const [administrations, setAdministrations] = useState<
+      ReadonlyArray<FoundAdministration>
+    >([]);
 
     const [selectedAdministration, setSelectedAdministration] = useState({
       ...initialSelectedAdministration
@@ -79,19 +91,6 @@ export const RegistrationContainer = withRouter(
       setIsViewedDocumentsCheckboxChecked
     ] = useState(false);
 
-    const handleAPIError = (error: Error) => {
-      manageErrors(
-        error.message,
-        () =>
-          alertContext.setAlert({
-            alertColor: "danger",
-            alertText: t(`common.errors.${error.message}`),
-            showAlert: true
-          }),
-        () => props.history.push("/home")
-      );
-    };
-
     const handleAdministrationSearch = (searchString: string) => {
       const params = {
         administrationSearchParam: searchString as AdministrationSearchParam
@@ -101,12 +100,39 @@ export const RegistrationContainer = withRouter(
           ...params
         })
         .then(response => {
-          return manageApiResponse(response);
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 200) {
+              const administrationsSearchResp = respValue.value;
+              setAdministrations(administrationsSearchResp.administrations);
+            } else {
+              const alertText = t(
+                `common.errors.searchAdministrations.${respValue.status}`
+              )
+                ? t(`common.errors.searchAdministrations.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            showGenericErrorAlert();
+          }
         })
-        .then(responseData => {
-          setAdministrations(responseData.administrations);
-        })
-        .catch((error: Error) => handleAPIError(error));
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error.message);
+          showGenericErrorAlert();
+        });
     };
 
     const handleAdministrationSelected = (
@@ -192,12 +218,38 @@ export const RegistrationContainer = withRouter(
         })
         .then(response => {
           loadingPageContext.setLoadingPage({ isVisible: false });
-          return manageApiResponse(response);
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 201) {
+              props.history.push("/sign-up/3");
+            } else {
+              const alertText = t(
+                `common.errors.searchAdministrations.${respValue.status}`
+              )
+                ? t(`common.errors.searchAdministrations.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            showGenericErrorAlert();
+          }
         })
-        .then(_ => {
-          props.history.push("/sign-up/3");
-        })
-        .catch((error: Error) => handleAPIError(error));
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error.message);
+          showGenericErrorAlert();
+        });
       loadingPageContext.setLoadingPage({
         image: documentCreationLoadingPageImage,
         isButtonVisible: false,

@@ -8,10 +8,12 @@ import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { UserRole } from "../../../generated/definitions/api/UserRole";
-import { BackendClient } from "../../clients/api";
 import { AlertContext } from "../../context/alert-context";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import { baseUrlBackendClient, manageErrors } from "../../utils/api-utils";
+import {
+  baseUrlBackendClient,
+  manageErrorReturnCodes
+} from "../../utils/api-utils";
 import { ICustomWindow } from "../../utils/customTypes/CustomWindow";
 import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
@@ -135,7 +137,7 @@ export const DefaultContainer = withRouter(props => {
               )
                 ? t(`common.errors.getUserProfile.${respValue.status}`)
                 : t(`common.errors.genericError.${respValue.status}`);
-              manageErrors(
+              manageErrorReturnCodes(
                 respValue.status,
                 () =>
                   alertContext.setAlert({
@@ -147,20 +149,25 @@ export const DefaultContainer = withRouter(props => {
               );
             }
           } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
             alertContext.setAlert({
               alertColor: "danger",
-              alertText: response.value.map(v => v.message).join(" - "),
+              alertText: t("common.errors.genericError.500"),
               showAlert: true
             });
           }
         })
-        .catch((error: Error) =>
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error);
+
           alertContext.setAlert({
             alertColor: "danger",
-            alertText: error.message,
+            alertText: t("common.errors.genericError.500"),
             showAlert: true
-          })
-        );
+          });
+        });
     }
   }, [cookies.sessionToken]);
 
