@@ -1,3 +1,4 @@
+import { fromNullable } from "fp-ts/lib/Option";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -10,11 +11,7 @@ import { UserRole } from "../../../generated/definitions/api/UserRole";
 import { BackendClient } from "../../clients/api";
 import { AlertContext } from "../../context/alert-context";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import {
-  baseUrlBackendClient,
-  manageApiResponse,
-  manageErrors
-} from "../../utils/api-utils";
+import { baseUrlBackendClient, manageErrors } from "../../utils/api-utils";
 import { ICustomWindow } from "../../utils/customTypes/CustomWindow";
 import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
@@ -126,14 +123,12 @@ export const DefaultContainer = withRouter(props => {
         .then(response => {
           if (response.isRight()) {
             const respValue = response.value;
-            if (respValue.status < 300) {
-              if (UserProfile.is(respValue.value)) {
-                const userProfileResp = respValue.value;
-                handleGetUserProfile(userProfileResp);
-                if (!userProfileResp.work_email) {
-                  toggleAddMailModal();
-                }
-              }
+            if (respValue.status === 200) {
+              const userProfileResp = respValue.value;
+              handleGetUserProfile(userProfileResp);
+              fromNullable(userProfileResp.work_email).map(() =>
+                toggleAddMailModal()
+              );
             } else {
               const alertText = t(
                 `common.errors.getUserProfile.${respValue.status}`
@@ -152,10 +147,20 @@ export const DefaultContainer = withRouter(props => {
               );
             }
           } else {
-            // cosa fare nel caso di risposta left?
+            alertContext.setAlert({
+              alertColor: "danger",
+              alertText: response.value.map(v => v.message).join(" - "),
+              showAlert: true
+            });
           }
         })
-        .catch((error: Error) => error);
+        .catch((error: Error) =>
+          alertContext.setAlert({
+            alertColor: "danger",
+            alertText: error.message,
+            showAlert: true
+          })
+        );
     }
   }, [cookies.sessionToken]);
 

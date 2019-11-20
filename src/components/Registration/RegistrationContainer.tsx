@@ -24,11 +24,7 @@ import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
 import { BackendClient } from "../../clients/api";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import {
-  baseUrlBackendClient,
-  manageApiResponse,
-  manageErrors
-} from "../../utils/api-utils";
+import { baseUrlBackendClient, manageErrors } from "../../utils/api-utils";
 
 import { useCookies } from "react-cookie";
 import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
@@ -104,22 +100,12 @@ export const RegistrationContainer = withRouter(
         .searchPublicAdministrations({
           ...params
         })
-        .then(
-          (
-            response: ReturnType<
-              typeof BackendClient
-            >["searchPublicAdministrations"]
-          ) => {
-            return manageApiResponse(response);
-          }
-        )
-        .then(
-          (
-            responseData: ReturnType<typeof BackendClient>["createOrganization"]
-          ) => {
-            setAdministrations(responseData.administrations);
-          }
-        )
+        .then(response => {
+          return manageApiResponse(response);
+        })
+        .then(responseData => {
+          setAdministrations(responseData.administrations);
+        })
         .catch((error: Error) => handleAPIError(error));
     };
 
@@ -201,18 +187,14 @@ export const RegistrationContainer = withRouter(
         organizationRegistrationParams
       };
       baseUrlBackendClient(cookies.sessionToken)
-        .createOrganization({
+        .createOrganizations({
           ...params
         })
-        .then(
-          (
-            response: ReturnType<typeof BackendClient>["createOrganization"]
-          ) => {
-            loadingPageContext.setLoadingPage({ isVisible: false });
-            return manageApiResponse(response);
-          }
-        )
-        .then((_: ReturnType<typeof BackendClient>["createOrganization"]) => {
+        .then(response => {
+          loadingPageContext.setLoadingPage({ isVisible: false });
+          return manageApiResponse(response);
+        })
+        .then(_ => {
           props.history.push("/sign-up/3");
         })
         .catch((error: Error) => handleAPIError(error));

@@ -5,8 +5,7 @@ import {
   constantResponseDecoder,
   createFetchRequestForApi,
   RequestHeaderProducer,
-  RequestHeaders,
-  TypeofApiCall
+  RequestHeaders
 } from "italia-ts-commons/lib/requests";
 import {
   createOrganizationsDefaultDecoder,
@@ -70,6 +69,7 @@ const sendDocumentsCustomDefaultDecoder = () => sendDocumentsCustomDecoder();
  * Create client
  */
 
+// tslint:disable-next-line: typedef
 export function BackendClient(
   baseUrl: string,
   token: string,
