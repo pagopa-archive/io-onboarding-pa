@@ -8,3 +8,4 @@ coverage
 .idea/
 public/env-config.js
 locales/locales.ts
+generated/*

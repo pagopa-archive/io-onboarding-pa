@@ -15,7 +15,6 @@ import {
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
 import { OrganizationScope } from "../../../generated/definitions/api/OrganizationScope";
-import { ICustomWindow } from "../../customTypes/CustomWindow";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
 import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
@@ -24,9 +23,16 @@ import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
 import { LoadingPageContext } from "../../context/loading-page-context";
+import {
+  baseUrlBackendClient,
+  manageErrorReturnCodes
+} from "../../utils/api-utils";
 
 import { useCookies } from "react-cookie";
+import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
+import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
+import { AlertContext } from "../../context/alert-context";
 
 interface IRegistrationContainerProps
   extends RouteComponentProps<{ signUpStep: string }> {
@@ -40,21 +46,17 @@ export const RegistrationContainer = withRouter(
      */
     const { t } = useTranslation();
 
-    /**
-     * Create window with custom element _env_ for environment variables
-     */
-    const customWindow = (window as unknown) as ICustomWindow;
-
-    const urlDomainPort =
-      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-      ":" +
-      customWindow._env_.IO_ONBOARDING_PA_API_PORT;
-
-    const contentType = "application/json";
-
     const [cookies] = useCookies(["sessionToken"]);
 
     const loadingPageContext = useContext(LoadingPageContext);
+    const alertContext = useContext(AlertContext);
+    const showGenericErrorAlert = () => {
+      alertContext.setAlert({
+        alertColor: "danger",
+        alertText: t("common.errors.genericError.500"),
+        showAlert: true
+      });
+    };
 
     const initialSelectedAdministration: ComponentProps<
       typeof RegistrationStepOne
@@ -76,7 +78,9 @@ export const RegistrationContainer = withRouter(
 
     const [isVisibleConfirmModal, setIsVisibleConfirmModal] = useState(false);
 
-    const [administrations, setAdministrations] = useState([]);
+    const [administrations, setAdministrations] = useState<
+      ReadonlyArray<FoundAdministration>
+    >([]);
 
     const [selectedAdministration, setSelectedAdministration] = useState({
       ...initialSelectedAdministration
@@ -88,24 +92,46 @@ export const RegistrationContainer = withRouter(
     ] = useState(false);
 
     const handleAdministrationSearch = (searchString: string) => {
-      const url =
-        urlDomainPort + `/public-administrations?search=${searchString}`;
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
-      fetch(url, {
-        headers: {
-          Accept: contentType,
-          Authorization: `Bearer ${cookies.sessionToken}`
-        },
-        method: "GET"
-      })
+      const params = {
+        administrationSearchParam: searchString as AdministrationSearchParam
+      };
+      baseUrlBackendClient(cookies.sessionToken)
+        .searchPublicAdministrations({
+          ...params
+        })
         .then(response => {
-          return response.json();
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 200) {
+              const administrationsSearchResp = respValue.value;
+              setAdministrations(administrationsSearchResp.administrations);
+            } else {
+              const alertText = t(
+                `common.errors.searchAdministrations.${respValue.status}`
+              )
+                ? t(`common.errors.searchAdministrations.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            showGenericErrorAlert();
+          }
         })
-        .then(responseData => {
-          setAdministrations(responseData.administrations);
-        })
-        .catch(error => {
-          return error;
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error.message);
+          showGenericErrorAlert();
         });
     };
 
@@ -183,27 +209,46 @@ export const RegistrationContainer = withRouter(
     const saveAdministration = (
       organizationRegistrationParams: OrganizationRegistrationParams
     ) => {
-      const url = urlDomainPort + "/organizations";
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
-      fetch(url, {
-        body: JSON.stringify(organizationRegistrationParams),
-        headers: {
-          Accept: contentType,
-          Authorization: `Bearer ${cookies.sessionToken}`,
-          "Content-Type": contentType
-        },
-        method: "POST"
-      })
+      const params = {
+        organizationRegistrationParams
+      };
+      baseUrlBackendClient(cookies.sessionToken)
+        .createOrganizations({
+          ...params
+        })
         .then(response => {
-          props.history.push("/sign-up/3");
           loadingPageContext.setLoadingPage({ isVisible: false });
-          return response.json();
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 201) {
+              props.history.push("/sign-up/3");
+            } else {
+              const alertText = t(
+                `common.errors.searchAdministrations.${respValue.status}`
+              )
+                ? t(`common.errors.searchAdministrations.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            showGenericErrorAlert();
+          }
         })
-        .then(responseData => {
-          return responseData;
-        })
-        .catch(error => {
-          return error;
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error.message);
+          showGenericErrorAlert();
         });
       loadingPageContext.setLoadingPage({
         image: documentCreationLoadingPageImage,

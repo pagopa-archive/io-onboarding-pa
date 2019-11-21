@@ -16,7 +16,11 @@ import {
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
 import { AlertContext } from "../../../context/alert-context";
-import { ICustomWindow } from "../../../customTypes/CustomWindow";
+import {
+  baseUrlBackendClient,
+  manageErrorReturnCodes
+} from "../../../utils/api-utils";
+import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepThreeProps extends RouteComponentProps {
@@ -37,13 +41,25 @@ interface IDocumentInfo {
   documentName: string;
 }
 
-interface IDocumentDownloadSectionProps extends IDocumentInfo {
+interface IDocumentDownloadSectionProps
+  extends RouteComponentProps,
+    IDocumentInfo {
   ipaCode: string;
   cookie: string;
-  urlDomainPort: string;
+  showGenericErrorAlert: () => void;
 }
 
 const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
+  /**
+   * Create window with custom element _env_ for environment variables
+   */
+  const customWindow = (window as unknown) as ICustomWindow;
+
+  const urlDomainPort =
+    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+    ":" +
+    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+
   /**
    * react-i18next translation hook
    */
@@ -51,9 +67,9 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
 
   const downloadDocument = () => (_: MouseEvent) => {
     const url =
-      props.urlDomainPort +
+      urlDomainPort +
       `/organizations/${props.ipaCode}/documents/${props.documentName}`;
-    // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
+    // TODO: use generated classes for api when binary files are avaliable (tracked in story https://www.pivotaltracker.com/story/show/169818047)
     fetch(url, {
       headers: {
         Authorization: `Bearer ${props.cookie}`
@@ -62,7 +78,11 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
     })
       .then(response => response.blob())
       .then(blob => FileSaver.saveAs(blob, props.documentName))
-      .catch(error => error);
+      .catch((error: Error) => {
+        // tslint:disable-next-line:no-console
+        console.log(error.message);
+        props.showGenericErrorAlert();
+      });
   };
 
   return (
@@ -98,19 +118,16 @@ export const RegistrationStepThree = withRouter(
      */
     const { t } = useTranslation();
 
-    /**
-     * Create window with custom element _env_ for environment variables
-     */
-    const customWindow = (window as unknown) as ICustomWindow;
-
-    const urlDomainPort =
-      customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-      ":" +
-      customWindow._env_.IO_ONBOARDING_PA_API_PORT;
-
     const [cookies] = useCookies(["sessionToken"]);
 
     const alertContext = useContext(AlertContext);
+    const showGenericErrorAlert = () => {
+      alertContext.setAlert({
+        alertColor: "danger",
+        alertText: t("common.errors.genericError.500"),
+        showAlert: true
+      });
+    };
 
     /**
      * array containing two documents download sections props
@@ -129,36 +146,63 @@ export const RegistrationStepThree = withRouter(
     const downloadDocsSections = downloadDocsSectionsDataArray.map(
       downloadDocSection => (
         <DownloadDocsSection
+          {...props}
           key={downloadDocSection.documentType}
           documentType={downloadDocSection.documentType}
           documentName={downloadDocSection.documentName}
           ipaCode={props.selectedAdministration.ipa_code}
           cookie={cookies.sessionToken}
-          urlDomainPort={urlDomainPort}
+          showGenericErrorAlert={showGenericErrorAlert}
         />
       )
     );
 
     const onSendDocuments = () => {
-      const url =
-        urlDomainPort +
-        `/organizations/${props.selectedAdministration.ipa_code}/signed-documents`;
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440)
-      fetch(url, {
-        headers: {
-          Authorization: `Bearer ${cookies.sessionToken}`
-        },
-        method: "POST"
-      })
-        .then(_ => {
-          props.history.push("/dashboard");
-          alertContext.setAlert({
-            alertColor: "warning",
-            alertText: t("common.alerts.documentsSent"),
-            showAlert: true
-          });
+      const params = {
+        ipaCode: props.selectedAdministration.ipa_code as string
+      };
+      baseUrlBackendClient(cookies.sessionToken)
+        .sendDocuments({
+          ...params
         })
-        .catch(error => error);
+        .then(response => {
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 204) {
+              props.history.push("/dashboard");
+              alertContext.setAlert({
+                alertColor: "warning",
+                alertText: t("common.alerts.documentsSent"),
+                showAlert: true
+              });
+            } else {
+              const alertText = t(
+                `common.errors.sendDocuments.${respValue.status}`
+              )
+                ? t(`common.errors.sendDocuments.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            showGenericErrorAlert();
+          }
+        })
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error.message);
+          showGenericErrorAlert();
+        });
     };
 
     return (

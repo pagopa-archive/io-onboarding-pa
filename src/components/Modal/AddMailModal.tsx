@@ -2,6 +2,7 @@ import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { ChangeEvent, MouseEvent, useContext, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
   Button,
   Col,
@@ -17,9 +18,12 @@ import {
 } from "reactstrap";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { AlertContext } from "../../context/alert-context";
-import { ICustomWindow } from "../../customTypes/CustomWindow";
+import {
+  baseUrlBackendClient,
+  manageErrorReturnCodes
+} from "../../utils/api-utils";
 
-interface IAddMailModalProps {
+interface IAddMailModalProps extends RouteComponentProps {
   isVisibleAddMailModal: boolean;
   toggleAddMailModal: () => void;
   spidMail: EmailAddress;
@@ -30,26 +34,21 @@ interface IAddMailModalProps {
 /*
  * Modal shown at first login to prompt user to add personal mail
  */
-export const AddMailModal = (props: IAddMailModalProps) => {
+export const AddMailModal = withRouter((props: IAddMailModalProps) => {
   /**
    * react-i18next translation hook
    */
   const { t } = useTranslation();
 
-  /**
-   * Create window with custom element _env_ for environment variables
-   */
-  const customWindow = (window as unknown) as ICustomWindow;
-
-  const urlDomainPort =
-    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-    ":" +
-    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
-
-  const contentType = "application/json";
-
   const [cookies] = useCookies(["sessionToken"]);
   const alertContext = useContext(AlertContext);
+  const showGenericErrorAlert = () => {
+    alertContext.setAlert({
+      alertColor: "danger",
+      alertText: t("common.errors.genericError.500"),
+      showAlert: true
+    });
+  };
 
   const [newMail, setNewMail] = useState("");
   const [confirmMail, setConfirmMail] = useState("");
@@ -76,32 +75,53 @@ export const AddMailModal = (props: IAddMailModalProps) => {
   const updateUserMail = (newUserMail: string, alertMessage: string) => (
     _: MouseEvent
   ) => {
-    const url = urlDomainPort + `/profile`;
-    fetch(url, {
-      body: JSON.stringify({ work_email: newUserMail as EmailAddress }),
-      headers: {
-        Accept: contentType,
-        Authorization: `Bearer ${cookies.sessionToken}`,
-        "Content-Type": contentType
-      },
-      method: "PUT"
-    })
+    const params = {
+      updateUserProfile: { work_email: newUserMail as EmailAddress }
+    };
+    baseUrlBackendClient(cookies.sessionToken)
+      .updateProfile({
+        ...params
+      })
       .then(response => {
-        return response.json();
+        if (response.isRight()) {
+          const respValue = response.value;
+          if (respValue.status === 200) {
+            props.onWorkMailSet(newUserMail as EmailAddress);
+            props.toggleAddMailModal();
+            alertContext.setAlert({
+              alertColor: "info",
+              alertText: alertMessage,
+              showAlert: true
+            });
+            setNewMail("");
+            setConfirmMail("");
+          } else {
+            const alertText = t(
+              `common.errors.updateUserMail.${respValue.status}`
+            )
+              ? t(`common.errors.updateUserMail.${respValue.status}`)
+              : t(`common.errors.genericError.${respValue.status}`);
+            manageErrorReturnCodes(
+              respValue.status,
+              () =>
+                alertContext.setAlert({
+                  alertColor: "danger",
+                  alertText,
+                  showAlert: true
+                }),
+              () => props.history.push("/home")
+            );
+          }
+        } else {
+          // tslint:disable-next-line:no-console
+          console.log(response.value.map(v => v.message).join(" - "));
+          showGenericErrorAlert();
+        }
       })
-      .then(() => {
-        props.onWorkMailSet(newUserMail as EmailAddress);
-        props.toggleAddMailModal();
-        alertContext.setAlert({
-          alertColor: "info",
-          alertText: alertMessage,
-          showAlert: true
-        });
-        setNewMail("");
-        setConfirmMail("");
-      })
-      .catch(error => {
-        return error;
+      .catch((error: Error) => {
+        // tslint:disable-next-line:no-console
+        console.log(error.message);
+        showGenericErrorAlert();
       });
   };
 
@@ -203,4 +223,4 @@ export const AddMailModal = (props: IAddMailModalProps) => {
       </ModalFooter>
     </Modal>
   );
-};
+});

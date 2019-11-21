@@ -1,6 +1,15 @@
 ---
 translation:
   common:
+    errors:
+      400: "I dati inseriti non sono stati riconosciuti, ricarica la pagina e prova di nuovo."
+      401: "Token scaduto"
+      403: "Il tuo profilo non ha i permessi per compiere questa operazione."
+      404: "Non riusciamo a trovare quello che cerchi, controlla che la tua ricerca sia corretta"
+      409: "L’operazione non può essere eseguita a causa di un conflitto."
+      429: "L’operazione non può essere eseguita a causa di un numero eccessivo di richieste."
+      500: "Abbiamo un problema tecnico e non è colpa tua, riprova di nuovo tra poco."
+      503: "Non possiamo gestire la tua richiesta per un disservizio temporaneo o una manutenzione programmata, riprova tra poco."
     buttons:
       add: "Aggiungi"
       back: "Torna indietro"

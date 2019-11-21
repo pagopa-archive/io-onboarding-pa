@@ -1,13 +1,20 @@
+import { fromNullable } from "fp-ts/lib/Option";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { UserRole } from "../../../generated/definitions/api/UserRole";
+import { AlertContext } from "../../context/alert-context";
 import { LoadingPageContext } from "../../context/loading-page-context";
-import { ICustomWindow } from "../../customTypes/CustomWindow";
+import {
+  baseUrlBackendClient,
+  manageErrorReturnCodes
+} from "../../utils/api-utils";
+import { ICustomWindow } from "../../utils/customTypes/CustomWindow";
 import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
@@ -34,7 +41,13 @@ interface IDefaultContainerUserProfileState {
  * Component containing slim header, central header and app body with second level routing
  */
 export const DefaultContainer = withRouter(props => {
+  /**
+   * react-i18next translation hook
+   */
+  const { t } = useTranslation();
+
   const loadingPageContext = useContext(LoadingPageContext);
+  const alertContext = useContext(AlertContext);
 
   const [cookies] = useCookies(["sessionToken"]);
 
@@ -107,32 +120,53 @@ export const DefaultContainer = withRouter(props => {
       !NonEmptyString.is(userProfile.given_name) &&
       location.pathname !== "/spid-login";
     if (isTokenValidAndUserProfileUnset) {
-      const url =
-        customWindow._env_.IO_ONBOARDING_PA_API_HOST +
-        ":" +
-        customWindow._env_.IO_ONBOARDING_PA_API_PORT +
-        "/profile";
-      // TODO: use generated classes for api (tracked in story https://www.pivotaltracker.com/story/show/169454440
-      fetch(url, {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${cookies.sessionToken}`
-          // 'Content-Type': 'application/json'
-        },
-        method: "GET"
-      })
+      baseUrlBackendClient(cookies.sessionToken)
+        .getProfile({})
         .then(response => {
-          return response.json();
-        })
-        .then(responseData => {
-          handleGetUserProfile(responseData);
-          if (!responseData.work_email) {
-            toggleAddMailModal();
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 200) {
+              const userProfileResp = respValue.value;
+              handleGetUserProfile(userProfileResp);
+              fromNullable(userProfileResp.work_email).map(() =>
+                toggleAddMailModal()
+              );
+            } else {
+              const alertText = t(
+                `common.errors.getUserProfile.${respValue.status}`
+              )
+                ? t(`common.errors.getUserProfile.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            alertContext.setAlert({
+              alertColor: "danger",
+              alertText: t("common.errors.genericError.500"),
+              showAlert: true
+            });
           }
         })
-        .catch(error => {
-          // TODO: manage error in promise, tracked with story #169033467
-          return error;
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error);
+
+          alertContext.setAlert({
+            alertColor: "danger",
+            alertText: t("common.errors.genericError.500"),
+            showAlert: true
+          });
         });
     }
   }, [cookies.sessionToken]);
