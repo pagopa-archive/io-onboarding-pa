@@ -15,12 +15,10 @@ import {
   Row
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
-import { BackendClient } from "../../../clients/api";
 import { AlertContext } from "../../../context/alert-context";
 import {
   baseUrlBackendClient,
-  manageApiResponse,
-  manageErrors
+  manageErrorReturnCodes
 } from "../../../utils/api-utils";
 import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
@@ -48,7 +46,7 @@ interface IDocumentDownloadSectionProps
     IDocumentInfo {
   ipaCode: string;
   cookie: string;
-  handleAPIError: (error: Error) => void;
+  showGenericErrorAlert: () => void;
 }
 
 const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
@@ -80,7 +78,11 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
     })
       .then(response => response.blob())
       .then(blob => FileSaver.saveAs(blob, props.documentName))
-      .catch((error: Error) => props.handleAPIError(error));
+      .catch((error: Error) => {
+        // tslint:disable-next-line:no-console
+        console.log(error.message);
+        props.showGenericErrorAlert();
+      });
   };
 
   return (
@@ -119,18 +121,12 @@ export const RegistrationStepThree = withRouter(
     const [cookies] = useCookies(["sessionToken"]);
 
     const alertContext = useContext(AlertContext);
-
-    const handleAPIError = (error: Error) => {
-      manageErrors(
-        error.message,
-        () =>
-          alertContext.setAlert({
-            alertColor: "danger",
-            alertText: t(`common.errors.${error.message}`),
-            showAlert: true
-          }),
-        () => props.history.push("/home")
-      );
+    const showGenericErrorAlert = () => {
+      alertContext.setAlert({
+        alertColor: "danger",
+        alertText: t("common.errors.genericError.500"),
+        showAlert: true
+      });
     };
 
     /**
@@ -156,7 +152,7 @@ export const RegistrationStepThree = withRouter(
           documentName={downloadDocSection.documentName}
           ipaCode={props.selectedAdministration.ipa_code}
           cookie={cookies.sessionToken}
-          handleAPIError={handleAPIError}
+          showGenericErrorAlert={showGenericErrorAlert}
         />
       )
     );
@@ -169,18 +165,44 @@ export const RegistrationStepThree = withRouter(
         .sendDocuments({
           ...params
         })
-        .then((response: ReturnType<typeof BackendClient>["sendDocuments"]) =>
-          manageApiResponse(response)
-        )
-        .then((_: ReturnType<typeof BackendClient>["sendDocuments"]) => {
-          props.history.push("/dashboard");
-          alertContext.setAlert({
-            alertColor: "warning",
-            alertText: t("common.alerts.documentsSent"),
-            showAlert: true
-          });
+        .then(response => {
+          if (response.isRight()) {
+            const respValue = response.value;
+            if (respValue.status === 204) {
+              props.history.push("/dashboard");
+              alertContext.setAlert({
+                alertColor: "warning",
+                alertText: t("common.alerts.documentsSent"),
+                showAlert: true
+              });
+            } else {
+              const alertText = t(
+                `common.errors.sendDocuments.${respValue.status}`
+              )
+                ? t(`common.errors.sendDocuments.${respValue.status}`)
+                : t(`common.errors.genericError.${respValue.status}`);
+              manageErrorReturnCodes(
+                respValue.status,
+                () =>
+                  alertContext.setAlert({
+                    alertColor: "danger",
+                    alertText,
+                    showAlert: true
+                  }),
+                () => props.history.push("/home")
+              );
+            }
+          } else {
+            // tslint:disable-next-line:no-console
+            console.log(response.value.map(v => v.message).join(" - "));
+            showGenericErrorAlert();
+          }
         })
-        .catch((error: Error) => handleAPIError(error));
+        .catch((error: Error) => {
+          // tslint:disable-next-line:no-console
+          console.log(error.message);
+          showGenericErrorAlert();
+        });
     };
 
     return (

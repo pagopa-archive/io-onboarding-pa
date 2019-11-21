@@ -17,12 +17,10 @@ import {
   Row
 } from "reactstrap";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
-import { BackendClient } from "../../clients/api";
 import { AlertContext } from "../../context/alert-context";
 import {
   baseUrlBackendClient,
-  manageApiResponse,
-  manageErrors
+  manageErrorReturnCodes
 } from "../../utils/api-utils";
 
 interface IAddMailModalProps extends RouteComponentProps {
@@ -44,6 +42,13 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
 
   const [cookies] = useCookies(["sessionToken"]);
   const alertContext = useContext(AlertContext);
+  const showGenericErrorAlert = () => {
+    alertContext.setAlert({
+      alertColor: "danger",
+      alertText: t("common.errors.genericError.500"),
+      showAlert: true
+    });
+  };
 
   const [newMail, setNewMail] = useState("");
   const [confirmMail, setConfirmMail] = useState("");
@@ -77,32 +82,47 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
       .updateProfile({
         ...params
       })
-      .then((response: ReturnType<typeof BackendClient>["updateProfile"]) => {
-        manageApiResponse(response);
-      })
-      .then(() => {
-        props.onWorkMailSet(newUserMail as EmailAddress);
-        props.toggleAddMailModal();
-        alertContext.setAlert({
-          alertColor: "info",
-          alertText: alertMessage,
-          showAlert: true
-        });
-        setNewMail("");
-        setConfirmMail("");
-      })
-      .catch((error: Error) =>
-        manageErrors(
-          error.message,
-          () =>
+      .then(response => {
+        if (response.isRight()) {
+          const respValue = response.value;
+          if (respValue.status === 200) {
+            props.onWorkMailSet(newUserMail as EmailAddress);
+            props.toggleAddMailModal();
             alertContext.setAlert({
-              alertColor: "danger",
-              alertText: t(`common.errors.${error.message}`),
+              alertColor: "info",
+              alertText: alertMessage,
               showAlert: true
-            }),
-          () => props.history.push("/home")
-        )
-      );
+            });
+            setNewMail("");
+            setConfirmMail("");
+          } else {
+            const alertText = t(
+              `common.errors.updateUserMail.${respValue.status}`
+            )
+              ? t(`common.errors.updateUserMail.${respValue.status}`)
+              : t(`common.errors.genericError.${respValue.status}`);
+            manageErrorReturnCodes(
+              respValue.status,
+              () =>
+                alertContext.setAlert({
+                  alertColor: "danger",
+                  alertText,
+                  showAlert: true
+                }),
+              () => props.history.push("/home")
+            );
+          }
+        } else {
+          // tslint:disable-next-line:no-console
+          console.log(response.value.map(v => v.message).join(" - "));
+          showGenericErrorAlert();
+        }
+      })
+      .catch((error: Error) => {
+        // tslint:disable-next-line:no-console
+        console.log(error.message);
+        showGenericErrorAlert();
+      });
   };
 
   return (

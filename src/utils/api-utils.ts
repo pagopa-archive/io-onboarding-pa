@@ -13,7 +13,7 @@ export const baseUrlBackendClient = (token: string) => {
 };
 
 /* function to manage errors */
-export const manageErrors = (
+export const manageErrorReturnCodes = (
   status: number,
   setAlert: () => void,
   historyPush: () => void
@@ -24,4 +24,13 @@ export const manageErrors = (
   } else {
     setAlert();
   }
+};
+
+export const manageIsLeftOrUnknownError = (
+  message: string,
+  setAlert: () => void
+) => {
+  // tslint:disable-next-line:no-console
+  console.log(message);
+  setAlert();
 };
