@@ -25,12 +25,3 @@ export const manageErrorReturnCodes = (
     setAlert();
   }
 };
-
-export const manageIsLeftOrUnknownError = (
-  message: string,
-  setAlert: () => void
-) => {
-  // tslint:disable-next-line:no-console
-  console.log(message);
-  setAlert();
-};

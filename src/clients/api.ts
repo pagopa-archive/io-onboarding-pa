@@ -36,7 +36,7 @@ function ParamAuthorizationBearerHeaderProducer<
 
 /*
  * Custom decoder to temporary fix problem with 204-no content response
- * TODO: change it with generetad class - tracked with story https://www.pivotaltracker.com/story/show/169836423
+ * TODO: change it with generated class - tracked with story https://www.pivotaltracker.com/story/show/169836423
  */
 // Decodes the success response with a custom success type
 // tslint:disable-next-line:typedef
