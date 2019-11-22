@@ -16,11 +16,11 @@ export const baseUrlBackendClient = (token: string) => {
 export const manageErrorReturnCodes = (
   status: number,
   setAlert: () => void,
-  historyPush: () => void
+  logout: () => void
 ) => {
   // with status 401 we have an expired token -> user needs to be logged out to perform login again and get new token
   if (status === 401) {
-    historyPush();
+    logout();
   } else {
     setAlert();
   }

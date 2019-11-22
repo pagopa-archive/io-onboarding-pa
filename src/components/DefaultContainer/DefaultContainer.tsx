@@ -11,6 +11,10 @@ import { UserRole } from "../../../generated/definitions/api/UserRole";
 import { AlertContext } from "../../context/alert-context";
 import { LoadingPageContext } from "../../context/loading-page-context";
 import {
+  LogoutModalContext,
+  LogoutModalContextProvider
+} from "../../context/logout-modal-context";
+import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../utils/api-utils";
@@ -20,6 +24,7 @@ import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
 import { LoadingPage } from "../LoadingPage/LoadingPage";
 import { AddMailModal } from "../Modal/AddMailModal";
+import { LogoutModal } from "../Modal/LogoutModal";
 import { RegistrationContainer } from "../Registration/RegistrationContainer";
 import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
@@ -48,6 +53,7 @@ export const DefaultContainer = withRouter(props => {
 
   const loadingPageContext = useContext(LoadingPageContext);
   const alertContext = useContext(AlertContext);
+  const logoutModalContext = useContext(LogoutModalContext);
 
   const [cookies] = useCookies(["sessionToken"]);
 
@@ -116,9 +122,10 @@ export const DefaultContainer = withRouter(props => {
   useEffect(() => {
     // make api call only after onMount because token is string in any case, no longer undefined, and only if userProfile is not set and user is not on spid login page
     const isTokenValidAndUserProfileUnset =
-      NonEmptyString.is(cookies.sessionToken) &&
-      !NonEmptyString.is(userProfile.given_name) &&
-      location.pathname !== "/spid-login";
+      customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1" ||
+      (NonEmptyString.is(cookies.sessionToken) &&
+        !NonEmptyString.is(userProfile.given_name) &&
+        location.pathname !== "/spid-login");
     if (isTokenValidAndUserProfileUnset) {
       baseUrlBackendClient(cookies.sessionToken)
         .getProfile({})
@@ -145,7 +152,11 @@ export const DefaultContainer = withRouter(props => {
                     alertText,
                     showAlert: true
                   }),
-                () => props.history.push("/home")
+                () =>
+                  logoutModalContext.setLogoutModal({
+                    isFromExpiredToken: true,
+                    isLogoutModalVisible: true
+                  })
               );
             }
           } else {
@@ -187,35 +198,38 @@ export const DefaultContainer = withRouter(props => {
   );
 
   return (
-    <div className="DefaultContainer">
-      {!loadingPageContext.loadingPage.isVisible ? (
-        <Fragment>
-          <SlimHeader />
-          <CentralHeader
-            userName={`${userProfile.given_name} ${userProfile.family_name}`}
-            userRole={userProfile.role}
+    <LogoutModalContextProvider>
+      <div className="DefaultContainer">
+        {!loadingPageContext.loadingPage.isVisible ? (
+          <Fragment>
+            <SlimHeader />
+            <CentralHeader
+              userName={`${userProfile.given_name} ${userProfile.family_name}`}
+              userRole={userProfile.role}
+            />
+          </Fragment>
+        ) : null}
+        <div>
+          <AppAlert />
+          <Route path="/spid-login" component={SpidLogin} />
+          <Route
+            path="/sign-up/:signUpStep"
+            exact={true}
+            render={navigateToRegistration}
           />
-        </Fragment>
-      ) : null}
-      <div>
-        <AppAlert />
-        <Route path="/spid-login" component={SpidLogin} />
-        <Route
-          path="/sign-up/:signUpStep"
-          exact={true}
-          render={navigateToRegistration}
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/profile" render={navigateToUserProfile} />
+        </div>
+        <AddMailModal
+          isVisibleAddMailModal={isVisibleAddMailModal}
+          toggleAddMailModal={toggleAddMailModal}
+          spidMail={userProfile.email}
+          workMail={userProfile.work_email}
+          onWorkMailSet={handleWorkMailSet}
         />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/profile" render={navigateToUserProfile} />
+        <LogoutModal />
+        {loadingPageContext.loadingPage.isVisible ? <LoadingPage /> : null}
       </div>
-      <AddMailModal
-        isVisibleAddMailModal={isVisibleAddMailModal}
-        toggleAddMailModal={toggleAddMailModal}
-        spidMail={userProfile.email}
-        workMail={userProfile.work_email}
-        onWorkMailSet={handleWorkMailSet}
-      />
-      {loadingPageContext.loadingPage.isVisible ? <LoadingPage /> : null}
-    </div>
+    </LogoutModalContextProvider>
   );
 });

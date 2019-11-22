@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
 import { AlertContext } from "../../../context/alert-context";
+import { LogoutModalContext } from "../../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
   manageErrorReturnCodes
@@ -128,6 +129,7 @@ export const RegistrationStepThree = withRouter(
         showAlert: true
       });
     };
+    const logoutModalContext = useContext(LogoutModalContext);
 
     /**
      * array containing two documents download sections props
@@ -189,7 +191,11 @@ export const RegistrationStepThree = withRouter(
                     alertText,
                     showAlert: true
                   }),
-                () => props.history.push("/home")
+                () =>
+                  logoutModalContext.setLogoutModal({
+                    isFromExpiredToken: true,
+                    isLogoutModalVisible: true
+                  })
               );
             }
           } else {

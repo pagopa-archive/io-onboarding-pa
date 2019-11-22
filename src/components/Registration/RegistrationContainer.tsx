@@ -33,6 +33,7 @@ import { AdministrationSearchParam } from "../../../generated/definitions/api/Ad
 import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 import { AlertContext } from "../../context/alert-context";
+import { LogoutModalContext } from "../../context/logout-modal-context";
 
 interface IRegistrationContainerProps
   extends RouteComponentProps<{ signUpStep: string }> {
@@ -57,6 +58,7 @@ export const RegistrationContainer = withRouter(
         showAlert: true
       });
     };
+    const logoutModalContext = useContext(LogoutModalContext);
 
     const initialSelectedAdministration: ComponentProps<
       typeof RegistrationStepOne
@@ -119,7 +121,11 @@ export const RegistrationContainer = withRouter(
                     alertText,
                     showAlert: true
                   }),
-                () => props.history.push("/home")
+                () =>
+                  logoutModalContext.setLogoutModal({
+                    isFromExpiredToken: true,
+                    isLogoutModalVisible: true
+                  })
               );
             }
           } else {
@@ -236,7 +242,11 @@ export const RegistrationContainer = withRouter(
                     alertText,
                     showAlert: true
                   }),
-                () => props.history.push("/home")
+                () =>
+                  logoutModalContext.setLogoutModal({
+                    isFromExpiredToken: true,
+                    isLogoutModalVisible: true
+                  })
               );
             }
           } else {

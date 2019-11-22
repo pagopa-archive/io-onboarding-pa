@@ -1,4 +1,5 @@
 import React, { FC, MouseEvent } from "react";
+import { useCookies } from "react-cookie";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Button, Col, Media, Row } from "reactstrap";
 
@@ -21,11 +22,18 @@ export const HomeLoginButton = withRouter<
   IHomeLoginButtonProps,
   FC<IHomeLoginButtonProps>
 >((props: IHomeLoginButtonProps) => {
+  const [cookies] = useCookies(["sessionToken"]);
   /**
    * Navigate to link provided in props
    */
-  const navigateTo = (link: string) => (_: MouseEvent) =>
-    props.history.push(link);
+  const navigateTo = (link: string) => (_: MouseEvent) => {
+    // if token is already present, user already logged in and token did not expire yet -> user can skip login
+    if (cookies.sessionToken) {
+      props.history.push("/dashboard");
+    } else {
+      props.history.push(link);
+    }
+  };
 
   return (
     <Col sm={{ size: 3, offset: props.offset }}>

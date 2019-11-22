@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -10,6 +10,7 @@ import {
   Row
 } from "reactstrap";
 import { UserProfile as UserProfileType } from "../../../generated/definitions/api/UserProfile";
+import { LogoutModalContext } from "../../context/logout-modal-context";
 import { BackButton } from "../BackButton/BackButton";
 
 interface IUserProfileProps {
@@ -25,6 +26,15 @@ export const UserProfile = (props: IUserProfileProps) => {
    * react-i18next translation hook
    */
   const { t } = useTranslation();
+
+  const logoutModalContext = useContext(LogoutModalContext);
+
+  const showLogoutModal = () => {
+    logoutModalContext.setLogoutModal({
+      isFromExpiredToken: false,
+      isLogoutModalVisible: true
+    });
+  };
 
   return (
     <div className="UserProfile container-fluid">
@@ -51,8 +61,8 @@ export const UserProfile = (props: IUserProfileProps) => {
                           color="primary"
                           outline={true}
                           className="float-right"
+                          onClick={showLogoutModal}
                         >
-                          {/*TODO: add logout function - story https://www.pivotaltracker.com/story/show/169448479*/}
                           {t("common.buttons.logout")}
                         </Button>
                       </Col>
