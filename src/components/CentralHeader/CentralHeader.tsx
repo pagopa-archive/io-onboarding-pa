@@ -1,5 +1,5 @@
 import { AppHeader } from "@coreui/react";
-import React, { ComponentProps } from "react";
+import React, { ComponentProps, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
@@ -20,6 +20,7 @@ import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg"
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
 
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
+import { LogoutModalContext } from "../../context/logout-modal-context";
 import "./CentralHeader.css";
 
 /*
@@ -71,10 +72,20 @@ const UserIcon = () => {
  */
 const UserNameWithDropdown = withRouter((props: IUserNameWithDropdownProps) => {
   const { t } = useTranslation();
+
+  const logoutModalContext = useContext(LogoutModalContext);
+
   /**
    * function to navigate to profile
    */
   const navigateToProfile = () => props.history.push("/profile");
+
+  const showLogoutModal = () => {
+    logoutModalContext.setLogoutModal({
+      isFromExpiredToken: false,
+      isLogoutModalVisible: true
+    });
+  };
 
   const userRoleBadge = NonEmptyString.is(props.userRole) ? (
     <UserRoleBadge userRole={props.userRole} />
@@ -104,8 +115,9 @@ const UserNameWithDropdown = withRouter((props: IUserNameWithDropdownProps) => {
           <DropdownItem onClick={navigateToProfile}>
             {t("common.buttons.profile")}
           </DropdownItem>
-          {/*TODO: add logout function - story https://www.pivotaltracker.com/story/show/169448479*/}
-          <DropdownItem>{t("common.buttons.logout")}</DropdownItem>
+          <DropdownItem onClick={showLogoutModal}>
+            {t("common.buttons.logout")}
+          </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     </Nav>

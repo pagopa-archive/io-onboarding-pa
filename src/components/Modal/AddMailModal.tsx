@@ -18,6 +18,7 @@ import {
 } from "reactstrap";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { AlertContext } from "../../context/alert-context";
+import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
   manageErrorReturnCodes
@@ -49,6 +50,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
       showAlert: true
     });
   };
+  const logoutModalContext = useContext(LogoutModalContext);
 
   const [newMail, setNewMail] = useState("");
   const [confirmMail, setConfirmMail] = useState("");
@@ -109,7 +111,11 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
                   alertText,
                   showAlert: true
                 }),
-              () => props.history.push("/home")
+              () =>
+                logoutModalContext.setLogoutModal({
+                  isFromExpiredToken: true,
+                  isLogoutModalVisible: true
+                })
             );
           }
         } else {

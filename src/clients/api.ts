@@ -14,7 +14,6 @@ import {
   GetDocumentT,
   getProfileDefaultDecoder,
   GetProfileT,
-  logoutDefaultDecoder,
   LogoutT,
   searchPublicAdministrationsDefaultDecoder,
   SearchPublicAdministrationsT,
@@ -64,6 +63,31 @@ function sendDocumentsCustomDecoder() {
 
 // Decodes the success response with the type defined in the specs
 const sendDocumentsCustomDefaultDecoder = () => sendDocumentsCustomDecoder();
+
+/*
+ * Custom decoder to temporary fix problem with 204-no content response
+ * TODO: change it with generated class - tracked with story https://www.pivotaltracker.com/story/show/169836423
+ */
+// Decodes the success response with a custom success type
+// tslint:disable-next-line:typedef
+function logoutCustomDecoder<A, O>() {
+  return composeResponseDecoders(
+    composeResponseDecoders(
+      composeResponseDecoders(
+        composeResponseDecoders(
+          constantResponseDecoder<undefined, 204>(204, undefined),
+          constantResponseDecoder<undefined, 400>(400, undefined)
+        ),
+        constantResponseDecoder<undefined, 401>(401, undefined)
+      ),
+      constantResponseDecoder<undefined, 429>(429, undefined)
+    ),
+    constantResponseDecoder<undefined, 503>(503, undefined)
+  );
+}
+
+// Decodes the success response with the type defined in the specs
+const logoutCustomDefaultDecoder = () => logoutCustomDecoder();
 
 /*
  * Create client
@@ -139,7 +163,7 @@ export function BackendClient(
     headers: composeHeaderProducers(tokenHeaderProducer, ApiHeaderJson),
     method: "post",
     query: _ => ({}),
-    response_decoder: logoutDefaultDecoder(),
+    response_decoder: logoutCustomDefaultDecoder(),
     url: () => "/logout"
   };
 

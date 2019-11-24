@@ -2,14 +2,15 @@
 translation:
   common:
     errors:
-      400: "I dati inseriti non sono stati riconosciuti, ricarica la pagina e prova di nuovo."
-      401: "Token scaduto"
-      403: "Il tuo profilo non ha i permessi per compiere questa operazione."
-      404: "Non riusciamo a trovare quello che cerchi, controlla che la tua ricerca sia corretta"
-      409: "L’operazione non può essere eseguita a causa di un conflitto."
-      429: "L’operazione non può essere eseguita a causa di un numero eccessivo di richieste."
-      500: "Abbiamo un problema tecnico e non è colpa tua, riprova di nuovo tra poco."
-      503: "Non possiamo gestire la tua richiesta per un disservizio temporaneo o una manutenzione programmata, riprova tra poco."
+      genericError:
+        400: "I dati inseriti non sono stati riconosciuti, ricarica la pagina e prova di nuovo."
+        401: "Token scaduto"
+        403: "Il tuo profilo non ha i permessi per compiere questa operazione."
+        404: "Non riusciamo a trovare quello che cerchi, controlla che la tua ricerca sia corretta"
+        409: "L’operazione non può essere eseguita a causa di un conflitto."
+        429: "L’operazione non può essere eseguita a causa di un numero eccessivo di richieste."
+        500: "Abbiamo un problema tecnico e non è colpa tua, riprova di nuovo tra poco."
+        503: "Non possiamo gestire la tua richiesta per un disservizio temporaneo o una manutenzione programmata, riprova tra poco."
     buttons:
       add: "Aggiungi"
       back: "Torna indietro"
@@ -17,6 +18,7 @@ translation:
       backDashboard: "Torna alla dashboard"
       cancel: "Annulla"
       confirm: "Conferma"
+      logoutConfirm: "Conferma logout"
       search: "Ricerca"
       profile: "Profilo"
       logout: "Logout"
@@ -50,6 +52,13 @@ translation:
         inputs:
           newMailLabel: "Nuova email di lavoro"
           confirmNewMailLabel: "Ripeti la nuova email di lavoro"
+      logout:
+        title: "Logout"
+        isFromExpiredToken:
+          text: ""
+        isUserTriggered:
+          text: "Sei sicuro di voler uscire dal backoffice? Per rientrare ti verrà chiesto nuovamente di fare il log in con SPID.<br><br>Di default la sessione rimarrà attiva per un'ora, passati i quali sarà necessario accedere con SPID."
+
   loadingPages:
     documentsCreation:
       title: "Attendi…"
