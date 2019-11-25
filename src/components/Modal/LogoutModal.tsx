@@ -78,9 +78,9 @@ export const LogoutModal = withRouter(props => {
             removeCookie("sessionToken", { path: "/" });
             props.history.push("/home");
           } else {
-            const alertText = t(`common.errors.logout.${respValue.status}`)
-              ? t(`common.errors.logout.${respValue.status}`)
-              : t(`common.errors.genericError.${respValue.status}`);
+            const alertText =
+              t(`common.errors.logout.${respValue.status}`) ||
+              t(`common.errors.genericError.${respValue.status}`);
             manageErrorReturnCodes(
               respValue.status,
               () =>

@@ -74,6 +74,13 @@ export const RegistrationStepButtons = withRouter(
               }
               text={t("common.buttons.back")}
               additionalClasses={"mt-5 pl-0"}
+              showModalbBackConfirm={
+                previousStep === 0
+                  ? () => {
+                      props.openConfirmModal();
+                    }
+                  : undefined
+              }
             />
           </Col>
         </Row>

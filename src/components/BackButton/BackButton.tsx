@@ -7,6 +7,7 @@ interface IBackButtonProps extends RouteComponentProps {
   path: string;
   text: string;
   additionalClasses: string;
+  showModalbBackConfirm?: () => void;
 }
 
 /**
@@ -14,7 +15,9 @@ interface IBackButtonProps extends RouteComponentProps {
  */
 export const BackButton = withRouter((props: IBackButtonProps) => {
   const navigateBack = () => {
-    props.history.push(props.path);
+    return props.showModalbBackConfirm
+      ? props.showModalbBackConfirm()
+      : props.history.push(props.path);
   };
 
   return (

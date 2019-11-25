@@ -139,11 +139,9 @@ export const DefaultContainer = withRouter(props => {
                 toggleAddMailModal()
               );
             } else {
-              const alertText = t(
-                `common.errors.getUserProfile.${respValue.status}`
-              )
-                ? t(`common.errors.getUserProfile.${respValue.status}`)
-                : t(`common.errors.genericError.${respValue.status}`);
+              const alertText =
+                t(`common.errors.getUserProfile.${respValue.status}`) ||
+                t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
                 () =>

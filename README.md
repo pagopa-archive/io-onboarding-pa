@@ -1,4 +1,4 @@
-# IO Public Administrations Onboarding frontned
+# IO Public Administrations Onboarding frontend
 
 The repository contains the frontend code of the IO Public Administrations onboarding portal.
 
