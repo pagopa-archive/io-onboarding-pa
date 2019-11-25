@@ -75,6 +75,8 @@ export const RegistrationStepButtons = withRouter(
               text={t("common.buttons.back")}
               additionalClasses={"mt-5 pl-0"}
               showModalbBackConfirm={
+                // if user is at step one, a modal to confirm to go back to dashboard and leave registration process appears
+                // otherwise, user is simply taken to previous registration step
                 previousStep === 0
                   ? () => {
                       props.openConfirmModal();
