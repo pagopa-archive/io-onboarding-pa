@@ -25,6 +25,7 @@ interface IRegistrationStepTwoProps {
   onSaveAdministration: (
     administrationToSave: OrganizationRegistrationParams
   ) => void;
+  openConfirmModal: () => void;
 }
 
 /**
@@ -174,6 +175,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           outline={true}
                           color="secondary"
                           className="w-50"
+                          onClick={props.openConfirmModal}
                         >
                           {t("common.buttons.cancel")}
                         </Button>

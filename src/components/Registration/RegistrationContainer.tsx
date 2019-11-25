@@ -108,11 +108,9 @@ export const RegistrationContainer = withRouter(
               const administrationsSearchResp = respValue.value;
               setAdministrations(administrationsSearchResp.administrations);
             } else {
-              const alertText = t(
-                `common.errors.searchAdministrations.${respValue.status}`
-              )
-                ? t(`common.errors.searchAdministrations.${respValue.status}`)
-                : t(`common.errors.genericError.${respValue.status}`);
+              const alertText =
+                t(`common.errors.searchAdministrations.${respValue.status}`) ||
+                t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
                 () =>
@@ -229,11 +227,9 @@ export const RegistrationContainer = withRouter(
             if (respValue.status === 201) {
               props.history.push("/sign-up/3");
             } else {
-              const alertText = t(
-                `common.errors.searchAdministrations.${respValue.status}`
-              )
-                ? t(`common.errors.searchAdministrations.${respValue.status}`)
-                : t(`common.errors.genericError.${respValue.status}`);
+              const alertText =
+                t(`common.errors.searchAdministrations.${respValue.status}`) ||
+                t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
                 () =>
@@ -300,6 +296,7 @@ export const RegistrationContainer = withRouter(
               selectedAdministration={selectedAdministration}
               onStepTwoInputChange={handleStepTwoInputChange}
               onSaveAdministration={saveAdministration}
+              openConfirmModal={toggleConfirmationModal}
             />
           );
         case "3":
@@ -313,6 +310,7 @@ export const RegistrationContainer = withRouter(
               onIsViewedDocumentsCheckboxChanged={
                 handleIsViewedDocumentsCheckboxChanged
               }
+              openConfirmModal={toggleConfirmationModal}
             />
           );
       }

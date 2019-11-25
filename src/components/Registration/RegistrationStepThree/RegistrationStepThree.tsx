@@ -31,6 +31,7 @@ interface IRegistrationStepThreeProps extends RouteComponentProps {
   userFiscalCode: string;
   isViewedDocumentsCheckboxChecked: boolean;
   onIsViewedDocumentsCheckboxChanged: () => void;
+  openConfirmModal: () => void;
 }
 
 /*
@@ -178,11 +179,9 @@ export const RegistrationStepThree = withRouter(
                 showAlert: true
               });
             } else {
-              const alertText = t(
-                `common.errors.sendDocuments.${respValue.status}`
-              )
-                ? t(`common.errors.sendDocuments.${respValue.status}`)
-                : t(`common.errors.genericError.${respValue.status}`);
+              const alertText =
+                t(`common.errors.sendDocuments.${respValue.status}`) ||
+                t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
                 () =>
@@ -246,7 +245,12 @@ export const RegistrationStepThree = withRouter(
                   </Form>
                   <Row className="pt-5 pb-5">
                     <Col size={6} className="text-left">
-                      <Button outline={true} color="secondary" className="w-50">
+                      <Button
+                        outline={true}
+                        color="secondary"
+                        className="w-50"
+                        onClick={props.openConfirmModal}
+                      >
                         {t("common.buttons.cancel")}
                       </Button>
                     </Col>
