@@ -1,4 +1,4 @@
-import React, { ComponentProps, Fragment, useContext } from "react";
+import React, { ComponentProps, Fragment, useContext, useEffect } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -95,6 +95,22 @@ export const RegistrationContainer = withRouter(
       setIsViewedDocumentsCheckboxChecked
     ] = useState(false);
 
+    const isAdministrationAlreadyRegistered =
+      selectedAdministration.registration_status ===
+        OrganizationRegistrationStatusEnum.DRAFT ||
+      selectedAdministration.registration_status ===
+        OrganizationRegistrationStatusEnum.REGISTERED;
+
+    useEffect(() => {
+      if (isAdministrationAlreadyRegistered) {
+        alertContext.setAlert({
+          alertColor: "info",
+          alertText: t("common.alerts.alreadyRegisteredInstitution"),
+          showAlert: true
+        });
+      }
+    }, [selectedAdministration.registration_status]);
+
     const handleAdministrationSearch = (searchString: string) => {
       const params = {
         administrationSearchParam: searchString as AdministrationSearchParam
@@ -166,18 +182,6 @@ export const RegistrationContainer = withRouter(
             }
           : event[0];
       setSelectedAdministration(newAdministration);
-      const isAdministrationAlreadyRegistered =
-        newAdministration.registration_status ===
-          OrganizationRegistrationStatusEnum.DRAFT ||
-        newAdministration.registration_status ===
-          OrganizationRegistrationStatusEnum.REGISTERED;
-      if (isAdministrationAlreadyRegistered) {
-        alertContext.setAlert({
-          alertColor: "info",
-          alertText: t("common.alerts.alreadyRegisteredInstitution"),
-          showAlert: true
-        });
-      }
     };
 
     const handlePecCheckboxChange = (selectedPecLabel: string) => {
@@ -303,6 +307,9 @@ export const RegistrationContainer = withRouter(
               onAdministrationSelected={handleAdministrationSelected}
               selectedAdministration={selectedAdministration}
               openConfirmModal={toggleConfirmationModal}
+              isAdministrationAlreadyRegistered={
+                isAdministrationAlreadyRegistered
+              }
             />
           );
         case "2":
