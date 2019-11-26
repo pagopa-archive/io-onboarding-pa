@@ -19,6 +19,7 @@ import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../utils/api-utils";
+import { getConfig } from "../../utils/config";
 
 /*
  * Modal shown at first login to prompt user to add personal mail
@@ -58,7 +59,9 @@ export const LogoutModal = withRouter(props => {
           isFromExpiredToken: false,
           isLogoutModalVisible: false
         });
-        removeCookie("sessionToken", { path: "/" });
+        removeCookie("sessionToken", {
+          domain: getConfig("IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN")
+        });
         props.history.push("/home");
       }, 8000);
     }
@@ -75,7 +78,9 @@ export const LogoutModal = withRouter(props => {
         if (response.isRight()) {
           const respValue = response.value;
           if (respValue.status === 204) {
-            removeCookie("sessionToken", { path: "/" });
+            removeCookie("sessionToken", {
+              domain: getConfig("IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN")
+            });
             props.history.push("/home");
           } else {
             const alertText =
@@ -90,7 +95,9 @@ export const LogoutModal = withRouter(props => {
                   showAlert: true
                 }),
               () => {
-                removeCookie("sessionToken");
+                removeCookie("sessionToken", {
+                  domain: getConfig("IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN")
+                });
                 props.history.push("/home");
               }
             );

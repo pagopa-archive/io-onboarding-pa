@@ -1,3 +1,4 @@
+import { constant } from "fp-ts/lib/function";
 import { fromNullable } from "fp-ts/lib/Option";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { Fragment, useContext, useEffect, useState } from "react";
@@ -18,7 +19,7 @@ import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../utils/api-utils";
-import { ICustomWindow } from "../../utils/customTypes/CustomWindow";
+import { getConfig } from "../../utils/config";
 import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
@@ -56,11 +57,6 @@ export const DefaultContainer = withRouter(props => {
   const logoutModalContext = useContext(LogoutModalContext);
 
   const [cookies] = useCookies(["sessionToken"]);
-
-  /**
-   * Create window with custom element _env_ for environment variables
-   */
-  const customWindow = (window as unknown) as ICustomWindow;
 
   /**
    * Initial state for user profile
@@ -113,7 +109,7 @@ export const DefaultContainer = withRouter(props => {
     const isTokenExpired =
       !cookies.sessionToken &&
       location.pathname !== "/spid-login" &&
-      customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV !== "1";
+      getConfig("IO_ONBOARDING_PA_IS_MOCK_ENV") !== "1";
     if (isTokenExpired) {
       props.history.push("/home");
     }
@@ -122,10 +118,10 @@ export const DefaultContainer = withRouter(props => {
   useEffect(() => {
     // make api call only after onMount because token is string in any case, no longer undefined, and only if userProfile is not set and user is not on spid login page
     const isTokenValidAndUserProfileUnset =
-      customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1" ||
-      (NonEmptyString.is(cookies.sessionToken) &&
-        !NonEmptyString.is(userProfile.given_name) &&
-        location.pathname !== "/spid-login");
+      (getConfig("IO_ONBOARDING_PA_IS_MOCK_ENV") === "1" ||
+        NonEmptyString.is(cookies.sessionToken)) &&
+      !NonEmptyString.is(userProfile.given_name) &&
+      location.pathname !== "/spid-login";
     if (isTokenValidAndUserProfileUnset) {
       baseUrlBackendClient(cookies.sessionToken)
         .getProfile({})
@@ -135,8 +131,9 @@ export const DefaultContainer = withRouter(props => {
             if (respValue.status === 200) {
               const userProfileResp = respValue.value;
               handleGetUserProfile(userProfileResp);
-              fromNullable(userProfileResp.work_email).map(() =>
-                toggleAddMailModal()
+              fromNullable(userProfileResp.work_email).foldL(
+                toggleAddMailModal,
+                constant
               );
             } else {
               const alertText =
