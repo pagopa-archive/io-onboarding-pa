@@ -1,4 +1,4 @@
-import React, { ComponentProps, Fragment, useContext } from "react";
+import React, { ComponentProps, Fragment, useContext, useEffect } from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -31,6 +31,7 @@ import {
 import { useCookies } from "react-cookie";
 import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
 import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
+import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 import { AlertContext } from "../../context/alert-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
@@ -74,6 +75,7 @@ export const RegistrationContainer = withRouter(
       links: [],
       name: "",
       pecs: {},
+      registration_status: undefined,
       scope: undefined,
       selected_pec_label: ""
     };
@@ -92,6 +94,22 @@ export const RegistrationContainer = withRouter(
       isViewedDocumentsCheckboxChecked,
       setIsViewedDocumentsCheckboxChecked
     ] = useState(false);
+
+    const isAdministrationAlreadyRegistered =
+      selectedAdministration.registration_status ===
+        OrganizationRegistrationStatusEnum.DRAFT ||
+      selectedAdministration.registration_status ===
+        OrganizationRegistrationStatusEnum.REGISTERED;
+
+    useEffect(() => {
+      if (isAdministrationAlreadyRegistered) {
+        alertContext.setAlert({
+          alertColor: "info",
+          alertText: t("common.alerts.alreadyRegisteredInstitution"),
+          showAlert: true
+        });
+      }
+    }, [selectedAdministration.registration_status]);
 
     const handleAdministrationSearch = (searchString: string) => {
       const params = {
@@ -158,6 +176,7 @@ export const RegistrationContainer = withRouter(
               links: [],
               name: "",
               pecs: {},
+              registration_status: undefined,
               scope: undefined,
               selected_pec_label: ""
             }
@@ -288,6 +307,9 @@ export const RegistrationContainer = withRouter(
               onAdministrationSelected={handleAdministrationSelected}
               selectedAdministration={selectedAdministration}
               openConfirmModal={toggleConfirmationModal}
+              isAdministrationAlreadyRegistered={
+                isAdministrationAlreadyRegistered
+              }
             />
           );
         case "2":

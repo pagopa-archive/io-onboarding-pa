@@ -26,6 +26,7 @@ interface IRegistrationStepOneProps
   onPecCheckboxChange: (selectedPecLabel: string) => void;
   onScopeCheckboxChange: (selectedScope: OrganizationScope) => void;
   openConfirmModal: () => void;
+  isAdministrationAlreadyRegistered: boolean;
 }
 
 /**
@@ -64,6 +65,7 @@ export const RegistrationStepOne = withRouter(
               value={key}
               checked={props.selectedAdministration.selected_pec_label === key}
               onChange={onPecCheckboxChange}
+              disabled={props.isAdministrationAlreadyRegistered}
             />
             <Label
               check={true}
@@ -96,6 +98,7 @@ export const RegistrationStepOne = withRouter(
             value={scope.value}
             checked={props.selectedAdministration.scope === scope.value}
             onChange={onScopeCheckboxChange}
+            disabled={props.isAdministrationAlreadyRegistered}
           />
           <Label
             check={true}
