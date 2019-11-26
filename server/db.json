@@ -21,11 +21,37 @@
         ]
       },
       {
+        "fiscal_code": "81000930801",
+        "ipa_code": "c_e045",
+        "legal_representative": {
+          "family_name": "Rossi",
+          "given_name": "Luca",
+          "fiscal_code": "BCDFGH12A21Z123F",
+          "phone_number": "123444444"
+        },
+        "name": "Comune di Gioiosa Marina",
+        "pecs": {
+          "1": "indirizzo40@email.pec.it",
+          "2": "indirizzo41@email.pec.it",
+          "3": "indirizzo42@email.pec.it",
+          "4": "indirizzo43@email.pec.it"
+        },
+        "registration_status": "REGISTERED",
+        "scope": "LOCAL",
+        "selected_pec_label": "3",
+        "links": [{
+          "rel": "self",
+          "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e045"
+        }]
+      },
+      {
         "fiscal_code": "81000930800",
         "ipa_code": "c_e044",
         "legal_representative": {
           "family_name": "ALI'",
-          "given_name": "Gianfranco"
+          "given_name": "Gianfranco",
+          "fiscal_code": "BCDFGH12A21Z123F",
+          "phone_number": "3332222222"
         },
         "name": "Comune di Gioiosa Jonica",
         "pecs": {
@@ -34,33 +60,31 @@
           "3": "indirizzo12@email.pec.it",
           "4": "indirizzo13@email.pec.it"
         },
-        "links": [
-          {
-            "rel": "self",
-            "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e044"
-          }
-        ]
+        "registration_status": "DRAFT",
+        "scope": "LOCAL",
+        "selected_pec_label": "3",
+        "links": [{
+          "rel": "self",
+          "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e044"
+        }]
       },
       {
-        "fiscal_code": "00282520808",
-        "ipa_code": "c_e956",
+        "fiscal_code": "00282520822",
+        "ipa_code": "c_e958",
         "legal_representative": {
-          "family_name": "Sergio",
-          "given_name": "Mazzia",
-          "fiscal_code": "BCDFGH12A21Z123E",
-          "phone_number": "3333333333"
+          "family_name": "Andrea",
+          "given_name": "Bianchi"
         },
-        "name": "Comune di Marina di Gioiosa Ionica",
+        "name": "Comune di Marina",
         "pecs": {
-          "1": "indirizzo20@email.pec.it",
-          "2": "indirizzo21@email.pec.it"
+          "1": "indirizzo90@email.pec.it",
+          "2": "indirizzo91@email.pec.it"
         },
-        "scope": "LOCAL",
-        "selected_pec_label": "1",
+        "registration_status": "PRE_DRAFT",
         "links": [
           {
             "rel": "self",
-            "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e0956"
+            "href": "https://api.pa-onboarding.dev.io.italia.it/public-administrations/c_e958"
           }
         ]
       }
@@ -71,7 +95,8 @@
     "family_name": "Rossi",
     "given_name": "Mario",
     "fiscal_code": "RSSMRA80A01H501U",
-    "role": "ORG_DELEGATE"
+    "role": "ORG_DELEGATE",
+    "work_email": "example_work@email.com"
   },
   "organizations": {
   }

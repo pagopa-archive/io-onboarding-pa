@@ -18,6 +18,7 @@ import { OrganizationScope } from "../../../../generated/definitions/api/Organiz
 
 import { SearchAdministrations } from "./SearchAdministrations";
 
+import { OrganizationRegistrationStatusEnum } from "../../../../generated/definitions/api/OrganizationRegistrationStatus";
 import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 
 interface IRegistrationStepOneProps
@@ -37,6 +38,12 @@ export const RegistrationStepOne = withRouter(
      * react-i18next translation hook
      */
     const { t } = useTranslation();
+
+    const isAdministrationAlreadyRegistered =
+      props.selectedAdministration.registration_status ===
+        OrganizationRegistrationStatusEnum.DRAFT ||
+      props.selectedAdministration.registration_status ===
+        OrganizationRegistrationStatusEnum.REGISTERED;
 
     /**
      * Function called when pecs checkbox is clicked
@@ -64,6 +71,7 @@ export const RegistrationStepOne = withRouter(
               value={key}
               checked={props.selectedAdministration.selected_pec_label === key}
               onChange={onPecCheckboxChange}
+              disabled={isAdministrationAlreadyRegistered}
             />
             <Label
               check={true}
@@ -96,6 +104,7 @@ export const RegistrationStepOne = withRouter(
             value={scope.value}
             checked={props.selectedAdministration.scope === scope.value}
             onChange={onScopeCheckboxChange}
+            disabled={isAdministrationAlreadyRegistered}
           />
           <Label
             check={true}

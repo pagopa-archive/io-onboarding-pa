@@ -39,6 +39,7 @@ translation:
       setMailWithNewMail: "L’email è stata aggiornata con successo."
       setMailWithNewMailAdditionalInfo: "Puoi controllare le informazioni di contatto nella sezione profilo in alto a destra."
       documentsSent: "Il tuo ente è in attesa di essere confermato dal Legale Rappresentante e verificato da PagoPA SpA. Senza la firma del Legale Rappresentante non possiamo generare il profilo ente sul Backoffice, ricordagli di aprire la mail, firmare i documenti e inviarli all’indirizzo digitale indicato nella mail."
+      alreadyRegisteredInstitution: "Il tuo ente è già iscritto a IO Back-office! Se è questo l'ente che cerchi, clicca 'Conferma'."
     modals:
       addWorkMail:
         title: "Aggiungi un'email di lavoro"

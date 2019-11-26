@@ -31,6 +31,7 @@ import {
 import { useCookies } from "react-cookie";
 import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
 import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
+import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 import { AlertContext } from "../../context/alert-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
@@ -74,6 +75,7 @@ export const RegistrationContainer = withRouter(
       links: [],
       name: "",
       pecs: {},
+      registration_status: undefined,
       scope: undefined,
       selected_pec_label: ""
     };
@@ -158,11 +160,24 @@ export const RegistrationContainer = withRouter(
               links: [],
               name: "",
               pecs: {},
+              registration_status: undefined,
               scope: undefined,
               selected_pec_label: ""
             }
           : event[0];
       setSelectedAdministration(newAdministration);
+      const isAdministrationAlreadyRegistered =
+        newAdministration.registration_status ===
+          OrganizationRegistrationStatusEnum.DRAFT ||
+        newAdministration.registration_status ===
+          OrganizationRegistrationStatusEnum.REGISTERED;
+      if (isAdministrationAlreadyRegistered) {
+        alertContext.setAlert({
+          alertColor: "info",
+          alertText: t("common.alerts.alreadyRegisteredInstitution"),
+          showAlert: true
+        });
+      }
     };
 
     const handlePecCheckboxChange = (selectedPecLabel: string) => {
