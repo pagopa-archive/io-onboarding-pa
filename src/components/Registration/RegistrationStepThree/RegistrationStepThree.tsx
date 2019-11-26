@@ -21,7 +21,7 @@ import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../../utils/api-utils";
-import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
+import { getConfig } from "../../../utils/config";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepThreeProps extends RouteComponentProps {
@@ -52,15 +52,10 @@ interface IDocumentDownloadSectionProps
 }
 
 const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
-  /**
-   * Create window with custom element _env_ for environment variables
-   */
-  const customWindow = (window as unknown) as ICustomWindow;
-
   const urlDomainPort =
-    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+    getConfig("IO_ONBOARDING_PA_API_HOST") +
     ":" +
-    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+    getConfig("IO_ONBOARDING_PA_API_PORT");
 
   /**
    * react-i18next translation hook

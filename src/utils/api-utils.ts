@@ -1,14 +1,12 @@
 import { BackendClient } from "../clients/api";
-import { ICustomWindow } from "./customTypes/CustomWindow";
+import { getConfig } from "./config";
 
 /* function to define a Backend instance with base url set */
 export const baseUrlBackendClient = (token: string) => {
-  const customWindow = (window as unknown) as ICustomWindow;
-
   const url =
-    customWindow._env_.IO_ONBOARDING_PA_API_HOST +
+    getConfig("IO_ONBOARDING_PA_API_HOST") +
     ":" +
-    customWindow._env_.IO_ONBOARDING_PA_API_PORT;
+    getConfig("IO_ONBOARDING_PA_API_PORT");
   return BackendClient(url, token);
 };
 

@@ -10,20 +10,13 @@ import {
 
 import spidLogo from "../../../assets/img/spid-ico-circle-bb.svg";
 import images from "../../../assets/img/spid/*.svg";
-
-import { ICustomWindow } from "../../../utils/customTypes/CustomWindow";
-
+import { getConfig } from "../../../utils/config";
 import "./SpidLoginButton.css";
 
 /**
  * Component for spid login button with dropdown
  */
 export const SpidLoginButton = withRouter(() => {
-  /**
-   * Create window with custom element _env_ for environment variables
-   */
-  const customWindow = (window as unknown) as ICustomWindow;
-
   /**
    * Initial state for spidButton (dropdown closed)
    */
@@ -45,7 +38,7 @@ export const SpidLoginButton = withRouter(() => {
     { name: "Sielte ID", idp: "sielteid" },
     { name: "SPIDItalia Register.it", idp: "spiditalia" },
     { name: "Tim ID", idp: "timid" },
-    ...(customWindow._env_.IO_ONBOARDING_PA_SHOW_FAKE_IDP === "0"
+    ...(getConfig("IO_ONBOARDING_PA_SHOW_FAKE_IDP") === "0"
       ? []
       : [{ name: "Fake IDP", idp: "xx_testenv2" }])
   ];
@@ -78,9 +71,11 @@ export const SpidLoginButton = withRouter(() => {
         <a
           className="w-100 d-block p-3"
           href={
-            customWindow._env_.IO_ONBOARDING_PA_IS_MOCK_ENV === "1"
+            getConfig("IO_ONBOARDING_PA_IS_MOCK_ENV") === "1"
               ? "/dashboard"
-              : `${customWindow._env_.IO_ONBOARDING_PA_API_HOST}:${customWindow._env_.IO_ONBOARDING_PA_API_PORT}/login?entityID=${spidButton.idp}&authLevel=SpidL2`
+              : `${getConfig("IO_ONBOARDING_PA_API_HOST")}:${getConfig(
+                  "IO_ONBOARDING_PA_API_PORT"
+                )}/login?entityID=${spidButton.idp}&authLevel=SpidL2`
           }
         >
           <span className="spid-sr-only">{spidButton.name}</span>
