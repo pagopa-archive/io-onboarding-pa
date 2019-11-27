@@ -1,0 +1,26 @@
+.Dashboard .left-section {
+    position: absolute;
+    bottom: 0;
+    overflow-y: scroll;
+}
+
+.Dashboard .left-section .info-column {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+}
+
+.Dashboard .left-section .main-column {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 80%;
+    flex: 0 0 80%;
+    max-width: 80%;
+}
+
+.Dashboard .right-section {
+    position: absolute;
+    bottom: 0;
+    overflow-y: scroll;
+    border-left: 1px solid #A8B1BB;
+}

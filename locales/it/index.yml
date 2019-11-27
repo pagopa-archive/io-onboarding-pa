@@ -59,7 +59,10 @@ translation:
           text: "La tua sessione è scaduta, per continuare ad utilizzare la piattaforma back-office devi effettuare di nuovo il login.<br><br>A breve verrai automaticamente rediretto alla home page."
         isUserTriggered:
           text: "Sei sicuro di voler uscire dal backoffice? Per rientrare ti verrà chiesto nuovamente di fare il log in con SPID.<br><br>Di default la sessione rimarrà attiva per un'ora, passati i quali sarà necessario accedere con SPID."
-
+    links:
+      pagopa:
+        text: "Controlla le informazioni del tuo ente qui:"
+        link: "www.indicepa.gov.it"
   loadingPages:
     documentsCreation:
       title: "Attendi…"
@@ -95,7 +98,6 @@ translation:
     rightCol:
       title: "Guida all'utilizzo"
       text: "Le informazioni legate al tuo ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA."
-      additionalInfo: "Controlla le informazioni del tuo ente qui:"
     backModal:
       title: "Annulla ricerca ente"
       text: "Sei sicuro di voler uscire dalla ricerca ente?"
@@ -155,3 +157,8 @@ translation:
         workMail: "Email di lavoro"
       workMailUsageDescription: "Useremo questa email per contattarti in caso di bisogno."
       noWorkMailDescription: "Se decidi di aggiungere un’email preferita di lavoro, useremo questa per contattarti in caso di bisogno."
+  dashboard:
+    infoColumn:
+      institutionRow:
+        title: "Guida all'utilizzo"
+        text: "Le informazioni legate al tuo Ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA e le stesse verranno modificate sul IO."
