@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Col, Container, Row } from "reactstrap";
 
 import { useTranslation } from "react-i18next";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { UserRoleEnum } from "../../../generated/definitions/api/UserRole";
-import { InstitutionCard } from "./InstitutionCard";
+import { OrganizationCard } from "./OrganizationCard";
 
 import { useCookies } from "react-cookie";
 import { Organization } from "../../../generated/definitions/api/Organization";
@@ -17,50 +17,53 @@ import {
 } from "../../utils/api-utils";
 import "./Dashboard.css";
 
-interface IInstitutionRowProps {
+interface IOrganizationRowProps {
   userOrganizations: ReadonlyArray<Organization>;
 }
 
-const InstitutionsRow = (props: IInstitutionRowProps) => {
+const OrganizationsRow = (props: IOrganizationRowProps) => {
   /**
    * react-i18next translation hook
    */
   const { t } = useTranslation();
 
   return (
-    <Row className="pt-5">
-      <Col className="info-column">
-        <Row>
-          <Col>
-            <p className="px-2">
-              {t("dashboard.infoColumn.institutionRow.title")}
-            </p>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <p className="small px-2">
-              {t("dashboard.infoColumn.institutionRow.text")}
-            </p>
-            <p className="small px-2">
-              {t("common.links.pagopa.text")}&nbsp;
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="http://www.indicepa.gov.it"
-              >
-                {t("common.links.pagopa.link")}
-              </a>
-            </p>
-          </Col>
-        </Row>
-      </Col>
-      <Col className="main-column">
-        <div className="ml-2">
-          <InstitutionCard userOrganizations={props.userOrganizations} />
-        </div>
-      </Col>
-    </Row>
+    <Fragment>
+      <Row className="pt-5 align-items-end">
+        <Col className="info-column">
+          <p className="px-2 mb-0">
+            {t("dashboard.infoColumn.organizationRow.title")}
+          </p>
+        </Col>
+        <Col className="main-column">
+          <h1 className="mb-0 ml-2">
+            {t("dashboard.mainColumn.organizationRow.title")}
+          </h1>
+        </Col>
+      </Row>
+      <Row className="pt-4">
+        <Col className="info-column">
+          <p className="small px-2">
+            {t("dashboard.infoColumn.organizationRow.text")}
+          </p>
+          <p className="small px-2">
+            {t("common.links.pagopa.text")}&nbsp;
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="http://www.indicepa.gov.it"
+            >
+              {t("common.links.pagopa.link")}
+            </a>
+          </p>
+        </Col>
+        <Col className="main-column">
+          <div className="ml-2 mr-3">
+            <OrganizationCard userOrganizations={props.userOrganizations} />
+          </div>
+        </Col>
+      </Row>
+    </Fragment>
   );
 };
 
@@ -134,9 +137,9 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
       });
   }, []);
 
-  const institutionsSection =
+  const organizationsSection =
     props.userProfile.role === UserRoleEnum.DEVELOPER ? null : (
-      <InstitutionsRow userOrganizations={userOrganizations} />
+      <OrganizationsRow userOrganizations={userOrganizations} />
     );
   /* add services section when get services api is ready - tracked by story https://www.pivotaltracker.com/story/show/169999740*/
   const servicesSection = null;
@@ -146,7 +149,7 @@ export const Dashboard = withRouter((props: IDashboardProps) => {
       <Container fluid={true}>
         <Row>
           <Col sm={10} className="left-section app-navigation-bar-height">
-            {institutionsSection}
+            {organizationsSection}
             {servicesSection}
           </Col>
           <Col

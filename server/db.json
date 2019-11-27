@@ -99,5 +99,6 @@
     "work_email": "example_work@email.com"
   },
   "organizations": {
+    "items": []
   }
 }

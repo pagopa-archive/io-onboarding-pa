@@ -159,6 +159,9 @@ translation:
       noWorkMailDescription: "Se decidi di aggiungere un’email preferita di lavoro, useremo questa per contattarti in caso di bisogno."
   dashboard:
     infoColumn:
-      institutionRow:
+      organizationRow:
         title: "Guida all'utilizzo"
         text: "Le informazioni legate al tuo Ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA e le stesse verranno modificate sul IO."
+    mainColumn:
+      organizationRow:
+        title: "Il tuo Ente"
