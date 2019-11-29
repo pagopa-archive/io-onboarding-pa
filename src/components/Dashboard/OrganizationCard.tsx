@@ -25,7 +25,7 @@ interface IOrganizationCardInfoSectionProps {
 
 interface IButtonInfoSectionProps {
   text: string;
-  onClickFunc: () => void;
+  onClick: () => void;
 }
 
 const OrganizationCardImageSection = () => {
@@ -101,11 +101,7 @@ const OrganizationDetailsSection = (
 
 const ButtonInfoSection = (props: IButtonInfoSectionProps) => {
   return (
-    <Button
-      color="primary"
-      className="btn btn-primary"
-      onClick={props.onClickFunc}
-    >
+    <Button color="primary" className="btn btn-primary" onClick={props.onClick}>
       {props.text}
     </Button>
   );
@@ -190,7 +186,7 @@ const OrganizationCardInfoSection = (
     OrganizationRegistrationStatusEnum.REGISTERED ? null : (
       <ButtonInfoSection
         text={t("common.buttons.sendDocumentsAgain")}
-        onClickFunc={onSendDocuments}
+        onClick={onSendDocuments}
       />
     );
 
@@ -229,7 +225,7 @@ const PreDraftInfoSection = withRouter(props => {
         <Col>
           <ButtonInfoSection
             text={t("common.buttons.goToRegistration")}
-            onClickFunc={navigateToSignUpStepOne}
+            onClick={navigateToSignUpStepOne}
           />
         </Col>
       </Row>

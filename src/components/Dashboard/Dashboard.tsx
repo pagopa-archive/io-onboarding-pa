@@ -47,13 +47,13 @@ const OrganizationsRow = (props: IOrganizationRowProps) => {
             {t("dashboard.infoColumn.organizationRow.text")}
           </p>
           <p className="small px-2">
-            {t("common.links.pagopa.text")}&nbsp;
+            {t("common.links.ipa.text")}&nbsp;
             <a
               target="_blank"
               rel="noopener noreferrer"
               href="http://www.indicepa.gov.it"
             >
-              {t("common.links.pagopa.link")}
+              {t("common.links.ipa.link")}
             </a>
           </p>
         </Col>

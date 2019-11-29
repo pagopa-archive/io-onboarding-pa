@@ -63,7 +63,7 @@ translation:
         isUserTriggered:
           text: "Sei sicuro di voler uscire dal backoffice? Per rientrare ti verrà chiesto nuovamente di fare il log in con SPID.<br><br>Di default la sessione rimarrà attiva per un'ora, passati i quali sarà necessario accedere con SPID."
     links:
-      pagopa:
+      ipa:
         text: "Controlla le informazioni del tuo ente qui:"
         link: "www.indicepa.gov.it"
   loadingPages:
