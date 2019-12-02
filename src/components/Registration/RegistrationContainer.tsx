@@ -350,7 +350,7 @@ export const RegistrationContainer = withRouter(
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="http://www.indicepa.gov.it"
+                  href="https://www.indicepa.gov.it"
                 >
                   {t("common.links.ipa.link")}
                 </a>
