@@ -25,6 +25,8 @@ translation:
       change: "Modifica"
       skip: "Salta questo passaggio"
       viewDocument: "Visualizza documento"
+      sendDocumentsAgain: "Invia nuovamente i documenti alla PEC"
+      goToRegistration: "Cerca il tuo ente"
     user:
       roles:
         delegate: "Delegato Ente"
@@ -39,6 +41,7 @@ translation:
       setMailWithNewMail: "L’email è stata aggiornata con successo."
       setMailWithNewMailAdditionalInfo: "Puoi controllare le informazioni di contatto nella sezione profilo in alto a destra."
       documentsSent: "Il tuo ente è in attesa di essere confermato dal Legale Rappresentante e verificato da PagoPA SpA. Senza la firma del Legale Rappresentante non possiamo generare il profilo ente sul Backoffice, ricordagli di aprire la mail, firmare i documenti e inviarli all’indirizzo digitale indicato nella mail."
+      documentsSentAgain: "Documenti inviati correttamente al Legale Rappresentante."
       alreadyRegisteredInstitution: "Il tuo ente è già iscritto a IO Back-office! Se è questo l'ente che cerchi, clicca 'Conferma'."
     modals:
       addWorkMail:
@@ -59,7 +62,10 @@ translation:
           text: "La tua sessione è scaduta, per continuare ad utilizzare la piattaforma back-office devi effettuare di nuovo il login.<br><br>A breve verrai automaticamente rediretto alla home page."
         isUserTriggered:
           text: "Sei sicuro di voler uscire dal backoffice? Per rientrare ti verrà chiesto nuovamente di fare il log in con SPID.<br><br>Di default la sessione rimarrà attiva per un'ora, passati i quali sarà necessario accedere con SPID."
-
+    links:
+      ipa:
+        text: "Controlla le informazioni del tuo ente qui:"
+        link: "www.indicepa.gov.it"
   loadingPages:
     documentsCreation:
       title: "Attendi…"
@@ -95,7 +101,6 @@ translation:
     rightCol:
       title: "Guida all'utilizzo"
       text: "Le informazioni legate al tuo ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA."
-      additionalInfo: "Controlla le informazioni del tuo ente qui:"
     backModal:
       title: "Annulla ricerca ente"
       text: "Sei sicuro di voler uscire dalla ricerca ente?"
@@ -155,3 +160,18 @@ translation:
         workMail: "Email di lavoro"
       workMailUsageDescription: "Useremo questa email per contattarti in caso di bisogno."
       noWorkMailDescription: "Se decidi di aggiungere un’email preferita di lavoro, useremo questa per contattarti in caso di bisogno."
+  dashboard:
+    infoColumn:
+      organizationRow:
+        title: "Guida all'utilizzo"
+        text: "Le informazioni legate al tuo Ente vengono derivate dal database di Indice PA. Nel caso alcune informazioni non siano corrette o siano state cambiate di recente, richiedine la modifica direttamente su Indice PA e le stesse verranno modificate sul IO."
+    mainColumn:
+      organizationRow:
+        title: "Il tuo Ente"
+        organizationCard:
+          noOrganizationText: "IO è un canale a disposizione di tutti gli enti erogatori di servizi pubblici. Registra qui il tuo ente per iniziare ad erogare servizi o cercalo tra quelli già registrati per diventarne gestore."
+          organizationDetails:
+            ipaCode: "Codice iPA"
+            fc: "Codice Fiscale"
+            pec: "PEC"
+            orgDelegates: "Gestori ente"

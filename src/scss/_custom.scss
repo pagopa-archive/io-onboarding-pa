@@ -38,3 +38,16 @@ h3 {
   margin: 0;
   height: 0;
 }
+
+.alert-info, .alert-warning, .alert-danger, .alert-success {
+  background-position: 20px 23px;
+}
+
+.alert-dismissible .close {
+  padding: 1.2rem 1rem;
+}
+
+// Class for elements with absolute positioning that otherwise would be covered by navigation bar
+.app-navigation-bar-height {
+  top: 168px;
+}

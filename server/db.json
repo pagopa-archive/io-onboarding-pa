@@ -99,5 +99,43 @@
     "work_email": "example_work@email.com"
   },
   "organizations": {
+    "items": [
+      {
+        "fiscal_code": "82003310727",
+        "ipa_code": "istsc_BAPM05000B",
+        "legal_representative": {
+          "email": "alexgpeppe+istsc_BAPM05000B.1@gmail.com",
+          "family_name": "Non lo sa",
+          "fiscal_code": "BBBCCC80T13C351D",
+          "given_name": "Ricreata da Pippo",
+          "phone_number": "1110000000",
+          "role": "ORG_MANAGER"
+        },
+        "links": [
+          {
+            "href": "/organizations/istsc_BAPM05000B",
+            "rel": "self"
+          },
+          {
+            "href": "/organizations/istsc_BAPM05000B",
+            "rel": "edit"
+          }
+        ],
+        "name": "ISTITUTO MAGISTRALE - DON LORENZO MILANI",
+        "pec": "alexgpeppe+istsc_BAPM05000B.1@gmail.com",
+        "registration_status": "DRAFT",
+        "scope": "LOCAL",
+        "users": [
+          {
+            "email": "pippo@pappo.net",
+            "family_name": "Pappo",
+            "fiscal_code": "PPPPPP00A01H501Y",
+            "given_name": "Giuseppe",
+            "role": "ORG_DELEGATE",
+            "work_email": "alexgpeppe84@hotmail.it"
+          }
+        ]
+      }
+    ]
   }
 }

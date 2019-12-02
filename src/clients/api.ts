@@ -12,6 +12,8 @@ import {
   CreateOrganizationsT,
   getDocumentDefaultDecoder,
   GetDocumentT,
+  getOrganizationsDefaultDecoder,
+  GetOrganizationsT,
   getProfileDefaultDecoder,
   GetProfileT,
   LogoutT,
@@ -114,6 +116,14 @@ export function BackendClient(
     url: () => "/profile"
   };
 
+  const getOrganizationsT: GetOrganizationsT = {
+    headers: composeHeaderProducers(tokenHeaderProducer, ApiHeaderJson),
+    method: "get",
+    query: _ => ({}),
+    response_decoder: getOrganizationsDefaultDecoder(),
+    url: () => "/organizations"
+  };
+
   const createOrganizationsT: CreateOrganizationsT = {
     body: params => JSON.stringify(params.organizationRegistrationParams),
     headers: composeHeaderProducers(tokenHeaderProducer, ApiHeaderJson),
@@ -182,6 +192,9 @@ export function BackendClient(
     ),
     getDocument: withBearerToken(
       createFetchRequestForApi(getDocumentT, options)
+    ),
+    getOrganizations: withBearerToken(
+      createFetchRequestForApi(getOrganizationsT, options)
     ),
     getProfile: withBearerToken(createFetchRequestForApi(getProfileT, options)),
     logout: withBearerToken(createFetchRequestForApi(logoutT, options)),

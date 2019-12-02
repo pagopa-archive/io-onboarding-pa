@@ -192,6 +192,10 @@ export const DefaultContainer = withRouter(props => {
     />
   );
 
+  const navigateToDashboard = (dashboardProps: RouteComponentProps) => (
+    <Dashboard {...dashboardProps} userProfile={userProfile} />
+  );
+
   return (
     <LogoutModalContextProvider>
       <div className="DefaultContainer">
@@ -212,7 +216,7 @@ export const DefaultContainer = withRouter(props => {
             exact={true}
             render={navigateToRegistration}
           />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/dashboard" render={navigateToDashboard} />
           <Route path="/profile" render={navigateToUserProfile} />
         </div>
         <AddMailModal

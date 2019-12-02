@@ -346,13 +346,13 @@ export const RegistrationContainer = withRouter(
               <p className="pr-3 mt-5">{t("signUp.rightCol.title")}</p>
               <p className="small pr-3">{t("signUp.rightCol.text")}</p>
               <p className="small pr-2">
-                {t("signUp.rightCol.additionalInfo")}&nbsp;
+                {t("common.links.ipa.text")}&nbsp;
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="http://www.indicepa.gov.it"
+                  href="https://www.indicepa.gov.it"
                 >
-                  www.indicepa.gov.it
+                  {t("common.links.ipa.link")}
                 </a>
               </p>
             </Fragment>
