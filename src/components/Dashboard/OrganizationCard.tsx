@@ -266,7 +266,7 @@ export const OrganizationCard = (props: IOrganizationCardProps) => {
                 <OrganizationCardImageSection />
               </Col>
             ) : null}
-            {/*if user has an organization not in pre-draft status, show organization info*/}
+            {/* if the user has an organization in pre-draft status, show organization info */}
             {organizationStatus ===
             OrganizationRegistrationStatusEnum.PRE_DRAFT ? (
               <PreDraftInfoSection />
