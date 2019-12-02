@@ -122,9 +122,9 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href="http://www.indicepa.gov.it"
+                          href={t("common.links.ipa.link")}
                         >
-                          www.indicepa.gov.it
+                          {t("common.links.ipa.textLink")}
                         </a>
                       </p>
                       <FormGroup row={true} className="pt-4">

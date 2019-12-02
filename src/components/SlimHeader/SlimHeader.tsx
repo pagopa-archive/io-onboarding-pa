@@ -2,12 +2,15 @@ import { AppHeader } from "@coreui/react";
 import React from "react";
 import { Container, Nav, NavItem } from "reactstrap";
 
+import { useTranslation } from "react-i18next";
 import "./SlimHeader.css";
 
 /**
  * Slim header at top of the app
  */
 export const SlimHeader = () => {
+  const { t } = useTranslation();
+
   return (
     <AppHeader
       fixed={true}
@@ -19,9 +22,9 @@ export const SlimHeader = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.agid.gov.it/it/piattaforme/pagopa"
+              href={t("common.links.pagopa.link")}
             >
-              PagoPa SPA
+              {t("common.links.pagopa.text")}
             </a>
           </NavItem>
         </Nav>
@@ -30,9 +33,9 @@ export const SlimHeader = () => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://io.italia.it/"
+              href={t("common.links.io.link")}
             >
-              io.italia.it
+              {t("common.links.io.text")}
             </a>
           </NavItem>
         </Nav>

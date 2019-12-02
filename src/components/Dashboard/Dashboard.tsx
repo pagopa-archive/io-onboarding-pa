@@ -51,9 +51,9 @@ const OrganizationsRow = (props: IOrganizationRowProps) => {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.indicepa.gov.it"
+              href={t("common.links.ipa.link")}
             >
-              {t("common.links.ipa.link")}
+              {t("common.links.ipa.textLink")}
             </a>
           </p>
         </Col>

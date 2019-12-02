@@ -65,7 +65,19 @@ translation:
     links:
       ipa:
         text: "Controlla le informazioni del tuo ente qui:"
-        link: "www.indicepa.gov.it"
+        link: "https://www.indicepa.gov.it"
+        textLink: "www.indicepa.gov.it"
+      pagopa:
+        link: "https://www.pagopa.it"
+        text: "PagoPa SPA"
+      spid:
+        requestLink: "https://www.spid.gov.it/richiedi-spid"
+        requestText: "Richiedila a uno dei gestori"
+        moreInfoLink: "https://www.spid.gov.it"
+        moreInfoText: "Maggiori informazioni su SPID"
+      io:
+        link: "https://io.italia.it/"
+        text: "io.italia.it"
   loadingPages:
     documentsCreation:
       title: "Attendi…"
@@ -91,11 +103,9 @@ translation:
       text: "Accedi con le credenziali fornite dal tuo gestore"
     noSpid:
       title: "Non hai ancora un'utenza SPID?"
-      text: "Richiedila a uno dei gestori"
     whatIsFor:
       title: "Cosa posso fare con SPID"
       text: "In questa fase di avvio del servizio le credenziali SPID sono utilizzabili solo per l'accesso ai servizi per il cittadino"
-    moreInfo: "Maggiori informazioni su SPID"
     wrongLogin: "Se ti sei sbagliato e volevi accedere con un profilo diverso clicca qui sotto"
   signUp:
     rightCol:

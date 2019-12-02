@@ -64,10 +64,10 @@ export const SpidLogin = withRouter(props => {
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://www.spid.gov.it/richiedi-spid"
+                        href={t("common.links.spid.requestLink")}
                         className="btn btn-link mb-4 pl-0"
                       >
-                        {t("spidLogin.noSpid.title")}
+                        {t("common.links.spid.requestText")}
                       </a>
                       <p className="font-weight-bold mb-0">
                         {t("spidLogin.whatIsFor.title")}
@@ -76,11 +76,11 @@ export const SpidLogin = withRouter(props => {
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://www.spid.gov.it"
+                        href={t("common.links.spid.moreInfoLink")}
                         className="btn btn-link pl-0"
                         role="button"
                       >
-                        {t("spidLogin.moreInfo")}
+                        {t("common.links.spid.moreInfoText")}
                       </a>
                     </Col>
                     <Col sm="3">
