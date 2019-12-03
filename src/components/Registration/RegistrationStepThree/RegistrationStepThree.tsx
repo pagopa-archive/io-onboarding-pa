@@ -1,5 +1,6 @@
 import * as FileSaver from "file-saver";
 import React, { ComponentProps, Fragment, MouseEvent, useContext } from "react";
+import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -15,7 +16,6 @@ import {
   Row
 } from "reactstrap";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
-import { AlertContext } from "../../../context/alert-context";
 import { LogoutModalContext } from "../../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
@@ -48,7 +48,6 @@ interface IDocumentDownloadSectionProps
     IDocumentInfo {
   ipaCode: string;
   cookie: string;
-  showGenericErrorAlert: () => void;
 }
 
 const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
@@ -61,6 +60,9 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
    * react-i18next translation hook
    */
   const { t } = useTranslation();
+  const common500ErrorString = t("common.errors.genericError.500");
+
+  const alert = useAlert();
 
   const downloadDocument = () => (_: MouseEvent) => {
     const url =
@@ -78,7 +80,7 @@ const DownloadDocsSection = (props: IDocumentDownloadSectionProps) => {
       .catch((error: Error) => {
         // tslint:disable-next-line:no-console
         console.log(error.message);
-        props.showGenericErrorAlert();
+        alert.error(common500ErrorString);
       });
   };
 
@@ -114,17 +116,11 @@ export const RegistrationStepThree = withRouter(
      * react-i18next translation hook
      */
     const { t } = useTranslation();
+    const common500ErrorString = t("common.errors.genericError.500");
 
     const [cookies] = useCookies(["sessionToken"]);
 
-    const alertContext = useContext(AlertContext);
-    const showGenericErrorAlert = () => {
-      alertContext.setAlert({
-        alertColor: "danger",
-        alertText: t("common.errors.genericError.500"),
-        showAlert: true
-      });
-    };
+    const alert = useAlert();
     const logoutModalContext = useContext(LogoutModalContext);
 
     /**
@@ -150,7 +146,6 @@ export const RegistrationStepThree = withRouter(
           documentName={downloadDocSection.documentName}
           ipaCode={props.selectedAdministration.ipa_code}
           cookie={cookies.sessionToken}
-          showGenericErrorAlert={showGenericErrorAlert}
         />
       )
     );
@@ -168,23 +163,14 @@ export const RegistrationStepThree = withRouter(
             const respValue = response.value;
             if (respValue.status === 204) {
               props.history.push("/dashboard");
-              alertContext.setAlert({
-                alertColor: "warning",
-                alertText: t("common.alerts.documentsSent"),
-                showAlert: true
-              });
+              alert.info(t("common.alerts.documentsSent"));
             } else {
               const alertText =
                 t(`common.errors.sendDocuments.${respValue.status}`) ||
                 t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
-                () =>
-                  alertContext.setAlert({
-                    alertColor: "danger",
-                    alertText,
-                    showAlert: true
-                  }),
+                () => alert.error(alertText),
                 () =>
                   logoutModalContext.setLogoutModal({
                     isFromExpiredToken: true,
@@ -195,13 +181,13 @@ export const RegistrationStepThree = withRouter(
           } else {
             // tslint:disable-next-line:no-console
             console.log(response.value.map(v => v.message).join(" - "));
-            showGenericErrorAlert();
+            alert.error(common500ErrorString);
           }
         })
         .catch((error: Error) => {
           // tslint:disable-next-line:no-console
           console.log(error.message);
-          showGenericErrorAlert();
+          alert.error(common500ErrorString);
         });
     };
 

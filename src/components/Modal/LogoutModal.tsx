@@ -1,4 +1,5 @@
 import React, { MouseEvent, useContext, useEffect } from "react";
+import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { Trans, useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
@@ -13,7 +14,6 @@ import {
   Row
 } from "reactstrap";
 import logoutLogo from "../../assets/img/logout.svg";
-import { AlertContext } from "../../context/alert-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
@@ -31,14 +31,7 @@ export const LogoutModal = withRouter(props => {
   const { t } = useTranslation();
 
   const [cookies, , removeCookie] = useCookies(["sessionToken"]);
-  const alertContext = useContext(AlertContext);
-  const showGenericErrorAlert = () => {
-    alertContext.setAlert({
-      alertColor: "danger",
-      alertText: t("common.errors.genericError.500"),
-      showAlert: true
-    });
-  };
+  const alert = useAlert();
   const logoutModalContext = useContext(LogoutModalContext);
 
   const toggleLogoutModal = (isFromExpiredToken: boolean) => (
@@ -88,12 +81,7 @@ export const LogoutModal = withRouter(props => {
               t(`common.errors.genericError.${respValue.status}`);
             manageErrorReturnCodes(
               respValue.status,
-              () =>
-                alertContext.setAlert({
-                  alertColor: "danger",
-                  alertText,
-                  showAlert: true
-                }),
+              () => alert.error(alertText),
               () => {
                 removeCookie("sessionToken", {
                   domain: getConfig("IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN")
@@ -105,13 +93,13 @@ export const LogoutModal = withRouter(props => {
         } else {
           // tslint:disable-next-line:no-console
           console.log(response.value.map(v => v.message).join(" - "));
-          showGenericErrorAlert();
+          alert.error(t("common.errors.genericError.500"));
         }
       })
       .catch((error: Error) => {
         // tslint:disable-next-line:no-console
         console.log(error.message);
-        showGenericErrorAlert();
+        alert.error(t("common.errors.genericError.500"));
       });
   };
 

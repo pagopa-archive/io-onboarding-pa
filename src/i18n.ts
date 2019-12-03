@@ -37,6 +37,7 @@ i18n
       escapeValue: false // react already safes from xss
     },
     lng: "it",
+    parseMissingKeyHandler: () => undefined,
     resources
   })
   .catch(error => error);

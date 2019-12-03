@@ -1,4 +1,5 @@
 import React, { ComponentProps, Fragment, useContext } from "react";
+import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
@@ -7,7 +8,6 @@ import { Organization } from "../../../generated/definitions/api/Organization";
 import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
 import dashboardStart from "../../assets/img/dashboard_start.svg";
 import documentsWaiting from "../../assets/img/institution_document_approval_waiting.svg";
-import { AlertContext } from "../../context/alert-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
@@ -114,14 +114,7 @@ const OrganizationCardInfoSection = (
 
   const [cookies] = useCookies(["sessionToken"]);
 
-  const alertContext = useContext(AlertContext);
-  const showGenericErrorAlert = () => {
-    alertContext.setAlert({
-      alertColor: "danger",
-      alertText: t("common.errors.genericError.500"),
-      showAlert: true
-    });
-  };
+  const alert = useAlert();
 
   const logoutModalContext = useContext(LogoutModalContext);
 
@@ -143,23 +136,14 @@ const OrganizationCardInfoSection = (
         if (response.isRight()) {
           const respValue = response.value;
           if (respValue.status === 204) {
-            alertContext.setAlert({
-              alertColor: "info",
-              alertText: t("common.alerts.documentsSentAgain"),
-              showAlert: true
-            });
+            alert.info(t("common.alerts.documentsSentAgain"));
           } else {
             const alertText =
               t(`common.errors.sendDocuments.${respValue.status}`) ||
               t(`common.errors.genericError.${respValue.status}`);
             manageErrorReturnCodes(
               respValue.status,
-              () =>
-                alertContext.setAlert({
-                  alertColor: "danger",
-                  alertText,
-                  showAlert: true
-                }),
+              () => alert.error(alertText),
               () =>
                 logoutModalContext.setLogoutModal({
                   isFromExpiredToken: true,
@@ -170,13 +154,13 @@ const OrganizationCardInfoSection = (
         } else {
           // tslint:disable-next-line:no-console
           console.log(response.value.map(v => v.message).join(" - "));
-          showGenericErrorAlert();
+          alert.error(t("common.errors.genericError.500"));
         }
       })
       .catch((error: Error) => {
         // tslint:disable-next-line:no-console
         console.log(error.message);
-        showGenericErrorAlert();
+        alert.error(t("common.errors.genericError.500"));
       });
   };
 
