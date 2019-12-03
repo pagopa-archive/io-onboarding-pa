@@ -2,6 +2,7 @@ import { constant } from "fp-ts/lib/function";
 import { fromNullable } from "fp-ts/lib/Option";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, withRouter } from "react-router";
@@ -9,7 +10,6 @@ import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { UserRole } from "../../../generated/definitions/api/UserRole";
-import { AlertContext } from "../../context/alert-context";
 import { LoadingPageContext } from "../../context/loading-page-context";
 import {
   LogoutModalContext,
@@ -20,7 +20,6 @@ import {
   manageErrorReturnCodes
 } from "../../utils/api-utils";
 import { getConfig } from "../../utils/config";
-import { AppAlert } from "../AppAlert/AppAlert";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";
 import { LoadingPage } from "../LoadingPage/LoadingPage";
@@ -30,6 +29,8 @@ import { RegistrationContainer } from "../Registration/RegistrationContainer";
 import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
 import { UserProfile as UserProfileComponent } from "../UserProfile/UserProfile";
+
+import "./AppAlert.css";
 
 /**
  * part of Default Container state responsible of user profile entity
@@ -53,10 +54,11 @@ export const DefaultContainer = withRouter(props => {
   const { t } = useTranslation();
 
   const loadingPageContext = useContext(LoadingPageContext);
-  const alertContext = useContext(AlertContext);
   const logoutModalContext = useContext(LogoutModalContext);
 
   const [cookies] = useCookies(["sessionToken"]);
+
+  const alert = useAlert();
 
   /**
    * Initial state for user profile
@@ -113,6 +115,7 @@ export const DefaultContainer = withRouter(props => {
     if (isTokenExpired) {
       props.history.push("/home");
     }
+    alert.alerts.forEach(alertItem => alert.remove(alertItem));
   }, [location.pathname]);
 
   useEffect(() => {
@@ -141,12 +144,7 @@ export const DefaultContainer = withRouter(props => {
                 t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
-                () =>
-                  alertContext.setAlert({
-                    alertColor: "danger",
-                    alertText,
-                    showAlert: true
-                  }),
+                () => alert.error(alertText),
                 () =>
                   logoutModalContext.setLogoutModal({
                     isFromExpiredToken: true,
@@ -157,22 +155,13 @@ export const DefaultContainer = withRouter(props => {
           } else {
             // tslint:disable-next-line:no-console
             console.log(response.value.map(v => v.message).join(" - "));
-            alertContext.setAlert({
-              alertColor: "danger",
-              alertText: t("common.errors.genericError.500"),
-              showAlert: true
-            });
+            alert.error(t("common.errors.genericError.500"));
           }
         })
         .catch((error: Error) => {
           // tslint:disable-next-line:no-console
           console.log(error);
-
-          alertContext.setAlert({
-            alertColor: "danger",
-            alertText: t("common.errors.genericError.500"),
-            showAlert: true
-          });
+          alert.error(t("common.errors.genericError.500"));
         });
     }
   }, [cookies.sessionToken]);
@@ -209,7 +198,6 @@ export const DefaultContainer = withRouter(props => {
           </Fragment>
         ) : null}
         <div>
-          <AppAlert />
           <Route path="/spid-login" component={SpidLogin} />
           <Route
             path="/sign-up/:signUpStep"

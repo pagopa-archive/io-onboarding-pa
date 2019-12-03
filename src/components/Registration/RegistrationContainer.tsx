@@ -28,12 +28,12 @@ import {
   manageErrorReturnCodes
 } from "../../utils/api-utils";
 
+import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
 import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
 import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
-import { AlertContext } from "../../context/alert-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 
 interface IRegistrationContainerProps
@@ -47,18 +47,14 @@ export const RegistrationContainer = withRouter(
      * react-i18next translation hook
      */
     const { t } = useTranslation();
+    const common500ErrorString = t("common.errors.genericError.500");
 
     const [cookies] = useCookies(["sessionToken"]);
 
     const loadingPageContext = useContext(LoadingPageContext);
-    const alertContext = useContext(AlertContext);
-    const showGenericErrorAlert = () => {
-      alertContext.setAlert({
-        alertColor: "danger",
-        alertText: t("common.errors.genericError.500"),
-        showAlert: true
-      });
-    };
+
+    const alert = useAlert();
+
     const logoutModalContext = useContext(LogoutModalContext);
 
     const initialSelectedAdministration: ComponentProps<
@@ -103,11 +99,7 @@ export const RegistrationContainer = withRouter(
 
     useEffect(() => {
       if (isAdministrationAlreadyRegistered) {
-        alertContext.setAlert({
-          alertColor: "info",
-          alertText: t("common.alerts.alreadyRegisteredInstitution"),
-          showAlert: true
-        });
+        alert.info(t("common.alerts.alreadyRegisteredInstitution"));
       }
     }, [selectedAdministration.registration_status]);
 
@@ -131,12 +123,7 @@ export const RegistrationContainer = withRouter(
                 t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
-                () =>
-                  alertContext.setAlert({
-                    alertColor: "danger",
-                    alertText,
-                    showAlert: true
-                  }),
+                () => alert.error(alertText),
                 () =>
                   logoutModalContext.setLogoutModal({
                     isFromExpiredToken: true,
@@ -147,13 +134,13 @@ export const RegistrationContainer = withRouter(
           } else {
             // tslint:disable-next-line:no-console
             console.log(response.value.map(v => v.message).join(" - "));
-            showGenericErrorAlert();
+            alert.error(common500ErrorString);
           }
         })
         .catch((error: Error) => {
           // tslint:disable-next-line:no-console
           console.log(error.message);
-          showGenericErrorAlert();
+          alert.error(common500ErrorString);
         });
     };
 
@@ -251,12 +238,7 @@ export const RegistrationContainer = withRouter(
                 t(`common.errors.genericError.${respValue.status}`);
               manageErrorReturnCodes(
                 respValue.status,
-                () =>
-                  alertContext.setAlert({
-                    alertColor: "danger",
-                    alertText,
-                    showAlert: true
-                  }),
+                () => alert.error(alertText),
                 () =>
                   logoutModalContext.setLogoutModal({
                     isFromExpiredToken: true,
@@ -267,13 +249,13 @@ export const RegistrationContainer = withRouter(
           } else {
             // tslint:disable-next-line:no-console
             console.log(response.value.map(v => v.message).join(" - "));
-            showGenericErrorAlert();
+            alert.error(common500ErrorString);
           }
         })
         .catch((error: Error) => {
           // tslint:disable-next-line:no-console
           console.log(error.message);
-          showGenericErrorAlert();
+          alert.error(common500ErrorString);
         });
       loadingPageContext.setLoadingPage({
         image: documentCreationLoadingPageImage,

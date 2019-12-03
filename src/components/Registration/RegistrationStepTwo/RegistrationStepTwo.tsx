@@ -1,5 +1,6 @@
 import { exact } from "io-ts";
-import React, { ChangeEvent, ComponentProps, useContext } from "react";
+import React, { ChangeEvent, ComponentProps } from "react";
+import { useAlert } from "react-alert";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -14,7 +15,6 @@ import {
 } from "reactstrap";
 import { OrganizationRegistrationParams } from "../../../../generated/definitions/api/OrganizationRegistrationParams";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
-import { AlertContext } from "../../../context/alert-context";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
 
 interface IRegistrationStepTwoProps {
@@ -37,7 +37,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
    */
   const { t } = useTranslation();
 
-  const alertContext = useContext(AlertContext);
+  const alert = useAlert();
 
   const onStepTwoInputChange = (inputName: string) => (
     event: ChangeEvent<HTMLInputElement>
@@ -48,11 +48,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
   const saveAdministration = () => {
     OrganizationRegistrationParams.decode(props.selectedAdministration).fold(
       _ => {
-        alertContext.setAlert({
-          alertColor: "danger",
-          alertText: t("common.alerts.registrationWrongData"),
-          showAlert: true
-        });
+        alert.error(t("common.alerts.registrationWrongData"));
       },
       rightResult => {
         props.onSaveAdministration(

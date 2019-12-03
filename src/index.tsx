@@ -8,17 +8,14 @@ import "./i18n";
 
 import { CookiesProvider } from "react-cookie";
 import { App } from "./App";
-import { AlertContextProvider } from "./context/alert-context";
 import { LoadingPageContextProvider } from "./context/loading-page-context";
 
 const app = (
-  <AlertContextProvider>
-    <LoadingPageContextProvider>
-      <CookiesProvider>
-        <App />
-      </CookiesProvider>
-    </LoadingPageContextProvider>
-  </AlertContextProvider>
+  <LoadingPageContextProvider>
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
+  </LoadingPageContextProvider>
 );
 
 render(app, document.getElementById("root"));

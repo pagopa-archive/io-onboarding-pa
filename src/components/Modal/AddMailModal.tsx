@@ -1,5 +1,6 @@
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { ChangeEvent, MouseEvent, useContext, useState } from "react";
+import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -17,7 +18,6 @@ import {
   Row
 } from "reactstrap";
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
-import { AlertContext } from "../../context/alert-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
@@ -42,14 +42,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
   const { t } = useTranslation();
 
   const [cookies] = useCookies(["sessionToken"]);
-  const alertContext = useContext(AlertContext);
-  const showGenericErrorAlert = () => {
-    alertContext.setAlert({
-      alertColor: "danger",
-      alertText: t("common.errors.genericError.500"),
-      showAlert: true
-    });
-  };
+  const alert = useAlert();
   const logoutModalContext = useContext(LogoutModalContext);
 
   const [newMail, setNewMail] = useState("");
@@ -85,16 +78,12 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
         ...params
       })
       .then(response => {
+        props.toggleAddMailModal();
         if (response.isRight()) {
           const respValue = response.value;
           if (respValue.status === 200) {
             props.onWorkMailSet(newUserMail as EmailAddress);
-            props.toggleAddMailModal();
-            alertContext.setAlert({
-              alertColor: "info",
-              alertText: alertMessage,
-              showAlert: true
-            });
+            alert.success(alertMessage);
             setNewMail("");
             setConfirmMail("");
           } else {
@@ -105,12 +94,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
               : t(`common.errors.genericError.${respValue.status}`);
             manageErrorReturnCodes(
               respValue.status,
-              () =>
-                alertContext.setAlert({
-                  alertColor: "danger",
-                  alertText,
-                  showAlert: true
-                }),
+              () => alert.error(alertText),
               () =>
                 logoutModalContext.setLogoutModal({
                   isFromExpiredToken: true,
@@ -121,13 +105,13 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
         } else {
           // tslint:disable-next-line:no-console
           console.log(response.value.map(v => v.message).join(" - "));
-          showGenericErrorAlert();
+          alert.error(t("common.errors.genericError.500"));
         }
       })
       .catch((error: Error) => {
         // tslint:disable-next-line:no-console
         console.log(error.message);
-        showGenericErrorAlert();
+        alert.error(t("common.errors.genericError.500"));
       });
   };
 
