@@ -1,19 +1,12 @@
 import React from "react";
+import { positions, Provider as AlertProvider, transitions } from "react-alert";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
+import "./App.scss";
+import { AppAlertTemplate } from "./components/AppAlert/AppAlertTemplate";
 import { DefaultContainer } from "./components/DefaultContainer/DefaultContainer";
 import { Home } from "./components/Home/Home";
 import { ScrollToTop } from "./components/ScrollToTop";
-
-import {
-  AlertComponentPropsWithStyle,
-  positions,
-  Provider as AlertProvider,
-  transitions,
-  types
-} from "react-alert";
-import { Alert } from "reactstrap";
-import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
-import "./App.scss";
 
 /**
  * Entry point for app, with first level routing
@@ -34,28 +27,10 @@ export const App = () => {
     transition: transitions.FADE
   };
 
-  const AlertTemplate = ({
-    style,
-    options,
-    message,
-    close
-  }: AlertComponentPropsWithStyle) => (
-    <div style={style} className="AppAlert">
-      <Alert
-        // fix for different names: bootstrap uses "danger", react-alert uses "error"
-        color={options.type === types.ERROR ? "danger" : options.type}
-        toggle={close}
-        className="mt-2 mb-0"
-      >
-        {message}
-      </Alert>
-    </div>
-  );
-
   return (
     <BrowserRouter>
       <ScrollToTop>
-        <AlertProvider template={AlertTemplate} {...alertOptions}>
+        <AlertProvider template={AppAlertTemplate} {...alertOptions}>
           <div className="App vh-100">
             <Switch>
               <Route exact={true} path="/" component={redirectToHome} />

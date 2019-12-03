@@ -30,8 +30,6 @@ import { SlimHeader } from "../SlimHeader/SlimHeader";
 import { SpidLogin } from "../SpidLogin/SpidLogin";
 import { UserProfile as UserProfileComponent } from "../UserProfile/UserProfile";
 
-import "./AppAlert.css";
-
 /**
  * part of Default Container state responsible of user profile entity
  */
