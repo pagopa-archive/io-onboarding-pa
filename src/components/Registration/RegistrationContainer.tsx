@@ -188,16 +188,22 @@ export const RegistrationContainer = withRouter(
       });
     };
 
-    const handleStepTwoInputChange = (
-      inputName: string,
-      inputValue: string
+    const onRegistrationStepTwoSubmit = (
+      formData: Parameters<
+        ComponentProps<
+          typeof RegistrationStepTwo
+        >["onRegistrationStepTwoSubmit"]
+      >[0]
     ) => {
       setSelectedAdministration(prevState => {
         return {
           ...prevState,
           legal_representative: {
             ...prevState.legal_representative,
-            [inputName]: inputValue
+            family_name: formData.familyName,
+            fiscal_code: formData.fc,
+            given_name: formData.givenName,
+            phone_number: formData.phoneNumber
           }
         };
       });
@@ -284,9 +290,9 @@ export const RegistrationContainer = withRouter(
           return (
             <RegistrationStepTwo
               selectedAdministration={selectedAdministration}
-              onStepTwoInputChange={handleStepTwoInputChange}
               onSaveAdministration={saveAdministration}
               openConfirmModal={toggleConfirmationModal}
+              onRegistrationStepTwoSubmit={onRegistrationStepTwoSubmit}
             />
           );
         case "3":

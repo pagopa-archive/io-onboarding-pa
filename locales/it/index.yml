@@ -82,7 +82,8 @@ translation:
       errors:
         requiredField: "Questo campo è obbligatorio"
         invalidEmail: "Inserisci una email valida"
-        differentConfirmMail: "Le email non corrispondono."
+        differentConfirmMail: "Le email non corrispondono"
+        invalidFiscalCode: "Inserisci un codice fiscale valido"
   loadingPages:
     documentsCreation:
       title: "Attendi…"
