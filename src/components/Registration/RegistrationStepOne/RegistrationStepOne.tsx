@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ComponentProps } from "react";
+import React, { ComponentProps, Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
@@ -6,6 +6,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   FormGroup,
   FormText,
   Input,
@@ -14,19 +15,31 @@ import {
   Row
 } from "reactstrap";
 
-import { OrganizationScope } from "../../../../generated/definitions/api/OrganizationScope";
+import {
+  OrganizationScope,
+  OrganizationScopeEnum
+} from "../../../../generated/definitions/api/OrganizationScope";
 
 import { SearchAdministrations } from "./SearchAdministrations";
 
+import useForm from "react-hook-form";
+import { OrganizationFiscalCode } from "../../../../generated/definitions/api/OrganizationFiscalCode";
 import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchAdministrations>,
     RouteComponentProps<{ registrationStep: string }> {
-  onPecCheckboxChange: (selectedPecLabel: string) => void;
-  onScopeCheckboxChange: (selectedScope: OrganizationScope) => void;
   openConfirmModal: () => void;
   isAdministrationAlreadyRegistered: boolean;
+  onRegistrationStepOneSubmit: (formData: IRegistrationStepOneFormData) => void;
+}
+
+// Types for form input
+interface IRegistrationStepOneFormData {
+  cf: OrganizationFiscalCode;
+  name: string;
+  selectedPecLabel: string;
+  organizationScope: OrganizationScope;
 }
 
 /**
@@ -39,19 +52,11 @@ export const RegistrationStepOne = withRouter(
      */
     const { t } = useTranslation();
 
-    /**
-     * Function called when pecs checkbox is clicked
-     */
-    const onPecCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onPecCheckboxChange(event.target.value);
-    };
+    const { register, handleSubmit, errors } = useForm<
+      IRegistrationStepOneFormData
+    >();
 
-    /**
-     * Function called when scope checkbox is clicked
-     */
-    const onScopeCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-      props.onScopeCheckboxChange(event.target.value as OrganizationScope);
-    };
+    const requiredInputErrorText = `${t("common.inputs.errors.requiredField")}`;
 
     const pecRadioButtons = Object.keys(props.selectedAdministration.pecs).map(
       key => {
@@ -63,9 +68,14 @@ export const RegistrationStepOne = withRouter(
               id={`radio-pec-${key}`}
               name="selectedPecLabel"
               value={key}
-              checked={props.selectedAdministration.selected_pec_label === key}
-              onChange={onPecCheckboxChange}
               disabled={props.isAdministrationAlreadyRegistered}
+              innerRef={register({
+                required: requiredInputErrorText
+              })}
+              invalid={errors.selectedPecLabel !== undefined}
+              defaultChecked={
+                props.selectedAdministration.selected_pec_label === key
+              }
             />
             <Label
               check={true}
@@ -74,44 +84,71 @@ export const RegistrationStepOne = withRouter(
             >
               {props.selectedAdministration.pecs[key]}
             </Label>
+            {/*Add form feedback after last radio button*/}
+            {parseInt(key, 10) ===
+            Object.keys(props.selectedAdministration.pecs).length ? (
+              <FormFeedback>
+                {errors.selectedPecLabel && errors.selectedPecLabel.message}
+              </FormFeedback>
+            ) : null}
           </FormGroup>
         );
       }
     );
 
-    const administrationScopes: ReadonlyArray<{
+    const organizationScopes: ReadonlyArray<{
       label: string;
-      value: string;
+      value: OrganizationScopeEnum;
     }> = [
-      { label: t("signUp.stepOne.scopeRadio.localLabel"), value: "LOCAL" },
-      { label: t("signUp.stepOne.scopeRadio.nationalLabel"), value: "NATIONAL" }
+      {
+        label: t("signUp.stepOne.scopeRadio.localLabel"),
+        value: OrganizationScopeEnum.LOCAL
+      },
+      {
+        label: t("signUp.stepOne.scopeRadio.nationalLabel"),
+        value: OrganizationScopeEnum.NATIONAL
+      }
     ];
 
-    const scopeRadioButtons = administrationScopes.map(scope => {
+    const scopeRadioButtons = organizationScopes.map((scope, index) => {
       return (
         <FormGroup check={true} className="radio" key={scope.value}>
           <Input
             className="form-check-input"
             type="radio"
-            id={`radio-${scope.value}`}
-            name="scope"
+            id={`radio-scope-${scope.value}`}
+            name="organizationScope"
             value={scope.value}
-            checked={props.selectedAdministration.scope === scope.value}
-            onChange={onScopeCheckboxChange}
             disabled={props.isAdministrationAlreadyRegistered}
+            innerRef={register({
+              required: requiredInputErrorText
+            })}
+            invalid={errors.organizationScope !== undefined}
+            defaultChecked={props.selectedAdministration.scope === scope.value}
           />
           <Label
             check={true}
             className="form-check-label"
-            htmlFor={`radio-${scope.value}`}
+            htmlFor={`radio-scope-${scope.value}`}
           >
             {scope.label}
           </Label>
+          {/*Add form feedback after last radio button*/}
+          {index === organizationScopes.length - 1 ? (
+            <FormFeedback>
+              {errors.organizationScope && errors.organizationScope.message}
+            </FormFeedback>
+          ) : null}
         </FormGroup>
       );
     });
 
     const goToSignUpStepTwo = () => props.history.push("/sign-up/2");
+
+    const onRegistrationStepOneSubmit = handleSubmit(formData => {
+      props.onRegistrationStepOneSubmit(formData);
+      return goToSignUpStepTwo();
+    });
 
     return (
       <div className="RegistrationStepOne">
@@ -132,12 +169,7 @@ export const RegistrationStepOne = withRouter(
                         }
                         selectedAdministration={props.selectedAdministration}
                       />
-                      <Form
-                        action=""
-                        method="post"
-                        encType="multipart/form-data"
-                        className="form-horizontal w-100 mt-5"
-                      >
+                      <Form className="form-horizontal w-100 mt-5">
                         <FormGroup row={true}>
                           <Col sm="4">
                             <Label htmlFor="cf-input">
@@ -148,11 +180,20 @@ export const RegistrationStepOne = withRouter(
                             <Input
                               type="text"
                               id="cf-input"
-                              name="cf-input"
+                              name="cf"
                               placeholder=""
                               readOnly={true}
-                              value={props.selectedAdministration.fiscal_code}
+                              innerRef={register({
+                                required: requiredInputErrorText
+                              })}
+                              invalid={errors.cf !== undefined}
+                              defaultValue={
+                                props.selectedAdministration.fiscal_code
+                              }
                             />
+                            <FormFeedback>
+                              {errors.cf && errors.cf.message}
+                            </FormFeedback>
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}
                             </FormText>
@@ -168,32 +209,43 @@ export const RegistrationStepOne = withRouter(
                             <Input
                               type="text"
                               id="admin-name-input"
-                              name="admin-name-input"
+                              name="name"
                               placeholder=""
                               readOnly={true}
-                              value={props.selectedAdministration.name}
+                              innerRef={register({
+                                required: requiredInputErrorText
+                              })}
+                              invalid={errors.name !== undefined}
+                              defaultValue={props.selectedAdministration.name}
                             />
+                            <FormFeedback>
+                              {errors.name && errors.name.message}
+                            </FormFeedback>
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}
                             </FormText>
                           </Col>
                         </FormGroup>
-                        <FormGroup row={true}>
-                          <Col sm="4">
-                            <Label htmlFor="text-input">
-                              {t("signUp.stepOne.inputs.pecLabel")}
-                            </Label>
-                          </Col>
-                          <Col sm="8">{pecRadioButtons}</Col>
-                        </FormGroup>
-                        <FormGroup row={true} className="mb-5">
-                          <Col sm="4">
-                            <Label htmlFor="text-input">
-                              {t("signUp.stepOne.inputs.scopeLabel")}
-                            </Label>
-                          </Col>
-                          <Col sm="8">{scopeRadioButtons}</Col>
-                        </FormGroup>
+                        {props.selectedAdministration.name ? (
+                          <Fragment>
+                            <FormGroup row={true}>
+                              <Col sm="4">
+                                <Label htmlFor="text-input">
+                                  {t("signUp.stepOne.inputs.pecLabel")}
+                                </Label>
+                              </Col>
+                              <Col sm="8">{pecRadioButtons}</Col>
+                            </FormGroup>
+                            <FormGroup row={true} className="mb-5">
+                              <Col sm="4">
+                                <Label htmlFor="text-input">
+                                  {t("signUp.stepOne.inputs.scopeLabel")}
+                                </Label>
+                              </Col>
+                              <Col sm="8">{scopeRadioButtons}</Col>
+                            </FormGroup>
+                          </Fragment>
+                        ) : null}
                       </Form>
                       <Row className="pb-5">
                         <Col size={6} className="text-left">
@@ -210,13 +262,8 @@ export const RegistrationStepOne = withRouter(
                           <Button
                             color="primary"
                             className="w-50"
-                            onClick={goToSignUpStepTwo}
-                            disabled={
-                              !props.selectedAdministration.name ||
-                              props.selectedAdministration
-                                .selected_pec_label === null ||
-                              !props.selectedAdministration.scope
-                            }
+                            onClick={onRegistrationStepOneSubmit}
+                            disabled={!props.selectedAdministration.name}
                           >
                             {t("common.buttons.confirm")}
                           </Button>

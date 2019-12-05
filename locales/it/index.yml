@@ -78,6 +78,11 @@ translation:
       io:
         link: "https://io.italia.it/"
         text: "io.italia.it"
+    inputs:
+      errors:
+        requiredField: "Questo campo è obbligatorio"
+        invalidEmail: "Inserisci una email valida"
+        differentConfirmMail: "Le email non corrispondono."
   loadingPages:
     documentsCreation:
       title: "Attendi…"

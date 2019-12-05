@@ -75,6 +75,7 @@
     "react-bootstrap-typeahead": "^3.4.6",
     "react-cookie": "^4.0.1",
     "react-dom": "^16.8.6",
+    "react-hook-form": "^3.28.11",
     "react-i18next": "^10.13.1",
     "react-router-config": "^5.0.1",
     "react-router-dom": "^5.0.1",

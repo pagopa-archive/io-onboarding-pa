@@ -14,7 +14,6 @@ import {
 } from "reactstrap";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
-import { OrganizationScope } from "../../../generated/definitions/api/OrganizationScope";
 
 import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
 import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
@@ -171,49 +170,37 @@ export const RegistrationContainer = withRouter(
       setSelectedAdministration(newAdministration);
     };
 
-    const handlePecCheckboxChange = (selectedPecLabel: string) => {
-      setSelectedAdministration(
-        (
-          prevState: ComponentProps<
-            typeof RegistrationStepOne
-          >["selectedAdministration"]
-        ) => {
-          return { ...prevState, selected_pec_label: selectedPecLabel };
-        }
-      );
-    };
-
-    const handleScopeCheckboxChange = (selectedScope: OrganizationScope) => {
-      setSelectedAdministration(
-        (
-          prevState: ComponentProps<
-            typeof RegistrationStepOne
-          >["selectedAdministration"]
-        ) => {
-          return { ...prevState, scope: selectedScope };
-        }
-      );
+    const onRegistrationStepOneSubmit = (
+      formData: Parameters<
+        ComponentProps<
+          typeof RegistrationStepOne
+        >["onRegistrationStepOneSubmit"]
+      >[0]
+    ) => {
+      setSelectedAdministration(prevState => {
+        return {
+          ...prevState,
+          fiscal_code: formData.cf,
+          name: formData.name,
+          scope: formData.organizationScope,
+          selected_pec_label: formData.selectedPecLabel
+        };
+      });
     };
 
     const handleStepTwoInputChange = (
       inputName: string,
       inputValue: string
     ) => {
-      setSelectedAdministration(
-        (
-          prevState: ComponentProps<
-            typeof RegistrationStepOne
-          >["selectedAdministration"]
-        ) => {
-          return {
-            ...prevState,
-            legal_representative: {
-              ...prevState.legal_representative,
-              [inputName]: inputValue
-            }
-          };
-        }
-      );
+      setSelectedAdministration(prevState => {
+        return {
+          ...prevState,
+          legal_representative: {
+            ...prevState.legal_representative,
+            [inputName]: inputValue
+          }
+        };
+      });
     };
 
     const saveAdministration = (
@@ -282,8 +269,6 @@ export const RegistrationContainer = withRouter(
         case "1":
           return (
             <RegistrationStepOne
-              onPecCheckboxChange={handlePecCheckboxChange}
-              onScopeCheckboxChange={handleScopeCheckboxChange}
               administrations={administrations}
               onAdministrationSearch={handleAdministrationSearch}
               onAdministrationSelected={handleAdministrationSelected}
@@ -292,6 +277,7 @@ export const RegistrationContainer = withRouter(
               isAdministrationAlreadyRegistered={
                 isAdministrationAlreadyRegistered
               }
+              onRegistrationStepOneSubmit={onRegistrationStepOneSubmit}
             />
           );
         case "2":
