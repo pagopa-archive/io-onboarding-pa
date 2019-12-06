@@ -1,7 +1,7 @@
 import { constant } from "fp-ts/lib/function";
 import { fromNullable } from "fp-ts/lib/Option";
 import { NonEmptyString } from "italia-ts-commons/lib/strings";
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
@@ -185,16 +185,18 @@ export const DefaultContainer = withRouter(props => {
 
   return (
     <LogoutModalContextProvider>
-      <div className="DefaultContainer">
-        {!loadingPageContext.loadingPage.isVisible ? (
-          <Fragment>
-            <SlimHeader />
-            <CentralHeader
-              userName={`${userProfile.given_name} ${userProfile.family_name}`}
-              userRole={userProfile.role}
-            />
-          </Fragment>
-        ) : null}
+      <div
+        className={`DefaultContainer ${
+          loadingPageContext.loadingPage.isVisible
+            ? "h-100 overflow-hidden"
+            : ""
+        }`}
+      >
+        <SlimHeader />
+        <CentralHeader
+          userName={`${userProfile.given_name} ${userProfile.family_name}`}
+          userRole={userProfile.role}
+        />
         <div>
           <Route path="/spid-login" component={SpidLogin} />
           <Route

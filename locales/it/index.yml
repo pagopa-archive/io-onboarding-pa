@@ -27,6 +27,7 @@ translation:
       viewDocument: "Visualizza documento"
       sendDocumentsAgain: "Invia nuovamente i documenti alla PEC"
       goToRegistration: "Cerca il tuo ente"
+      understood: "Ho capito"
     user:
       roles:
         delegate: "Delegato Ente"
@@ -82,6 +83,11 @@ translation:
     documentsCreation:
       title: "Attendi…"
       text: "Stiamo generando il documento legale necessario alla creazione della tua richiesta di delega"
+    documentsSending:
+      title: "Stiamo inviando i tuoi documenti…"
+      text: "Abbiamo preso in carico la richiesta di creazione del tuo profilo Ente. Riceverai una mail di conferma una volta ultimati i passaggi legali tra il Legale Rappresentante e PagoPA SpA.<br>Senza la firma del tuo Legale Rappresentante non possiamo generare il profilo ente su IO, ricordagli di aprire la PEC, firmare i documenti e inviarli all’indirizzo digitale indicato nella mail."
+    documentsSent:
+      title: "Abbiamo inviato i tuoi documenti!"
   home:
     title: "IO Back-office"
     profileSelect: "Seleziona il profilo con cui vuoi accedere al back-office."

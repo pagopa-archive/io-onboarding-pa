@@ -15,7 +15,9 @@ import {
   Media,
   Row
 } from "reactstrap";
+import documentSendingLoadingPageImage from "../../../assets/img/document_sending.svg";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
+import { LoadingPageContext } from "../../../context/loading-page-context";
 import { LogoutModalContext } from "../../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
@@ -120,6 +122,8 @@ export const RegistrationStepThree = withRouter(
 
     const [cookies] = useCookies(["sessionToken"]);
 
+    const loadingPageContext = useContext(LoadingPageContext);
+
     const alert = useAlert();
     const logoutModalContext = useContext(LogoutModalContext);
 
@@ -150,10 +154,26 @@ export const RegistrationStepThree = withRouter(
       )
     );
 
+    const documentSentLoadingPageFunc = () => {
+      loadingPageContext.setLoadingPage({
+        isVisible: false
+      });
+      props.history.push("/dashboard");
+      alert.info(t("common.alerts.documentsSent"));
+    };
+
     const onSendDocuments = () => {
       const params = {
         ipaCode: props.selectedAdministration.ipa_code as string
       };
+      loadingPageContext.setLoadingPage({
+        image: documentSendingLoadingPageImage,
+        isButtonVisible: false,
+        isLoadingBarVisible: true,
+        isVisible: true,
+        text: t("loadingPages.documentsSending.text"),
+        title: t("loadingPages.documentsSending.title")
+      });
       baseUrlBackendClient(cookies.sessionToken)
         .sendDocuments({
           ...params
@@ -162,8 +182,16 @@ export const RegistrationStepThree = withRouter(
           if (response.isRight()) {
             const respValue = response.value;
             if (respValue.status === 204) {
-              props.history.push("/dashboard");
-              alert.info(t("common.alerts.documentsSent"));
+              loadingPageContext.setLoadingPage({
+                buttonFunction: documentSentLoadingPageFunc,
+                buttonText: t("common.buttons.understood"),
+                image: documentSendingLoadingPageImage,
+                isButtonVisible: true,
+                isLoadingBarVisible: false,
+                isVisible: true,
+                text: t("loadingPages.documentsSending.text"),
+                title: t("loadingPages.documentsSent.title")
+              });
             } else {
               const alertText =
                 t(`common.errors.sendDocuments.${respValue.status}`) ||
@@ -177,17 +205,26 @@ export const RegistrationStepThree = withRouter(
                     isLogoutModalVisible: true
                   })
               );
+              loadingPageContext.setLoadingPage({
+                isVisible: false
+              });
             }
           } else {
             // tslint:disable-next-line:no-console
             console.log(response.value.map(v => v.message).join(" - "));
             alert.error(common500ErrorString);
+            loadingPageContext.setLoadingPage({
+              isVisible: false
+            });
           }
         })
         .catch((error: Error) => {
           // tslint:disable-next-line:no-console
           console.log(error.message);
           alert.error(common500ErrorString);
+          loadingPageContext.setLoadingPage({
+            isVisible: false
+          });
         });
     };
 
