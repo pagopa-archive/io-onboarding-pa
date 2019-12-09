@@ -20,7 +20,7 @@ LABEL maintainer="https://teamdigitale.governo.it"
 # Install major CA certificates to cover
 # https://github.com/SparebankenVest/azure-key-vault-to-kubernetes integration
 RUN apt-get update && \
-    apt-get install -y ca-certificates
+  apt-get install -y ca-certificates
 
 COPY nginx.conf /etc/nginx
 

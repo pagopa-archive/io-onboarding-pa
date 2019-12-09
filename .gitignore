@@ -9,3 +9,4 @@ coverage
 public/env-config.js
 locales/locales.ts
 generated/*
+.env
