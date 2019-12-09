@@ -84,6 +84,7 @@ translation:
         invalidEmail: "Inserisci una email valida"
         differentConfirmMail: "Le email non corrispondono"
         invalidFiscalCode: "Inserisci un codice fiscale valido"
+        lowerCaseFiscalCode: "Il codice fiscale deve contenere solo lettere maiuscole e numeri"
   loadingPages:
     documentsCreation:
       title: "Attendi…"

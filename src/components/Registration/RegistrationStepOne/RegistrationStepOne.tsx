@@ -67,12 +67,15 @@ const RegistrationStepOneRadioButtons = React.memo(
   (props: IRegistrationStepOneRadioButtonsProps) => {
     useEffect(() => {
       props.register({ name: props.name }, { required: props.errorText });
-
+      if (props.defaultCheckedValue) {
+        props.setValue(props.name, props.defaultCheckedValue);
+      }
       return () => props.unregister(props.name);
     }, [props.name, props.register, props.unregister]);
 
-    const setCheckboxValue = (e: ChangeEvent<HTMLInputElement>) =>
+    const setCheckboxValue = (e: ChangeEvent<HTMLInputElement>) => {
       props.setValue(props.name, e.target.value);
+    };
 
     const propWithError = props.errors[props.name];
 

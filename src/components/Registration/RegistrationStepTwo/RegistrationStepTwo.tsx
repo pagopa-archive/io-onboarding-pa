@@ -174,9 +174,18 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                             )}
                             innerRef={register({
                               required: requiredInputErrorText,
-                              validate: value =>
-                                FiscalCode.is(value) ||
-                                `${t("common.inputs.errors.invalidFiscalCode")}`
+                              validate: {
+                                isUpperCase: value =>
+                                  value.toUpperCase() === value ||
+                                  `${t(
+                                    "common.inputs.errors.lowerCaseFiscalCode"
+                                  )}`,
+                                isValidFiscalCode: value =>
+                                  FiscalCode.is(value) ||
+                                  `${t(
+                                    "common.inputs.errors.invalidFiscalCode"
+                                  )}`
+                              }
                             })}
                             invalid={errors.fc !== undefined}
                             defaultValue={
