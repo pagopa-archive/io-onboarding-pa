@@ -59,15 +59,15 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
   /*
    * Boolean variable to check if a work email different from spid one is already set
    * */
-  const isWorkMailNotSet =
-    (!props.workMail || props.workMail === props.spidMail) &&
-    props.location.pathname !== "/profile";
+  const isWorkMailNotSet = !props.workMail || props.workMail === props.spidMail;
 
   // If a work mail different from spid one is already set, user in changing work email
   // otherwise is adding work mail
   const workMailOperationType = isWorkMailNotSet
     ? "addWorkMail"
     : "changeWorkMail";
+
+  const isModalFromProfilePage = props.location.pathname === "/profile";
 
   const updateUserMail = (newUserMail: string, alertMessage: string) => {
     const params = {
@@ -117,7 +117,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
     updateUserMail(
       formData.newMail,
       `${t("common.alerts.setMailWithNewMail")} ${
-        isWorkMailNotSet
+        !isModalFromProfilePage
           ? t("common.alerts.setMailWithNewMailAdditionalInfo")
           : ""
       }`
@@ -206,7 +206,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
               outline={true}
               color="secondary"
               onClick={
-                isWorkMailNotSet
+                !isModalFromProfilePage
                   ? onCancelUpdateMail(
                       props.spidMail,
                       t("common.alerts.setMailWithSpidMail")
@@ -214,7 +214,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
                   : props.toggleAddMailModal
               }
             >
-              {isWorkMailNotSet
+              {!isModalFromProfilePage
                 ? t("common.buttons.skip")
                 : t("common.buttons.cancel")}
             </Button>
