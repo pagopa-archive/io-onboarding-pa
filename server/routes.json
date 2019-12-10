@@ -1,3 +1,0 @@
-{
-  "/public-administrations?search=:searchString": "/administrations?q=:searchString"
-}
