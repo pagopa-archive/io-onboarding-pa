@@ -1,16 +1,29 @@
 version: "3.2"
 services:
-  # IO onboarding PA frontend
   io-onboarding-pa:
-    container_name: io-onboarding-pa
-    image: teamdigitale/io-onboarding-pa
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: circleci/node:10.14.1
+    working_dir: /usr/src/app
+    command: ["yarn", "watch"]
     env_file:
       - .env
     ports:
-      - "8080:80"
+      - "127.0.0.1:1234:1234"
+      - "127.0.0.1:1235:1235"
+    volumes:
+      - ".:/usr/src/app"
+    networks:
+      - io-onboarding
+
+  io-onboarding-pa-mock-server:
+    image: circleci/node:10.14.1
+    working_dir: /usr/src/app
+    command: ["yarn", "mock"]
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ".:/usr/src/app"
     networks:
       - io-onboarding
 

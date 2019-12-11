@@ -33,7 +33,7 @@ jobs:
       - *save_node_cache
 
       # Build app
-      - run: yarn generate:all
+      - run: yarn generate
       - run: yarn build
 
   tests:
@@ -44,11 +44,11 @@ jobs:
       - *install_node_modules
 
       # Generate models and locales
-      - run: yarn generate:all
+      - run: yarn generate
 
       # Run tests
       - run: yarn test
-      - run: 'bash <(curl -s https://codecov.io/bash)'
+      - run: "bash <(curl -s https://codecov.io/bash)"
 
   lint:
     <<: *defaults_js
