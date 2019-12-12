@@ -1,7 +1,11 @@
 # IO Onboarding portal frontend
 
-The repository contains the frontend code of the [IO](https://io.italia.it)
-onboarding portal.
+This repository contains the code of the frontend application of the IO Public
+Administrations onboarding portal.
+
+## What is IO?
+
+More informations can be found on the [IO project website](https://io.italia.it).
 
 ## Prerequisites
 
@@ -30,6 +34,7 @@ of the application.
 | IO_ONBOARDING_PA_API_PORT              | The port for of APIs url                                                                         | string |
 | IO_ONBOARDING_PA_SHOW_FAKE_IDP         | Show or hide fake IDP button in SPID dropdown button (0 to hide, 1 to show)                      | string |
 | IO_ONBOARDING_PA_IS_MOCK_ENV           | Front end is running with mock backend or with real APIs (0 for real APIs, 1 for mock backend)   | string |
+| IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN  | Session token domain used to delete the token when logging out                                   | string |
 
 ### Environment variables run-time injection
 
@@ -53,7 +58,7 @@ application in a browser.
 >example *IO_ONBOARDING_PA_API_HOST*.
 
 To read the variable values inside the frontend application, use
-`window._env_.IO_ONBOARDING_PA_YOUR_VAR`. 
+the [`getConfig()`](../src/utils/config.ts) method.
 
 ## Production deployment
 
