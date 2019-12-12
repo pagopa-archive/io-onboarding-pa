@@ -85,7 +85,9 @@ cp env.example .env
 To run the frontend application locally, prepare the environment first:
 
 ```shell
-# run yarn inside docker container
+chmod +x ./scripts/yarn.sh
+# launch the docker NodeJS image 
+# and run yarn inside the docker container
 ./scripts/yarn.sh install
 ./scripts/yarn.sh generate
 
