@@ -21,16 +21,31 @@ server.use((req, res, next) => {
 
 // If you want to target /posts specifically
 router.render = (req, res) => {
-    if (req.url === '/posts') {
-        res.jsonp({
-            posts: res.locals.data
-        })
-    }
-    else if (req.url === '/logout') {
-        res.sendStatus(204);
-    }
-    else {
-        res.jsonp(res.locals.data)
+    switch (req.url) {
+        case "/logout":
+            res.sendStatus(204);
+            break;
+        case "/profile":
+            const profile = {
+                "email": "example@email.com",
+                "family_name": "Rossi",
+                "given_name": "Mario",
+                "fiscal_code": "RSSMRA80A01H501U",
+                "role": "ORG_DELEGATE"
+            };
+            if (req.method === "PUT") {
+                const tmpWorkMail = req.body;
+                req.body = {
+                    ...profile,
+                    ...tmpWorkMail
+                };
+                console.log(req.body);
+                res.jsonp({...req.body});
+            }
+            break;
+        case "default":
+            res.jsonp(res.locals.data);
+            break;
     }
 };
 
