@@ -1,25 +1,27 @@
 const jsonServer = require('json-server');
 const path = require('path');
+const fs  = require('fs');
 
 const server = jsonServer.create();
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults();
 
-
-// Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
-server.use(router);
 
 server.use(jsonServer.rewriter({
     "/public-administrations?search=:searchString": "/administrations?q=:searchString"
 }));
 
+server.use(router);
 
-server.use((req, res, next) => {
-    next()
-});
+const updateDbFile = (key, newData) => {
+    const db = JSON.parse(fs.readFileSync(path.join(__dirname, 'db.json'), 'utf8'));
+    db[key] = newData;
+    router.db.setState(db);
+    let newFileData = JSON.stringify(db, null, 2);
+    fs.writeFileSync(path.join(__dirname, 'db.json'), newFileData);
+};
 
-// If you want to target /posts specifically
 router.render = (req, res) => {
     switch (req.url) {
         case "/logout":
@@ -34,16 +36,19 @@ router.render = (req, res) => {
                 "role": "ORG_DELEGATE"
             };
             if (req.method === "PUT") {
-                const tmpWorkMail = req.body;
-                req.body = {
+                res.jsonp({
                     ...profile,
-                    ...tmpWorkMail
-                };
-                console.log(req.body);
-                res.jsonp({...req.body});
+                    ...req.body
+                });
+                updateDbFile("profile", {
+                    ...profile,
+                    ...req.body
+                });
+                break;
             }
-            break;
-        case "default":
+            /* falls through */
+        default:
+            console.log(`Enter default case for service ${req.method} ${req.url}`);
             res.jsonp(res.locals.data);
             break;
     }
