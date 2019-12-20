@@ -78,6 +78,13 @@ translation:
       io:
         link: "https://io.italia.it/"
         text: "io.italia.it"
+    inputs:
+      errors:
+        requiredField: "Questo campo è obbligatorio"
+        invalidEmail: "Inserisci una email valida"
+        differentConfirmMail: "Le email non corrispondono"
+        invalidFiscalCode: "Inserisci un codice fiscale valido"
+        lowerCaseFiscalCode: "Il codice fiscale deve contenere solo lettere maiuscole e numeri"
   loadingPages:
     documentsCreation:
       title: "Attendi…"

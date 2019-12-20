@@ -1,18 +1,21 @@
 import { exact } from "io-ts";
-import React, { ChangeEvent, ComponentProps } from "react";
+import React, { ComponentProps } from "react";
 import { useAlert } from "react-alert";
+import useForm from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   Button,
   Col,
   Container,
   Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
   Media,
   Row
 } from "reactstrap";
+import { FiscalCode } from "../../../../generated/definitions/api/FiscalCode";
 import { OrganizationRegistrationParams } from "../../../../generated/definitions/api/OrganizationRegistrationParams";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";
 import { SearchAdministrations } from "../RegistrationStepOne/SearchAdministrations";
@@ -21,11 +24,19 @@ interface IRegistrationStepTwoProps {
   selectedAdministration: ComponentProps<
     typeof SearchAdministrations
   >["selectedAdministration"];
-  onStepTwoInputChange: (inputName: string, inputValue: string) => void;
   onSaveAdministration: (
     administrationToSave: OrganizationRegistrationParams
   ) => void;
   openConfirmModal: () => void;
+  onRegistrationStepTwoSubmit: (formData: IRegistrationStepTwoFormData) => void;
+}
+
+// Types for form input
+interface IRegistrationStepTwoFormData {
+  givenName: string;
+  familyName: string;
+  fc: FiscalCode;
+  phoneNumber: string;
 }
 
 /**
@@ -39,14 +50,23 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
 
   const alert = useAlert();
 
-  const onStepTwoInputChange = (inputName: string) => (
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    props.onStepTwoInputChange(inputName, event.target.value);
-  };
+  const { register, handleSubmit, errors } = useForm<
+    IRegistrationStepTwoFormData
+  >();
 
-  const saveAdministration = () => {
-    OrganizationRegistrationParams.decode(props.selectedAdministration).fold(
+  const requiredInputErrorText = `${t("common.inputs.errors.requiredField")}`;
+
+  const saveAdministration = (formData: IRegistrationStepTwoFormData) => {
+    OrganizationRegistrationParams.decode({
+      ...props.selectedAdministration,
+      legal_representative: {
+        ...props.selectedAdministration.legal_representative,
+        family_name: formData.familyName,
+        fiscal_code: formData.fc,
+        given_name: formData.givenName,
+        phone_number: formData.phoneNumber
+      }
+    }).fold(
       _ => {
         alert.error(t("common.alerts.registrationWrongData"));
       },
@@ -57,6 +77,11 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
       }
     );
   };
+
+  const onRegistrationStepTwoSubmit = handleSubmit(formData => {
+    props.onRegistrationStepTwoSubmit(formData);
+    return saveAdministration(formData);
+  });
 
   return (
     <div className="RegistrationStepTwo">
@@ -87,14 +112,20 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           <Input
                             type="text"
                             id="given_name-input"
-                            name="given_name"
+                            name="givenName"
                             placeholder=""
-                            value={
+                            innerRef={register({
+                              required: requiredInputErrorText
+                            })}
+                            invalid={errors.givenName !== undefined}
+                            defaultValue={
                               props.selectedAdministration.legal_representative
                                 .given_name
                             }
-                            onChange={onStepTwoInputChange("given_name")}
                           />
+                          <FormFeedback>
+                            {errors.givenName && errors.givenName.message}
+                          </FormFeedback>
                         </Col>
                         <Col sm="6">
                           <Label htmlFor="family_name-input" className="active">
@@ -103,14 +134,20 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           <Input
                             type="text"
                             id="family_name-input"
-                            name="family_name"
+                            name="familyName"
                             placeholder=""
-                            value={
+                            innerRef={register({
+                              required: requiredInputErrorText
+                            })}
+                            invalid={errors.familyName !== undefined}
+                            defaultValue={
                               props.selectedAdministration.legal_representative
                                 .family_name
                             }
-                            onChange={onStepTwoInputChange("family_name")}
                           />
+                          <FormFeedback>
+                            {errors.familyName && errors.familyName.message}
+                          </FormFeedback>
                         </Col>
                       </FormGroup>
                       <p className="pt-3 mb-5">
@@ -131,16 +168,34 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           <Input
                             type="text"
                             id="fiscal_code-input"
-                            name="fiscal_code"
+                            name="fc"
                             placeholder={t(
                               "signUp.stepTwo.inputs.fcPlaceholder"
                             )}
-                            value={
+                            innerRef={register({
+                              required: requiredInputErrorText,
+                              validate: {
+                                isUpperCase: value =>
+                                  value.toUpperCase() === value ||
+                                  `${t(
+                                    "common.inputs.errors.lowerCaseFiscalCode"
+                                  )}`,
+                                isValidFiscalCode: value =>
+                                  FiscalCode.is(value) ||
+                                  `${t(
+                                    "common.inputs.errors.invalidFiscalCode"
+                                  )}`
+                              }
+                            })}
+                            invalid={errors.fc !== undefined}
+                            defaultValue={
                               props.selectedAdministration.legal_representative
-                                .fiscal_code || ""
+                                .fiscal_code
                             }
-                            onChange={onStepTwoInputChange("fiscal_code")}
                           />
+                          <FormFeedback>
+                            {errors.fc && errors.fc.message}
+                          </FormFeedback>
                         </Col>
                         <Col sm="6">
                           <Label
@@ -152,16 +207,22 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                           <Input
                             type="text"
                             id="phone_number-input"
-                            name="phone_number"
+                            name="phoneNumber"
                             placeholder={t(
                               "signUp.stepTwo.inputs.phonePlaceholder"
                             )}
-                            value={
+                            innerRef={register({
+                              required: requiredInputErrorText
+                            })}
+                            invalid={errors.phoneNumber !== undefined}
+                            defaultValue={
                               props.selectedAdministration.legal_representative
-                                .phone_number || ""
+                                .phone_number
                             }
-                            onChange={onStepTwoInputChange("phone_number")}
                           />
+                          <FormFeedback>
+                            {errors.phoneNumber && errors.phoneNumber.message}
+                          </FormFeedback>
                         </Col>
                       </FormGroup>
                     </Form>
@@ -180,7 +241,7 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                         <Button
                           color="primary"
                           className="w-50"
-                          onClick={saveAdministration}
+                          onClick={onRegistrationStepTwoSubmit}
                         >
                           {t("common.buttons.confirm")}
                         </Button>

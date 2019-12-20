@@ -1,13 +1,14 @@
-import { NonEmptyString } from "italia-ts-commons/lib/strings";
-import React, { ChangeEvent, MouseEvent, useContext, useState } from "react";
+import React, { MouseEvent, useContext } from "react";
 import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
+import useForm from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
   Button,
   Col,
   Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
@@ -32,6 +33,12 @@ interface IAddMailModalProps extends RouteComponentProps {
   onWorkMailSet: (newUserMail: EmailAddress) => void;
 }
 
+// Types for form input
+interface IChangeMailFormData {
+  newMail: EmailAddress;
+  confirmMail: EmailAddress;
+}
+
 /*
  * Modal shown at first login to prompt user to add personal mail
  */
@@ -45,8 +52,9 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
   const alert = useAlert();
   const logoutModalContext = useContext(LogoutModalContext);
 
-  const [newMail, setNewMail] = useState("");
-  const [confirmMail, setConfirmMail] = useState("");
+  const { register, handleSubmit, getValues, errors } = useForm<
+    IChangeMailFormData
+  >();
 
   /*
    * Boolean variable to check if a work email different from spid one is already set
@@ -59,17 +67,9 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
     ? "addWorkMail"
     : "changeWorkMail";
 
-  const onChangeNewMailInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewMail(event.target.value);
-  };
+  const isModalFromProfilePage = props.location.pathname === "/profile";
 
-  const onChangeConfirmMailInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setConfirmMail(event.target.value);
-  };
-
-  const updateUserMail = (newUserMail: string, alertMessage: string) => (
-    _: MouseEvent
-  ) => {
+  const updateUserMail = (newUserMail: string, alertMessage: string) => {
     const params = {
       updateUserProfile: { work_email: newUserMail as EmailAddress }
     };
@@ -84,8 +84,6 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
           if (respValue.status === 200) {
             props.onWorkMailSet(newUserMail as EmailAddress);
             alert.success(alertMessage);
-            setNewMail("");
-            setConfirmMail("");
           } else {
             const alertText = t(
               `common.errors.updateUserMail.${respValue.status}`
@@ -115,6 +113,24 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
       });
   };
 
+  const onSubmit = handleSubmit(formData => {
+    updateUserMail(
+      formData.newMail,
+      `${t("common.alerts.setMailWithNewMail")} ${
+        !isModalFromProfilePage
+          ? t("common.alerts.setMailWithNewMailAdditionalInfo")
+          : ""
+      }`
+    );
+    return;
+  });
+
+  const onCancelUpdateMail = (newUserMail: string, alertMessage: string) => (
+    _: MouseEvent
+  ) => {
+    updateUserMail(newUserMail, alertMessage);
+  };
+
   return (
     <Modal isOpen={props.isVisibleAddMailModal} centered={true} size="lg">
       <ModalHeader>
@@ -126,12 +142,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
         <p className="px-4">
           {t(`common.modals.${workMailOperationType}.text`)}
         </p>
-        <Form
-          action=""
-          method="post"
-          encType="multipart/form-data"
-          className="form-horizontal w-100 pt-4 px-4"
-        >
+        <Form className="form-horizontal w-100 pt-4 px-4">
           <FormGroup row={true}>
             <Col sm="4 pl-0">
               <Label htmlFor="new_mail-input">
@@ -143,12 +154,20 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
             <Col sm="7">
               <Input
                 type="text"
+                name="newMail"
                 id="new_mail-input"
-                name="new_mail"
                 placeholder=""
-                value={newMail}
-                onChange={onChangeNewMailInput}
+                innerRef={register({
+                  required: `${t("common.inputs.errors.requiredField")}`,
+                  validate: value =>
+                    EmailAddress.is(value) ||
+                    `${t("common.inputs.errors.invalidEmail")}`
+                })}
+                invalid={errors.newMail !== undefined}
               />
+              <FormFeedback>
+                {errors.newMail && errors.newMail.message}
+              </FormFeedback>
             </Col>
           </FormGroup>
           <FormGroup row={true}>
@@ -163,11 +182,19 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
               <Input
                 type="text"
                 id="confirm_mail-input"
-                name="confirm_mail"
+                name="confirmMail"
                 placeholder=""
-                value={confirmMail}
-                onChange={onChangeConfirmMailInput}
+                innerRef={register({
+                  required: `${t("common.inputs.errors.requiredField")}`,
+                  validate: value =>
+                    value === getValues().newMail ||
+                    `${t("common.inputs.errors.differentConfirmMail")}`
+                })}
+                invalid={errors.confirmMail !== undefined}
               />
+              <FormFeedback>
+                {errors.confirmMail && errors.confirmMail.message}
+              </FormFeedback>
             </Col>
           </FormGroup>
         </Form>
@@ -179,32 +206,25 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
               outline={true}
               color="secondary"
               onClick={
-                isWorkMailNotSet
-                  ? updateUserMail(
+                !isModalFromProfilePage
+                  ? onCancelUpdateMail(
                       props.spidMail,
                       t("common.alerts.setMailWithSpidMail")
                     )
                   : props.toggleAddMailModal
               }
             >
-              {isWorkMailNotSet
+              {!isModalFromProfilePage
                 ? t("common.buttons.skip")
                 : t("common.buttons.cancel")}
             </Button>
           </Col>
           <Col sm="6" className="text-right">
             <Button
+              type="submit"
               color="primary"
               className="btn btn-primary"
-              disabled={!NonEmptyString.is(newMail) || newMail !== confirmMail}
-              onClick={updateUserMail(
-                newMail,
-                `${t("common.alerts.setMailWithNewMail")} ${
-                  isWorkMailNotSet
-                    ? t("common.alerts.setMailWithNewMailAdditionalInfo")
-                    : ""
-                }`
-              )}
+              onClick={onSubmit}
             >
               {t("common.buttons.confirm")}
             </Button>
