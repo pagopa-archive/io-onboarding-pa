@@ -1,7 +1,7 @@
 import { exact } from "io-ts";
 import React, { ComponentProps } from "react";
 import { useAlert } from "react-alert";
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   Button,
@@ -194,9 +194,9 @@ export const RegistrationStepTwo = (props: IRegistrationStepTwoProps) => {
                                 .fiscal_code
                             }
                           />
-                          <FormFeedback>
-                            {errors.fc && errors.fc.message}
-                          </FormFeedback>
+                          {errors && errors.fc && (
+                            <FormFeedback>{errors.fc.message}</FormFeedback>
+                          )}
                         </Col>
                         <Col sm="6">
                           <Label
