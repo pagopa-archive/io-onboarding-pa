@@ -29,8 +29,8 @@ translation:
       goToRegistration: "Cerca il tuo ente"
     user:
       roles:
-        delegate: "Delegato Ente"
-        delegateShort: "Delegato"
+        delegate: "Gestore Ente"
+        delegateShort: "Gestore"
         developer: "Sviluppatore"
         legalRep: "Legale Rappresentante Ente"
         legalRepShort: "Leg. Rappr. Ente"
