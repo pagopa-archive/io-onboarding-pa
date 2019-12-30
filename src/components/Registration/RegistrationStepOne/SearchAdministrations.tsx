@@ -1,6 +1,7 @@
+import "./SearchAdministrations.css";
+
 import React from "react";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-
 import { useTranslation } from "react-i18next";
 import { Button, Col, InputGroup, InputGroupAddon, Row } from "reactstrap";
 
@@ -13,9 +14,6 @@ import {
   FoundRegisteredAdministration,
   FoundRegisteredAdministrationLegal_representative
 } from "../../../../generated/definitions/api/FoundRegisteredAdministration";
-
-import "./SearchAdministrations.css";
-
 import bootstrapItaliaImages from "../../../assets/img/bootstrap-italia/sprite.svg";
 
 /*

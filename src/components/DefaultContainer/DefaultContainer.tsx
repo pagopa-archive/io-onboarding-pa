@@ -1,16 +1,5 @@
-import { constant } from "fp-ts/lib/function";
-import { fromNullable } from "fp-ts/lib/Option";
-import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useAlert } from "react-alert";
-import { useCookies } from "react-cookie";
-import { useTranslation } from "react-i18next";
 import { Route, RouteComponentProps, withRouter } from "react-router";
-import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
-import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
-import { UserProfile } from "../../../generated/definitions/api/UserProfile";
-import { UserRole } from "../../../generated/definitions/api/UserRole";
-import { LoadingPageContext } from "../../context/loading-page-context";
 import {
   LogoutModalContext,
   LogoutModalContextProvider
@@ -19,6 +8,18 @@ import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../utils/api-utils";
+
+import { constant } from "fp-ts/lib/function";
+import { fromNullable } from "fp-ts/lib/Option";
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
+import { useAlert } from "react-alert";
+import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
+import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
+import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
+import { UserProfile } from "../../../generated/definitions/api/UserProfile";
+import { UserRole } from "../../../generated/definitions/api/UserRole";
+import { LoadingPageContext } from "../../context/loading-page-context";
 import { getConfig } from "../../utils/config";
 import { CentralHeader } from "../CentralHeader/CentralHeader";
 import { Dashboard } from "../Dashboard/Dashboard";

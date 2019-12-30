@@ -1,3 +1,5 @@
+import "./SpidLogin.css";
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router";
@@ -10,10 +12,9 @@ import {
   Container,
   Row
 } from "reactstrap";
+
 import { BackButton } from "../BackButton/BackButton";
 import { SpidLoginButton } from "./SpidLoginButton/SpidLoginButton";
-
-import "./SpidLogin.css";
 
 /**
  * Component for spid login for delegate

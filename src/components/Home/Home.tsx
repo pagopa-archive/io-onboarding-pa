@@ -1,17 +1,16 @@
+import "./Home.css";
+
 import React, { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 import { Col, Media, Row } from "reactstrap";
-import { HomeLoginButton } from "./HomeLoginButton/HomeLoginButton";
 
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
-
-import logoTD from "../../assets/img/logo_td.png";
-
 import logoHomeDel from "../../assets/img/logo_home_del.svg";
 import logoHomeDev from "../../assets/img/logo_home_dev.svg";
 import logoHomeRep from "../../assets/img/logo_home_legal_rep.svg";
+import logoTD from "../../assets/img/logo_td.png";
+import { HomeLoginButton } from "./HomeLoginButton/HomeLoginButton";
 
-import "./Home.css";
 /**
  * Landing page with three different login for developers, institution delegate and institution legal ref
  */

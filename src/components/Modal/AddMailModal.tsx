@@ -1,7 +1,7 @@
 import React, { MouseEvent, useContext } from "react";
 import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
-import useForm from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
@@ -18,6 +18,7 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {

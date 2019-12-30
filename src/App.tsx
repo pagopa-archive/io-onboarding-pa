@@ -1,8 +1,10 @@
+import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
+import "./App.scss";
+
 import React from "react";
 import { positions, Provider as AlertProvider, transitions } from "react-alert";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import "../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css";
-import "./App.scss";
+
 import { AppAlertTemplate } from "./components/AppAlert/AppAlertTemplate";
 import { DefaultContainer } from "./components/DefaultContainer/DefaultContainer";
 import { Home } from "./components/Home/Home";

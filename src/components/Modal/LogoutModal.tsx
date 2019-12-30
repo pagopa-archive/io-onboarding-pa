@@ -13,6 +13,7 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+
 import logoutLogo from "../../assets/img/logout.svg";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {

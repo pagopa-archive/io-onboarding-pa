@@ -1,4 +1,7 @@
+import "./CentralHeader.css";
+
 import { AppHeader } from "@coreui/react";
+import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import React, { ComponentProps, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -14,14 +17,11 @@ import {
   Row,
   UncontrolledDropdown
 } from "reactstrap";
-import { UserRoleEnum } from "../../../generated/definitions/api/UserRole";
 
+import { UserRoleEnum } from "../../../generated/definitions/api/UserRole";
 import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 import ioLogoWhite from "../../assets/img/io-logo-white.svg";
-
-import { NonEmptyString } from "italia-ts-commons/lib/strings";
 import { LogoutModalContext } from "../../context/logout-modal-context";
-import "./CentralHeader.css";
 
 /*
  * Component for badge containing user role

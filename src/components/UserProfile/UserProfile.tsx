@@ -9,6 +9,7 @@ import {
   Container,
   Row
 } from "reactstrap";
+
 import { UserProfile as UserProfileType } from "../../../generated/definitions/api/UserProfile";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import { BackButton } from "../BackButton/BackButton";

@@ -1,9 +1,10 @@
+import "./LoadingPage.css";
+
 import React, { useContext } from "react";
 import { Trans } from "react-i18next";
 import { Button, Col, Media, Progress, Row } from "reactstrap";
 
 import { LoadingPageContext } from "../../context/loading-page-context";
-import "./LoadingPage.css";
 
 /**
  * Progress bar (visible in pages shown to wait for an operation to be completed)

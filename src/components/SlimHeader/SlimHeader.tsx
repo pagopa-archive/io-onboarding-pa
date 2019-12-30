@@ -1,9 +1,9 @@
+import "./SlimHeader.css";
+
 import { AppHeader } from "@coreui/react";
 import React from "react";
-import { Container, Nav, NavItem } from "reactstrap";
-
 import { useTranslation } from "react-i18next";
-import "./SlimHeader.css";
+import { Container, Nav, NavItem } from "reactstrap";
 
 /**
  * Slim header at top of the app

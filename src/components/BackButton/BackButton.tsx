@@ -1,6 +1,7 @@
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Button } from "reactstrap";
+
 import bootstrapItaliaImages from "../../assets/img/bootstrap-italia/sprite.svg";
 
 interface IBackButtonProps extends RouteComponentProps {
