@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ComponentProps, Fragment, useEffect } from "react";
-import useForm from "react-hook-form";
+import { ErrorMessage, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
@@ -75,8 +75,6 @@ const RegistrationStepOneRadioButtons = React.memo(
       props.setValue(props.name, e.target.value);
     };
 
-    const propWithError = props.errors[props.name];
-
     const content = props.dataArray.map((elem, index) => {
       return (
         <FormGroup check={true} className="radio" key={elem.label}>
@@ -101,7 +99,9 @@ const RegistrationStepOneRadioButtons = React.memo(
           {/*Add form feedback after last radio button*/}
           {index === props.dataArray.length - 1 ? (
             <FormFeedback>
-              {!props.errors || !propWithError ? "" : propWithError.message}
+              {props.errors[props.name] && (
+                <ErrorMessage name={props.name} errors={props.errors} />
+              )}
             </FormFeedback>
           ) : null}
         </FormGroup>
@@ -197,7 +197,7 @@ export const RegistrationStepOne = withRouter(
                               }
                             />
                             <FormFeedback>
-                              {errors.cf && errors.cf.message}
+                              <ErrorMessage name="cf" errors={errors} />
                             </FormFeedback>
                             <FormText color="muted">
                               {t("signUp.stepOne.inputs.precompiledLabel")}

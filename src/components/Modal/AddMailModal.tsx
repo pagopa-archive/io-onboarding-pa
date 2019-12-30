@@ -1,7 +1,7 @@
 import React, { MouseEvent, useContext } from "react";
 import { useAlert } from "react-alert";
 import { useCookies } from "react-cookie";
-import useForm from "react-hook-form";
+import { ErrorMessage, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
@@ -167,7 +167,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
                 invalid={errors.newMail !== undefined}
               />
               <FormFeedback>
-                {errors.newMail && errors.newMail.message}
+                <ErrorMessage name="newMail" errors={errors} />
               </FormFeedback>
             </Col>
           </FormGroup>
@@ -194,7 +194,7 @@ export const AddMailModal = withRouter((props: IAddMailModalProps) => {
                 invalid={errors.confirmMail !== undefined}
               />
               <FormFeedback>
-                {errors.confirmMail && errors.confirmMail.message}
+                <ErrorMessage name="confirmMail" errors={errors} />
               </FormFeedback>
             </Col>
           </FormGroup>
