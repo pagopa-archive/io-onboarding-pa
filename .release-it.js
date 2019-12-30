@@ -11,7 +11,7 @@ module.exports = {
     // "after:bump": "npx auto-changelog --package",
     "before:release": [
       "npx auto-changelog --config .auto-changelog.json --package",
-      "git add CHANGELOG.md && git commit -m 'updated changelog'"
+      "git add CHANGELOG.md"
     ]
   },
   github: {
