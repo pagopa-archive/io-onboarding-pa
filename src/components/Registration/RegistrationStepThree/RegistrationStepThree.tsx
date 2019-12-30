@@ -15,6 +15,7 @@ import {
   Media,
   Row
 } from "reactstrap";
+
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
 import { LogoutModalContext } from "../../../context/logout-modal-context";
 import {

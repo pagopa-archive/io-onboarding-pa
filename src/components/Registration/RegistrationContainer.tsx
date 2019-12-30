@@ -1,5 +1,7 @@
 import React, { ComponentProps, Fragment, useContext, useEffect } from "react";
 import { useState } from "react";
+import { useAlert } from "react-alert";
+import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
@@ -12,28 +14,24 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+
+import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
 import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
+import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
-
-import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
-import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
-import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepThree";
-import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
-
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
+import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
+import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 import { LoadingPageContext } from "../../context/loading-page-context";
+import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../utils/api-utils";
-
-import { useAlert } from "react-alert";
-import { useCookies } from "react-cookie";
-import { AdministrationSearchParam } from "../../../generated/definitions/api/AdministrationSearchParam";
-import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
-import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
-import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
-import { LogoutModalContext } from "../../context/logout-modal-context";
+import { RegistrationStepButtons } from "./RegistrationStepButtons/RegistrationStepButtons";
+import { RegistrationStepOne } from "./RegistrationStepOne/RegistrationStepOne";
+import { RegistrationStepThree } from "./RegistrationStepThree/RegistrationStepThree";
+import { RegistrationStepTwo } from "./RegistrationStepTwo/RegistrationStepTwo";
 
 interface IRegistrationContainerProps
   extends RouteComponentProps<{ signUpStep: string }> {

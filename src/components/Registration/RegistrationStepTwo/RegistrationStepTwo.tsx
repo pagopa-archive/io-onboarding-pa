@@ -15,6 +15,7 @@ import {
   Media,
   Row
 } from "reactstrap";
+
 import { FiscalCode } from "../../../../generated/definitions/api/FiscalCode";
 import { OrganizationRegistrationParams } from "../../../../generated/definitions/api/OrganizationRegistrationParams";
 import logoSignupStepTwoNew from "../../../assets/img/signup_step2_new.svg";

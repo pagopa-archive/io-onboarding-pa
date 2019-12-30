@@ -1,21 +1,21 @@
+import "./Dashboard.css";
+
 import React, { Fragment, useContext, useEffect, useState } from "react";
+import { useAlert } from "react-alert";
+import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Col, Container, Row } from "reactstrap";
 
-import { useTranslation } from "react-i18next";
+import { Organization } from "../../../generated/definitions/api/Organization";
 import { UserProfile } from "../../../generated/definitions/api/UserProfile";
 import { UserRoleEnum } from "../../../generated/definitions/api/UserRole";
-import { OrganizationCard } from "./OrganizationCard";
-
-import { useAlert } from "react-alert";
-import { useCookies } from "react-cookie";
-import { Organization } from "../../../generated/definitions/api/Organization";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
   baseUrlBackendClient,
   manageErrorReturnCodes
 } from "../../utils/api-utils";
-import "./Dashboard.css";
+import { OrganizationCard } from "./OrganizationCard";
 
 interface IOrganizationRowProps {
   userOrganizations: ReadonlyArray<Organization>;

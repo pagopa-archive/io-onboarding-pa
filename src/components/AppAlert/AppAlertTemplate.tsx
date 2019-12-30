@@ -1,7 +1,8 @@
+import "./AppAlert.css";
+
 import React from "react";
 import { AlertComponentPropsWithStyle, types } from "react-alert";
 import { Alert } from "reactstrap";
-import "./AppAlert.css";
 
 export const AppAlertTemplate = ({
   style,

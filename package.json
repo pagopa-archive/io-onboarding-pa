@@ -23,11 +23,12 @@
     "pregenerate": "npm-run-all clean",
     "generate": "npm-run-all generate:*",
     "prebuild": "npm-run-all generate",
+    "prettify": "prettier --write './**/*.{ts,tsx}'",
     "build:parcel": "parcel build ./public/index.html --public-url /",
     "build": "npm-run-all build:*",
     "postversion": "shx git push && git push --tags",
     "test": "jest",
-    "lint": "tslint --project . --exclude locales/locales.ts --exclude generated/definitions/api/requestTypes.ts"
+    "lint": "tslint --project . --exclude locales/locales.ts --exclude generated/**/*.ts"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.12",

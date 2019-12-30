@@ -1,4 +1,5 @@
 import React, { ChangeEvent, ComponentProps, Fragment, useEffect } from "react";
+import useForm from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
 import {
@@ -15,17 +16,14 @@ import {
   Row
 } from "reactstrap";
 
+import { OrganizationFiscalCode } from "../../../../generated/definitions/api/OrganizationFiscalCode";
 import {
   OrganizationScope,
   OrganizationScopeEnum
 } from "../../../../generated/definitions/api/OrganizationScope";
-
-import { SearchAdministrations } from "./SearchAdministrations";
-
-import useForm from "react-hook-form";
-import { OrganizationFiscalCode } from "../../../../generated/definitions/api/OrganizationFiscalCode";
 import logoSignupStepOne from "../../../assets/img/signup_step1.svg";
 import { ValueOf } from "../../../utils/value-of";
+import { SearchAdministrations } from "./SearchAdministrations";
 
 interface IRegistrationStepOneProps
   extends ComponentProps<typeof SearchAdministrations>,

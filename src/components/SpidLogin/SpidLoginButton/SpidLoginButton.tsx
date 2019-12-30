@@ -1,3 +1,5 @@
+import "./SpidLoginButton.css";
+
 import React from "react";
 import { withRouter } from "react-router";
 import {
@@ -11,7 +13,6 @@ import {
 import spidLogo from "../../../assets/img/spid-ico-circle-bb.svg";
 import images from "../../../assets/img/spid/*.svg";
 import { getConfig } from "../../../utils/config";
-import "./SpidLoginButton.css";
 
 /**
  * Component for spid login button with dropdown

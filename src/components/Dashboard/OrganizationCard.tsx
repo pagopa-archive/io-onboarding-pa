@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
 import { Button, Card, CardBody, Col, Media, Row } from "reactstrap";
+
 import { Organization } from "../../../generated/definitions/api/Organization";
 import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
 import dashboardStart from "../../assets/img/dashboard_start.svg";

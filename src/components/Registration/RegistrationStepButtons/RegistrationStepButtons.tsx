@@ -1,10 +1,9 @@
+import "./RegistrationStepButtons.css";
+
 import React, { MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
-
 import { Button, ButtonGroup, Col, Row } from "reactstrap";
-
-import "./RegistrationStepButtons.css";
 
 import { BackButton } from "../../BackButton/BackButton";
 

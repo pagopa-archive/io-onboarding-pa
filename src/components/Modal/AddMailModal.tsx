@@ -18,6 +18,7 @@ import {
   ModalHeader,
   Row
 } from "reactstrap";
+
 import { EmailAddress } from "../../../generated/definitions/api/EmailAddress";
 import { LogoutModalContext } from "../../context/logout-modal-context";
 import {
