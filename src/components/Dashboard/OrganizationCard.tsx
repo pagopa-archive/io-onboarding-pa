@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router-dom";
 import { Button, Card, CardBody, Col, Media, Row } from "reactstrap";
 
+import { TypeEnum } from "../../../generated/definitions/api/ActionPayload";
 import { Organization } from "../../../generated/definitions/api/Organization";
-import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
 import dashboardStart from "../../assets/img/dashboard_start.svg";
 import documentsWaiting from "../../assets/img/institution_document_approval_waiting.svg";
 import { LogoutModalContext } from "../../context/logout-modal-context";
@@ -21,7 +21,7 @@ interface IOrganizationCardProps {
 
 interface IOrganizationCardInfoSectionProps {
   organization: Organization;
-  organizationStatus: OrganizationRegistrationStatusEnum;
+  organizationStatus: "PRE_DRAFT" | "REGISTERED";
 }
 
 interface IButtonInfoSectionProps {
@@ -126,12 +126,13 @@ const OrganizationCardInfoSection = (
   );
 
   const onSendDocuments = () => {
-    const params = {
-      ipaCode: props.organization.ipa_code as string
-    };
     baseUrlBackendClient(cookies.sessionToken)
-      .sendDocuments({
-        ...params
+      .doActionOnRequests({
+        actionPayload: {
+          // TODO: pass requests id
+          ids: [],
+          type: TypeEnum["SEND-EMAIL"]
+        }
       })
       .then(response => {
         if (response.isRight()) {
@@ -166,9 +167,9 @@ const OrganizationCardInfoSection = (
   };
 
   // Set button only if organization is not completely registered
+  // TODO: check if the organization is completely registered
   const infoSectionButton =
-    props.organizationStatus ===
-    OrganizationRegistrationStatusEnum.REGISTERED ? null : (
+    props.organizationStatus === "REGISTERED" ? null : (
       <ButtonInfoSection
         text={t("common.buttons.sendDocumentsAgain")}
         onClick={onSendDocuments}
@@ -223,10 +224,9 @@ const OrganizationCardIcon = (props: {
     typeof OrganizationCardInfoSection
   >["organizationStatus"];
 }) => {
+  // TODO: check organization status
   const src =
-    props.orgStatus === OrganizationRegistrationStatusEnum.PRE_DRAFT
-      ? dashboardStart
-      : documentsWaiting;
+    props.orgStatus === "PRE_DRAFT" ? dashboardStart : documentsWaiting;
   return (
     <Media object={true} src={src} alt="organization_card_icon" height={100} />
   );
@@ -234,10 +234,9 @@ const OrganizationCardIcon = (props: {
 
 export const OrganizationCard = (props: IOrganizationCardProps) => {
   const hasUserOrganizations = props.userOrganizations.length > 0;
+  // TODO: check organization status
   // organization status, if no organization is present the user hasn't registered organizations yet , so it is still in pre-draft status
-  const organizationStatus = hasUserOrganizations
-    ? props.userOrganizations[0].registration_status
-    : OrganizationRegistrationStatusEnum.PRE_DRAFT;
+  const organizationStatus = hasUserOrganizations ? "REGISTERED" : "PRE_DRAFT";
 
   return (
     <div className="InstitutionCard card-wrapper card-space">
@@ -245,15 +244,15 @@ export const OrganizationCard = (props: IOrganizationCardProps) => {
         <CardBody>
           <Row>
             {/*if user has an organization not in pre-draft status, show image section on the left*/}
-            {organizationStatus !==
-            OrganizationRegistrationStatusEnum.PRE_DRAFT ? (
+            {/* TODO: check organization status */}
+            {organizationStatus !== "PRE_DRAFT" ? (
               <Col sm={2}>
                 <OrganizationCardImageSection />
               </Col>
             ) : null}
             {/* if the user has an organization in pre-draft status, show organization info */}
-            {organizationStatus ===
-            OrganizationRegistrationStatusEnum.PRE_DRAFT ? (
+            {/* TODO: check organization status */}
+            {organizationStatus === "PRE_DRAFT" ? (
               <PreDraftInfoSection />
             ) : (
               <OrganizationCardInfoSection
@@ -263,8 +262,8 @@ export const OrganizationCard = (props: IOrganizationCardProps) => {
             )}
             <Col>
               {/*if organization is registered there is no icon on the right*/}
-              {organizationStatus ===
-              OrganizationRegistrationStatusEnum.REGISTERED ? null : (
+              {/* TODO: check organization status */}
+              {organizationStatus === "REGISTERED" ? null : (
                 <OrganizationCardIcon orgStatus={organizationStatus} />
               )}
             </Col>

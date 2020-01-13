@@ -20,7 +20,7 @@ import { FiscalCode } from "../../../generated/definitions/api/FiscalCode";
 import { FoundAdministration } from "../../../generated/definitions/api/FoundAdministration";
 import { OrganizationFiscalCode } from "../../../generated/definitions/api/OrganizationFiscalCode";
 import { OrganizationRegistrationParams } from "../../../generated/definitions/api/OrganizationRegistrationParams";
-import { OrganizationRegistrationStatusEnum } from "../../../generated/definitions/api/OrganizationRegistrationStatus";
+
 import documentCreationLoadingPageImage from "../../assets/img/document_generation.svg";
 import { LoadingPageContext } from "../../context/loading-page-context";
 import { LogoutModalContext } from "../../context/logout-modal-context";
@@ -68,7 +68,6 @@ export const RegistrationContainer = withRouter(
       links: [],
       name: "",
       pecs: {},
-      registration_status: undefined,
       scope: undefined,
       selected_pec_label: ""
     };
@@ -88,17 +87,14 @@ export const RegistrationContainer = withRouter(
       setIsViewedDocumentsCheckboxChecked
     ] = useState(false);
 
+    // TODO: get organization registration request status
     const isAdministrationAlreadyRegistered =
-      selectedAdministration.registration_status ===
-        OrganizationRegistrationStatusEnum.DRAFT ||
-      selectedAdministration.registration_status ===
-        OrganizationRegistrationStatusEnum.REGISTERED;
-
+      "DRAFT" !== null || "REGISTERED" !== null;
     useEffect(() => {
       if (isAdministrationAlreadyRegistered) {
         alert.info(t("common.alerts.alreadyRegisteredInstitution"));
       }
-    }, [selectedAdministration.registration_status]);
+    }, [selectedAdministration]);
 
     const handleAdministrationSearch = (searchString: string) => {
       const params = {
