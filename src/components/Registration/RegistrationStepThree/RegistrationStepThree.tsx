@@ -16,6 +16,7 @@ import {
   Row
 } from "reactstrap";
 
+import { TypeEnum } from "../../../../generated/definitions/api/ActionPayload";
 import logoSignupStepThree from "../../../assets/img/signup_step3.svg";
 import { LogoutModalContext } from "../../../context/logout-modal-context";
 import {
@@ -152,12 +153,13 @@ export const RegistrationStepThree = withRouter(
     );
 
     const onSendDocuments = () => {
-      const params = {
-        ipaCode: props.selectedAdministration.ipa_code as string
-      };
       baseUrlBackendClient(cookies.sessionToken)
-        .sendDocuments({
-          ...params
+        .doActionOnRequests({
+          actionPayload: {
+            // TODO: pass requests id
+            ids: [],
+            type: TypeEnum["SEND-EMAIL"]
+          }
         })
         .then(response => {
           if (response.isRight()) {

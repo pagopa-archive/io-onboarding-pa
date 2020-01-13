@@ -11,6 +11,8 @@ import {
 import {
   createOrganizationsDefaultDecoder,
   CreateOrganizationsT,
+  doActionOnRequestsDefaultDecoder,
+  DoActionOnRequestsT,
   getDocumentDefaultDecoder,
   GetDocumentT,
   getOrganizationsDefaultDecoder,
@@ -20,7 +22,6 @@ import {
   LogoutT,
   searchPublicAdministrationsDefaultDecoder,
   SearchPublicAdministrationsT,
-  SendDocumentsT,
   updateProfileDefaultDecoder,
   UpdateProfileT
 } from "../../generated/definitions/api/requestTypes";
@@ -35,37 +36,6 @@ function ParamAuthorizationBearerHeaderProducer<
     };
   };
 }
-
-/*
- * Custom decoder to temporary fix problem with 204-no content response
- * TODO: change it with generated class - tracked with story https://www.pivotaltracker.com/story/show/169836423
- */
-// Decodes the success response with a custom success type
-// tslint:disable-next-line:typedef
-function sendDocumentsCustomDecoder() {
-  return composeResponseDecoders(
-    composeResponseDecoders(
-      composeResponseDecoders(
-        composeResponseDecoders(
-          composeResponseDecoders(
-            composeResponseDecoders(
-              constantResponseDecoder<undefined, 204>(204, undefined),
-              constantResponseDecoder<undefined, 400>(400, undefined)
-            ),
-            constantResponseDecoder<undefined, 401>(401, undefined)
-          ),
-          constantResponseDecoder<undefined, 403>(403, undefined)
-        ),
-        constantResponseDecoder<undefined, 404>(404, undefined)
-      ),
-      constantResponseDecoder<undefined, 429>(429, undefined)
-    ),
-    constantResponseDecoder<undefined, 503>(503, undefined)
-  );
-}
-
-// Decodes the success response with the type defined in the specs
-const sendDocumentsCustomDefaultDecoder = () => sendDocumentsCustomDecoder();
 
 /*
  * Custom decoder to temporary fix problem with 204-no content response
@@ -151,13 +121,13 @@ export function BackendClient(
       `/organizations/${params.ipaCode}/documents/${params.documentName}`
   };
 
-  const sendDocumentsT: SendDocumentsT = {
-    body: _ => JSON.stringify({}),
+  const doActionOnRequestsT: DoActionOnRequestsT = {
+    body: params => JSON.stringify(params.actionPayload),
     headers: composeHeaderProducers(tokenHeaderProducer, ApiHeaderJson),
     method: "post",
     query: _ => ({}),
-    response_decoder: sendDocumentsCustomDefaultDecoder(),
-    url: params => `/organizations/${params.ipaCode}/signed-documents`
+    response_decoder: doActionOnRequestsDefaultDecoder(),
+    url: () => `/requests/actions`
   };
 
   const updateProfileT: UpdateProfileT = {
@@ -191,6 +161,9 @@ export function BackendClient(
     createOrganizations: withBearerToken(
       createFetchRequestForApi(createOrganizationsT, options)
     ),
+    doActionOnRequests: withBearerToken(
+      createFetchRequestForApi(doActionOnRequestsT, options)
+    ),
     getDocument: withBearerToken(
       createFetchRequestForApi(getDocumentT, options)
     ),
@@ -202,9 +175,6 @@ export function BackendClient(
     searchPublicAdministrations: createFetchRequestForApi(
       searchPublicAdministrationsT,
       options
-    ),
-    sendDocuments: withBearerToken(
-      createFetchRequestForApi(sendDocumentsT, options)
     ),
     updateProfile: withBearerToken(
       createFetchRequestForApi(updateProfileT, options)
