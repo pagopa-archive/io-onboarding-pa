@@ -1,17 +1,16 @@
 version: 2.1
 
-# Needed environment variables (set up these on CircleCI):
-# IO_ONBOARDING_PA_API_PORT: "3000"
-# IO_ONBOARDING_PA_API_HOST: "http://localhost"
-# IO_ONBOARDING_PA_IS_MOCK_ENV: "0"
-# IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN: "localhost"
-# IO_ONBOARDING_PA_SHOW_FAKE_IDP: "1"
-
 orbs:
   azure-cli: circleci/azure-cli@1.1.0
 
 executors:
   docker-nodejs:
+    environment:
+      IO_ONBOARDING_PA_API_PORT: "3000"
+      IO_ONBOARDING_PA_API_HOST: "http://localhost"
+      IO_ONBOARDING_PA_IS_MOCK_ENV: "1"
+      IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN: "localhost"
+      IO_ONBOARDING_PA_SHOW_FAKE_IDP: "1"
     docker:
       - image: circleci/node:10.14.1
 
@@ -48,6 +47,12 @@ jobs:
 
   compile:
     executor: docker-nodejs
+    environment:
+      IO_ONBOARDING_PA_API_PORT: "3000"
+      IO_ONBOARDING_PA_API_HOST: "http://localhost"
+      IO_ONBOARDING_PA_IS_MOCK_ENV: "1"
+      IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN: "localhost"
+      IO_ONBOARDING_PA_SHOW_FAKE_IDP: "1"
     steps:
       - checkout
       - install_node_modules
@@ -87,13 +92,39 @@ jobs:
   deploy:
     executor: docker-nodejs
     steps:
+      - checkout
+      - install_node_modules
+
+      - run: |
+
+          # see https://circleci.com/docs/2.0/env-vars/
+
+          export IO_ONBOARDING_PA_API_PORT="443"
+          export IO_ONBOARDING_PA_IS_MOCK_ENV="0"
+          export IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN="*.io.italia.it"
+
+          if [[ "${CIRCLE_TAG}" == *latest* ]]
+          then
+            # production settings
+            export IO_ONBOARDING_PA_API_HOST="https://api.io.italia.it"
+            export IO_ONBOARDING_PA_SHOW_FAKE_IDP="0"
+          elif [[ "${CIRCLE_BRANCH}" == "master" ]]
+          then
+            # staging settings
+            export IO_ONBOARDING_PA_API_HOST="https://api.dev.io.italia.it"
+            export IO_ONBOARDING_PA_SHOW_FAKE_IDP="1"
+          fi
+
+      - run: yarn generate
+      - run: yarn build
+
       - run: |
 
           if [[ "${CIRCLE_TAG}" == *latest* ]]
           # TODO: change this settings once production infrastructure is ready
           # see https://www.pivotaltracker.com/story/show/170574874
           then
-              echo Releasing to Live...
+              echo Releasing to Live (TODO)...
               storageAccountName='iodevsaobfrontend'
               resourceGroup='io-dev-rg'
               cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
@@ -120,6 +151,9 @@ jobs:
           echo Purging CDN cache...
           az cdn endpoint purge --resource-group $resourceGroup --name $cdnEndpointName --profile-name $cdnProfileName --content-paths '/*'
 
+# CircleCI skips a job for a tag by default.
+# A job must have a filters tags section to run as a part of a tag push
+# and all its transitively dependent jobs must also have a filters tags section.
 workflows:
   build-and-test:
     jobs:
@@ -132,20 +166,18 @@ workflows:
               ignore: master
 
   build-and-deploy:
+    filters:
+      branches:
+        only:
+          - master
+      tags:
+        only:
+          - latest
     jobs:
       - az-install
       - az-login:
           requires:
             - az-install
-      - compile
       - deploy:
           requires:
             - az-login
-            - compile
-          filters:
-            branches:
-              only:
-                - master
-            tags:
-              only:
-                - latest
