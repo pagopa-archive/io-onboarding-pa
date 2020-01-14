@@ -1,47 +1,67 @@
-defaults: &defaults
-  working_directory: ~/repo
+version: 2.1
 
-node_cache_key: &node_cache_key v1-dependencies-{{ checksum "yarn.lock" }}
+# Needed environment variables (set up these on CircleCI):
+# IO_ONBOARDING_PA_API_PORT: "3000"
+# IO_ONBOARDING_PA_API_HOST: "http://localhost"
+# IO_ONBOARDING_PA_IS_MOCK_ENV: "0"
+# IO_ONBOARDING_PA_SESSION_TOKEN_DOMAIN: "localhost"
+# IO_ONBOARDING_PA_SHOW_FAKE_IDP: "1"
 
-defaults_js: &defaults_js
-  <<: *defaults
-  docker:
-    - image: circleci/node:10.14.1
+orbs:
+  azure-cli: circleci/azure-cli@1.1.0
 
-restore_node_cache: &restore_node_cache
-  restore_cache:
-    keys:
-      - *node_cache_key
+executors:
+  docker-nodejs:
+    docker:
+      - image: circleci/node:10.14.1
 
-save_node_cache: &save_node_cache
-  save_cache:
-    paths:
-      - node_modules
-    key: *node_cache_key
+commands:
+  install_node_modules:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "yarn.lock" }}
+      - run: yarn install --cache-folder ~/.cache/yarn --frozen-lockfile --no-progress --non-interactive
+  save_node_cache:
+    steps:
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
 
-install_node_modules: &install_node_modules
-  run: yarn install --no-progress --non-interactive --network-concurrency 1
-
-version: 2
 jobs:
+  az-install:
+    executor: azure-cli/default
+    steps:
+      - azure-cli/install
+      - run:
+          command: az -v
+          name: Verify Azure CLI is installed
+
+  az-login:
+    executor: azure-cli/default
+    steps:
+      - azure-cli/login-with-service-principal
+      - run:
+          command: az resource list
+          name: List resources of tenant stored as `AZURE_SP_TENANT` env var
+
   compile:
-    <<: *defaults_js
+    executor: docker-nodejs
     steps:
       - checkout
-      - *restore_node_cache
-      - *install_node_modules
-      - *save_node_cache
+      - install_node_modules
+      - save_node_cache
 
       # Build app
       - run: yarn generate
       - run: yarn build
 
   tests:
-    <<: *defaults_js
+    executor: docker-nodejs
     steps:
       - checkout
-      - *restore_node_cache
-      - *install_node_modules
+      - install_node_modules
 
       # Generate models and locales
       - run: yarn generate
@@ -51,24 +71,57 @@ jobs:
       - run: "bash <(curl -s https://codecov.io/bash)"
 
   lint:
-    <<: *defaults_js
+    executor: docker-nodejs
     steps:
       - checkout
-      - *restore_node_cache
-      - *install_node_modules
+      - install_node_modules
       - run: yarn lint
 
   danger:
-    <<: *defaults_js
+    executor: docker-nodejs
     steps:
       - checkout
-      - *restore_node_cache
-      - *install_node_modules
+      - install_node_modules
       - run: '[ -z "$DANGER_GITHUB_API_TOKEN" ] || yarn danger ci'
 
+  deploy:
+    executor: docker-nodejs
+    steps:
+      - run: |
+
+          if [[ "${CIRCLE_TAG}" == *latest* ]]
+          # TODO: change this settings once production infrastructure is ready
+          # see https://www.pivotaltracker.com/story/show/170574874
+          then
+              echo Releasing to Live...
+              storageAccountName='iodevsaobfrontend'
+              resourceGroup='io-dev-rg'
+              cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
+              cdnProfileName='io-dev-cdn-onboarding'
+          elif [[ "${CIRCLE_BRANCH}" == "master" ]]
+          then
+              echo Releasing to Staging...
+              storageAccountName='iodevsaobfrontend'
+              resourceGroup='io-dev-rg'
+              cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
+              cdnProfileName='io-dev-cdn-onboarding'
+          fi
+
+          # You may avoid a downtime by uploading index.html last
+          # see https://afana.me/archive/2018/10/06/deploy-angular-app-azure-cdn/
+
+          echo Uploading static website to blob storage...
+          az storage blob upload-batch --source ./dist --destination \$web --account-name $storageAccountName
+
+          # echo Deleting files older than 3 months... (not needed)
+          # oldFilesDateTime=$(date -d "-3 months"  +"%Y-%m-%dT%H:%MZ")
+          # az storage blob delete-batch --source \$web --if-unmodified-since $oldFilesDateTime --account-name $storageAccountName
+
+          echo Purging CDN cache...
+          az cdn endpoint purge --resource-group $resourceGroup --name $cdnEndpointName --profile-name $cdnProfileName --content-paths '/*'
+
 workflows:
-  version: 2
-  build:
+  build-and-test:
     jobs:
       - compile
       - tests
@@ -77,3 +130,22 @@ workflows:
           filters:
             branches:
               ignore: master
+
+  build-and-deploy:
+    jobs:
+      - az-install
+      - az-login:
+          requires:
+            - az-install
+      - compile
+      - deploy:
+          requires:
+            - az-login
+            - compile
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              only:
+                - latest
