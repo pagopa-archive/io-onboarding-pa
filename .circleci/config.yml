@@ -4,11 +4,16 @@ orbs:
   azure-cli: circleci/azure-cli@1.1.0
 
 references:
+  # every push on master
   staging_only: &staging_only
     filters:
       branches:
         only:
           - master
+
+  # every time some branch is tagged with 'latest'
+  production_only: &production_only
+    filters:
       tags:
         only:
           - latest
@@ -175,7 +180,7 @@ workflows:
             branches:
               ignore: master
 
-  build-and-deploy:
+  deploy-to-staging:
     jobs:
       - az-install:
           <<: *staging_only
@@ -185,5 +190,18 @@ workflows:
             - az-install
       - deploy:
           <<: *staging_only
+          requires:
+            - az-login
+
+  deploy-to-production:
+    jobs:
+      - az-install:
+          <<: *production_only
+      - az-login:
+          <<: *production_only
+          requires:
+            - az-install
+      - deploy:
+          <<: *production_only
           requires:
             - az-login
