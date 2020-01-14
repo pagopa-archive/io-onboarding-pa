@@ -3,6 +3,16 @@ version: 2.1
 orbs:
   azure-cli: circleci/azure-cli@1.1.0
 
+references:
+  staging_only: &staging_only
+    filters:
+      branches:
+        only:
+          - master
+      tags:
+        only:
+          - latest
+
 executors:
   docker-nodejs:
     environment:
@@ -168,30 +178,12 @@ workflows:
   build-and-deploy:
     jobs:
       - az-install:
-          filters:
-            branches:
-              only:
-                - master
-            tags:
-              only:
-                - latest
+          <<: *staging_only
       - az-login:
-          filters:
-            branches:
-              only:
-                - master
-            tags:
-              only:
-                - latest
+          <<: *staging_only
           requires:
             - az-install
       - deploy:
+          <<: *staging_only
           requires:
             - az-login
-          filters:
-            branches:
-              only:
-                - master
-            tags:
-              only:
-                - latest
