@@ -106,7 +106,7 @@ jobs:
       - install_node_modules
       - run: '[ -z "$DANGER_GITHUB_API_TOKEN" ] || yarn danger ci'
 
-  deploy:
+  prepare-deploy:
     executor: docker-nodejs
     steps:
       - checkout
@@ -134,39 +134,59 @@ jobs:
 
       - run: yarn generate
       - run: yarn build
+      - run: yarn test
 
-      - run: |
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory.
+          # This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: .
+          # Must be relative path from root
+          paths:
+            - dist
 
-          if [[ "${CIRCLE_TAG}" == *latest* ]]
-          # TODO: change this settings once production infrastructure is ready
-          # see https://www.pivotaltracker.com/story/show/170574874
-          then
-              echo Releasing to Live (TODO)...
-              storageAccountName='iodevsaobfrontend'
-              resourceGroup='io-dev-rg'
-              cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
-              cdnProfileName='io-dev-cdn-onboarding'
-          elif [[ "${CIRCLE_BRANCH}" == "master" ]]
-          then
-              echo Releasing to Staging...
-              storageAccountName='iodevsaobfrontend'
-              resourceGroup='io-dev-rg'
-              cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
-              cdnProfileName='io-dev-cdn-onboarding'
-          fi
+  deploy:
+    executor: azure-cli/default
+    steps:
+      - azure-cli/install
+      - azure-cli/login-with-service-principal
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp
+      - run:
+          name: Deploy to storage (website)
+          command: |
 
-          # You may avoid a downtime by uploading index.html last
-          # see https://afana.me/archive/2018/10/06/deploy-angular-app-azure-cdn/
+            if [[ "${CIRCLE_TAG}" == *latest* ]]
+            # TODO: change this settings once production infrastructure is ready
+            # see https://www.pivotaltracker.com/story/show/170574874
+            then
+                echo Releasing to Live (TODO)...
+                storageAccountName='iodevsaobfrontend'
+                resourceGroup='io-dev-rg'
+                cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
+                cdnProfileName='io-dev-cdn-onboarding'
+            elif [[ "${CIRCLE_BRANCH}" == "master" ]]
+            then
+                echo Releasing to Staging...
+                storageAccountName='iodevsaobfrontend'
+                resourceGroup='io-dev-rg'
+                cdnEndpointName='io-dev-cdn-endpoint-obfrontend'
+                cdnProfileName='io-dev-cdn-onboarding'
+            fi
 
-          echo Uploading static website to blob storage...
-          az storage blob upload-batch --source ./dist --destination \$web --account-name $storageAccountName
+            # You may avoid a downtime by uploading index.html last
+            # see https://afana.me/archive/2018/10/06/deploy-angular-app-azure-cdn/
 
-          # echo Deleting files older than 3 months... (not needed)
-          # oldFilesDateTime=$(date -d "-3 months"  +"%Y-%m-%dT%H:%MZ")
-          # az storage blob delete-batch --source \$web --if-unmodified-since $oldFilesDateTime --account-name $storageAccountName
+            echo Uploading static website to blob storage...
+            az storage blob upload-batch --source /tmp/dist --destination \$web --account-name $storageAccountName
 
-          echo Purging CDN cache...
-          az cdn endpoint purge --resource-group $resourceGroup --name $cdnEndpointName --profile-name $cdnProfileName --content-paths '/*'
+            # echo Deleting files older than 3 months... (not needed)
+            # oldFilesDateTime=$(date -d "-3 months"  +"%Y-%m-%dT%H:%MZ")
+            # az storage blob delete-batch --source \$web --if-unmodified-since $oldFilesDateTime --account-name $storageAccountName
+
+            echo Purging CDN cache...
+            az cdn endpoint purge --resource-group $resourceGroup --name $cdnEndpointName --profile-name $cdnProfileName --content-paths '/*'
 
 # CircleCI skips a job for a tag by default.
 # A job must have a filters tags section to run as a part of a tag push
@@ -184,26 +204,18 @@ workflows:
 
   deploy-to-staging:
     jobs:
-      - az-install:
+      - prepare-deploy:
           <<: *staging_only
-      - az-login:
-          <<: *staging_only
-          requires:
-            - az-install
       - deploy:
           <<: *staging_only
           requires:
-            - az-login
+            - prepare-deploy
 
   deploy-to-production:
     jobs:
-      - az-install:
+      - prepare-deploy:
           <<: *production_only
-      - az-login:
-          <<: *production_only
-          requires:
-            - az-install
       - deploy:
           <<: *production_only
           requires:
-            - az-login
+            - prepare-deploy
