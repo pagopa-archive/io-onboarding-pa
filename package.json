@@ -84,7 +84,7 @@
     "i18next-browser-languagedetector": "^3.0.3",
     "italia-ts-commons": "^5.1.12",
     "react": "^16.9.11",
-    "react-alert": "^6.0.0",
+    "react-alert": "^7.0.0",
     "react-app-polyfill": "^1.0.3",
     "react-bootstrap-typeahead": "^3.4.6",
     "react-cookie": "^4.0.1",
